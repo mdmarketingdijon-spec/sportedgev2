@@ -194,202 +194,121 @@
   </aside>
 
 
+
 <script>
-// SE-NAV-index
-(function(){
+// SE-NAV-onboarding v3
+(function() {
   'use strict';
 
-  /* ── BARRE DE NAVIGATION DU BAS ── */
-  var NAV = {
-    'home':       'home-medium.html',
-    'progress':   'progress.html',
-    'activities': 'activities.html',
-    'profile':    'profile.html',
-    'bolt':       'bolt.html'
+  var _energy   = 'medium'; // défaut
+  var _location = 'indoor'; // défaut
+
+  var ROUTES = {
+    'low-indoor':     'home-low.html',
+    'low-outdoor':    'home-low-outdoor.html',
+    'medium-indoor':  'home-medium.html',
+    'medium-outdoor': 'home-medium-outdoor.html',
+    'high-indoor':    'home-high.html',
+    'high-outdoor':   'home-high-outdoor.html'
   };
-  document.querySelectorAll('nav a, nav button').forEach(function(el){
-    var txt = (el.innerText||'').trim().toLowerCase();
-    var alt = ((el.querySelector('img')||{}).alt||'').toLowerCase();
-    Object.keys(NAV).forEach(function(k){
-      if(txt===k || alt===k || txt.includes(k)){
-        el.href = 'javascript:void(0)';
-        el.addEventListener('click',function(e){
-          e.preventDefault(); e.stopImmediatePropagation();
+
+  /* ── Cibler les boutons par leur H3 enfant ── */
+  var allButtons = document.querySelectorAll('button');
+
+  allButtons.forEach(function(btn) {
+    // Chercher le h3 à l'intérieur du bouton
+    var h3 = btn.querySelector('h3');
+    if (!h3) return;
+    var label = h3.textContent.trim().toLowerCase();
+
+    // Boutons énergie
+    if (label === 'low') {
+      btn.addEventListener('click', function() {
+        _energy = 'low';
+        highlightGroup(btn, 'energy');
+      });
+    } else if (label === 'medium') {
+      btn.addEventListener('click', function() {
+        _energy = 'medium';
+        highlightGroup(btn, 'energy');
+      });
+    } else if (label === 'high') {
+      btn.addEventListener('click', function() {
+        _energy = 'high';
+        highlightGroup(btn, 'energy');
+      });
+
+    // Boutons lieu
+    } else if (label === 'fitness mat') {
+      btn.addEventListener('click', function() {
+        _location = 'indoor';
+        highlightGroup(btn, 'location');
+      });
+    } else if (label === 'trainers') {
+      btn.addEventListener('click', function() {
+        _location = 'outdoor';
+        highlightGroup(btn, 'location');
+      });
+    }
+  });
+
+  /* ── Bouton CTA "Start now" ── */
+  var footerBtn = document.querySelector('footer button');
+  if (footerBtn) {
+    footerBtn.addEventListener('click', function(e) {
+      e.preventDefault();
+      e.stopImmediatePropagation();
+      var key = _energy + '-' + _location;
+      var dest = ROUTES[key] || 'home-medium.html';
+      window.location.href = dest;
+    }, true);
+  }
+
+  /* ── Highlight visuel du bouton sélectionné ── */
+  function highlightGroup(selected, group) {
+    // Trouver tous les boutons du même groupe
+    document.querySelectorAll('button').forEach(function(btn) {
+      var h3 = btn.querySelector('h3');
+      if (!h3) return;
+      var label = h3.textContent.trim().toLowerCase();
+
+      var isEnergyBtn   = (label === 'low' || label === 'medium' || label === 'high');
+      var isLocationBtn = (label === 'fitness mat' || label === 'trainers');
+
+      if (group === 'energy' && isEnergyBtn) {
+        btn.style.border = '2px solid transparent';
+        btn.style.backgroundColor = '#F6F5F3';
+      }
+      if (group === 'location' && isLocationBtn) {
+        btn.style.border = '2px solid transparent';
+        btn.style.backgroundColor = '#F6F5F3';
+      }
+    });
+
+    // Mettre en surbrillance le sélectionné
+    selected.style.border = '2px solid #EC9679';
+    selected.style.backgroundColor = '#FDF4F2';
+  }
+
+  /* ── Barre de navigation du bas ── */
+  document.querySelectorAll('nav a, nav button').forEach(function(el) {
+    var txt = (el.innerText || '').trim().toLowerCase();
+    var NAV = {
+      'home':       'home-medium.html',
+      'progress':   'progress.html',
+      'activities': 'activities.html',
+      'profile':    'profile.html',
+      'bolt':       'bolt.html'
+    };
+    Object.keys(NAV).forEach(function(k) {
+      if (txt.includes(k)) {
+        el.addEventListener('click', function(e) {
+          e.preventDefault();
           window.location.href = NAV[k];
-        },true);
+        });
       }
     });
   });
-
-  /* ── ONBOARDING : sélection + routing ── */
-  if('index' === 'onboarding' || 'index' === 'index'){
-    var _energy   = 'medium';
-    var _location = 'indoor';
-
-    var ROUTES = {
-      'low-indoor':     'home-low.html',
-      'low-outdoor':    'home-low-outdoor.html',
-      'medium-indoor':  'home-medium.html',
-      'medium-outdoor': 'home-medium-outdoor.html',
-      'high-indoor':    'home-high.html',
-      'high-outdoor':   'home-high-outdoor.html'
-    };
-
-    /* Sélection énergie */
-    document.querySelectorAll('button').forEach(function(btn){
-      var txt = (btn.innerText||'').trim().toLowerCase();
-      if(txt.includes('low') && txt.length < 25){
-        btn.addEventListener('click',function(){
-          _energy='low';
-          highlight(btn,'energy');
-        });
-      } else if(txt.includes('high') && txt.length < 25){
-        btn.addEventListener('click',function(){
-          _energy='high';
-          highlight(btn,'energy');
-        });
-      } else if(txt.includes('medium') && txt.length < 25){
-        btn.addEventListener('click',function(){
-          _energy='medium';
-          highlight(btn,'energy');
-        });
-      }
-    });
-
-    /* Sélection lieu */
-    document.querySelectorAll('button').forEach(function(btn){
-      var txt = (btn.innerText||'').trim().toLowerCase();
-      if(txt.includes('trainer') || txt.includes('outdoor')){
-        btn.addEventListener('click',function(){
-          _location='outdoor';
-          highlight(btn,'location');
-        });
-      } else if(txt.includes('mat') || txt.includes('fitness mat')){
-        btn.addEventListener('click',function(){
-          _location='indoor';
-          highlight(btn,'location');
-        });
-      }
-    });
-
-    /* CTA "Start now" */
-    document.querySelectorAll('button, a').forEach(function(btn){
-      var txt = (btn.innerText||'').trim().toLowerCase();
-      if(txt.includes('start now') || txt.includes('no commitment')){
-        btn.addEventListener('click',function(e){
-          e.preventDefault(); e.stopImmediatePropagation();
-          var key = _energy + '-' + _location;
-          window.location.href = ROUTES[key] || 'home-medium.html';
-        },true);
-      }
-    });
-
-    function highlight(el, group){
-      document.querySelectorAll('button[data-se-group="'+group+'"]').forEach(function(b){
-        b.style.border='2px solid transparent';
-        b.style.backgroundColor='#F6F5F3';
-        delete b.dataset.seGroup;
-      });
-      el.dataset.seGroup = group;
-      el.style.border='2px solid #EC9679';
-      el.style.backgroundColor='#FDF4F2';
-    }
-  }
-
-  /* ── HOME : bouton Start session ── */
-  if('index'.includes('home-')){
-    document.querySelectorAll('button, a').forEach(function(btn){
-      var txt = (btn.innerText||'').trim().toLowerCase();
-      if(txt.includes('start session') || txt.includes("let's go") || txt.includes('start now')){
-        btn.addEventListener('click',function(e){
-          e.preventDefault(); e.stopImmediatePropagation();
-          window.location.href = 'session-medium.html';
-        },true);
-      }
-    });
-  }
-
-  /* ── SESSION : bouton Done ── */
-  if('index'.includes('session')){
-    document.querySelectorAll('button, a').forEach(function(btn){
-      var txt = (btn.innerText||'').trim().toLowerCase();
-      if(txt === 'done' || txt.includes('done') || txt.includes('complete') || txt.includes('finish')){
-        btn.addEventListener('click',function(e){
-          e.preventDefault(); e.stopImmediatePropagation();
-          window.location.href = 'celebration.html';
-        },true);
-      }
-    });
-  }
-
-  /* ── CELEBRATION : retour home ── */
-  if('index'.includes('celebration')){
-    document.querySelectorAll('button, a').forEach(function(btn){
-      var txt = (btn.innerText||'').trim().toLowerCase();
-      if(txt.includes('home') || txt.includes('back') || txt.includes('return')){
-        btn.addEventListener('click',function(e){
-          e.preventDefault(); e.stopImmediatePropagation();
-          window.location.href = 'home-medium.html';
-        },true);
-      }
-    });
-  }
-
-  /* ── ACTIVITIES : liens bibliothèques ── */
-  if('index'.includes('activities')){
-    var LIB = {
-      'stretching':  'library-stretching.html',
-      'hiit':        'library-hiit.html',
-      'cardio':      'library-hiit.html',
-      'yoga':        'library-yoga.html',
-      'breathwork':  'library-yoga.html',
-      'outdoor run': 'library-outdoor-runs.html',
-      'outdoor runs':'library-outdoor-runs.html',
-      'strength':    'library-strength.html',
-      'meditation':  'library-meditation.html',
-      'mindful':     'library-meditation.html'
-    };
-    document.querySelectorAll('button, a, [role="button"]').forEach(function(el){
-      var txt = (el.innerText||'').trim().toLowerCase();
-      Object.keys(LIB).forEach(function(k){
-        if(txt.includes(k)){
-          el.addEventListener('click',function(e){
-            e.preventDefault(); e.stopImmediatePropagation();
-            window.location.href = LIB[k];
-          },true);
-        }
-      });
-    });
-  }
-
-  /* ── PROFILE : liens overlays ── */
-  if('index'.includes('profile')){
-    document.querySelectorAll('button, a, li, [role="listitem"]').forEach(function(el){
-      var txt = (el.innerText||'').trim().toLowerCase();
-      if(txt.includes('notification')){
-        el.addEventListener('click',function(e){e.preventDefault();window.location.href='notifications.html';});
-      } else if(txt.includes('energy level') || txt.includes('default energy')){
-        el.addEventListener('click',function(e){e.preventDefault();window.location.href='energy.html';});
-      } else if(txt.includes('about')){
-        el.addEventListener('click',function(e){e.preventDefault();window.location.href='about.html';});
-      } else if(txt.includes('training type') || txt.includes('preferred training')){
-        el.addEventListener('click',function(e){e.preventDefault();window.location.href='notifications.html';});
-      }
-    });
-  }
-
-  /* ── OVERLAYS (notifications, energy, about) : Save + Back ── */
-  if('index'.includes('notification') || 'index'.includes('energy') || 'index'.includes('about')){
-    document.querySelectorAll('button, a').forEach(function(btn){
-      var txt = (btn.innerText||'').trim().toLowerCase();
-      if(txt.includes('save') || txt.includes('confirm') || txt.includes('back')){
-        btn.addEventListener('click',function(e){
-          e.preventDefault(); e.stopImmediatePropagation();
-          window.location.href = 'profile.html';
-        },true);
-      }
-    });
-  }
 
 })();
 </script>
