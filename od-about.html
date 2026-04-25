@@ -1,0 +1,510 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SportEdge - Profile</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/iconify-icon@3.0.2/dist/iconify-icon.min.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&amp;display=swap" type="text/css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&amp;display=swap" type="text/css" rel="stylesheet">
+  <style>
+    body {
+      font-family: "Inter", ui-sans-serif, system-ui, -apple-system, sans-serif;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      color: #1D1A16;
+      background-color: #FBFAF9;
+    }
+
+    h1, h2, h3, h4, h5, h6 {
+      font-family: "Outfit", ui-sans-serif, system-ui, sans-serif;
+      font-weight: 600;
+      letter-spacing: -0.02em;
+    }
+
+    * {
+      transition: all 0.2s ease;
+    }
+
+    .bottom-sheet-shadow {
+      box-shadow: 0 -10px 25px -5px rgba(0, 0, 0, 0.1), 0 -8px 10px -6px rgba(0, 0, 0, 0.1);
+    }
+
+    .no-scrollbar::-webkit-scrollbar {
+      display: none;
+    }
+    .no-scrollbar {
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+    }
+
+    .glass-overlay {
+      background: rgba(0, 0, 0, 0.6);
+      backdrop-filter: blur(2px);
+    }
+  </style>
+</head>
+<body class="min-h-screen flex flex-col lg:flex-row">
+
+  <!-- Desktop Sidebar Navigation -->
+  <aside class="hidden lg:flex flex-col w-64 bg-white border-r border-[#E4E0DC] h-screen sticky top-0 p-6">
+    <div class="mb-10">
+      <h1 class="text-2xl font-bold text-[#EC9679]">SportEdge</h1>
+    </div>
+    <nav class="flex flex-col gap-4 flex-1">
+      <a href="#" class="flex items-center gap-3 p-3 rounded-xl hover:bg-[#F6F5F3] text-[#6A5E53]">
+        <iconify-icon icon="lucide:house" width="24"></iconify-icon>
+        <span class="font-medium">Home</span>
+      </a>
+      <a href="#" class="flex items-center gap-3 p-3 rounded-xl hover:bg-[#F6F5F3] text-[#6A5E53]">
+        <iconify-icon icon="lucide:chart-no-axes-column" width="24"></iconify-icon>
+        <span class="font-medium">Progress</span>
+      </a>
+      <a href="#" class="flex items-center gap-3 p-3 rounded-xl hover:bg-[#F6F5F3] text-[#6A5E53]">
+        <iconify-icon icon="lucide:message-circle" width="24"></iconify-icon>
+        <span class="font-medium">Bolt</span>
+      </a>
+      <a href="#" class="flex items-center gap-3 p-3 rounded-xl hover:bg-[#F6F5F3] text-[#6A5E53]">
+        <iconify-icon icon="lucide:activity" width="24"></iconify-icon>
+        <span class="font-medium">Activities</span>
+      </a>
+      <a href="#" class="flex items-center gap-3 p-3 rounded-xl bg-[#FDF4F2] text-[#EC9679]">
+        <iconify-icon icon="lucide:user" width="24"></iconify-icon>
+        <span class="font-bold">Profile</span>
+      </a>
+    </nav>
+    <div class="mt-auto pt-6 border-t border-[#E4E0DC]">
+      <p class="text-[10px] text-[#6A5E53]/60 text-center">Version 1.2.4 • Tiny victories</p>
+    </div>
+  </aside>
+
+  <!-- Main Content Area -->
+  <main class="flex-1 relative pb-20 lg:pb-0">
+    
+    <!-- Mobile Header -->
+    <header class="lg:hidden sticky top-0 z-30 bg-[#FBFAF9] border-b border-[#E4E0DC] px-4 py-4 flex items-center justify-center">
+      <h2 class="text-lg font-semibold">Profile</h2>
+    </header>
+
+    <!-- Scrollable Content -->
+    <div class="max-w-4xl mx-auto px-5 py-8 lg:py-12">
+      
+      <!-- Profile Section -->
+      <section class="flex flex-col items-center mb-10">
+        <div class="relative mb-4">
+          <div class="absolute inset-0 bg-[#EC9679]/20 rounded-full blur-xl"></div>
+          <div class="relative w-24 h-24 rounded-full overflow-hidden border-2 border-white shadow-sm">
+            <img src="./assets-od-about/IMG_3.webp" alt="Alex" class="w-full h-full object-cover">
+          </div>
+        </div>
+        <h1 class="text-2xl font-bold mb-1">Alex</h1>
+        <p class="text-[#6A5E53] text-sm font-medium">Moving a little, every day. ✨</p>
+      </section>
+
+      <!-- Stats Grid -->
+      <section class="grid grid-cols-3 gap-3 mb-10 md:gap-6">
+        <div class="bg-[#FDF4F2] border border-[#EC9679]/10 rounded-[26px] p-4 flex flex-col items-center justify-center text-center">
+          <iconify-icon icon="lucide:trophy" class="text-[#43180A]/70 mb-2" width="16"></iconify-icon>
+          <span class="text-lg font-bold text-[#43180A]">12</span>
+          <span class="text-[10px] uppercase tracking-widest font-semibold text-[#43180A]/60">Sessions</span>
+        </div>
+        <div class="bg-[#F2FDF9] border border-[#67E4BB]/10 rounded-[26px] p-4 flex flex-col items-center justify-center text-center">
+          <iconify-icon icon="lucide:flame" class="text-[#0B412F]/70 mb-2" width="16"></iconify-icon>
+          <span class="text-lg font-bold text-[#0B412F]">4 Days</span>
+          <span class="text-[10px] uppercase tracking-widest font-semibold text-[#0B412F]/60">Streak</span>
+        </div>
+        <div class="bg-[#F6F2FD] border border-[#B093EC]/10 rounded-[26px] p-4 flex flex-col items-center justify-center text-center">
+          <iconify-icon icon="lucide:heart" class="text-[#1d0b41]/70 mb-2" width="16"></iconify-icon>
+          <span class="text-lg font-bold text-[#1d0b41]">Stretch</span>
+          <span class="text-[10px] uppercase tracking-widest font-semibold text-[#1d0b41]/60">Fav</span>
+        </div>
+      </section>
+
+      <!-- Weekly Activity Card -->
+      <section class="bg-[#F6F5F3]/50 rounded-[24px] p-5 shadow-sm border border-white/30 mb-10">
+        <div class="flex justify-between items-center mb-6">
+          <div class="flex items-center gap-2">
+            <iconify-icon icon="lucide:calendar" class="text-[#EC9679]" width="16"></iconify-icon>
+            <h3 class="text-sm font-semibold">Weekly Activity</h3>
+          </div>
+          <span class="bg-[#EC9679]/5 border border-[#EC9679]/20 text-[10px] font-medium px-3 py-1 rounded-full">4/7 Days</span>
+        </div>
+        
+        <div class="flex justify-between items-center px-1">
+          <!-- Day Items -->
+          <div class="flex flex-col items-center gap-2">
+            <span class="text-[10px] font-bold text-[#6A5E53]">M</span>
+            <div class="w-8 h-8 bg-[#EC9679] rounded-full flex items-center justify-center shadow-sm">
+              <iconify-icon icon="lucide:circle-check" class="text-[#1D1A16]" width="16"></iconify-icon>
+            </div>
+          </div>
+          <div class="flex flex-col items-center gap-2">
+            <span class="text-[10px] font-bold text-[#6A5E53]">T</span>
+            <div class="w-8 h-8 bg-[#EC9679] rounded-full flex items-center justify-center shadow-sm">
+              <iconify-icon icon="lucide:circle-check" class="text-[#1D1A16]" width="16"></iconify-icon>
+            </div>
+          </div>
+          <div class="flex flex-col items-center gap-2">
+            <span class="text-[10px] font-bold text-[#6A5E53]">W</span>
+            <div class="w-8 h-8 border-2 border-dashed border-[#6A5E53]/20 rounded-full"></div>
+          </div>
+          <div class="flex flex-col items-center gap-2">
+            <span class="text-[10px] font-bold text-[#6A5E53]">T</span>
+            <div class="w-8 h-8 bg-[#EC9679] rounded-full flex items-center justify-center shadow-sm">
+              <iconify-icon icon="lucide:circle-check" class="text-[#1D1A16]" width="16"></iconify-icon>
+            </div>
+          </div>
+          <div class="flex flex-col items-center gap-2">
+            <span class="text-[10px] font-bold text-[#6A5E53]">F</span>
+            <div class="w-8 h-8 bg-[#EC9679] rounded-full flex items-center justify-center shadow-sm">
+              <iconify-icon icon="lucide:circle-check" class="text-[#1D1A16]" width="16"></iconify-icon>
+            </div>
+          </div>
+          <div class="flex flex-col items-center gap-2">
+            <span class="text-[10px] font-bold text-[#6A5E53]">S</span>
+            <div class="w-8 h-8 border-2 border-dashed border-[#6A5E53]/20 rounded-full"></div>
+          </div>
+          <div class="flex flex-col items-center gap-2">
+            <span class="text-[10px] font-bold text-[#6A5E53]">S</span>
+            <div class="w-8 h-8 border-2 border-dashed border-[#6A5E53]/20 rounded-full"></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- App Settings -->
+      <section>
+        <h3 class="text-[12px] font-bold uppercase tracking-[1.2px] text-[#6A5E53] mb-4">App Settings</h3>
+        <div class="bg-white border border-[#E4E0DC] rounded-[26px] overflow-hidden">
+          <!-- Setting Item -->
+          <button class="w-full flex items-center justify-between p-4 border-b border-[#E4E0DC]/50 hover:bg-[#F6F5F3]/30">
+            <div class="flex items-center gap-3">
+              <div class="w-10 h-10 bg-[#F6F5F3] rounded-2xl flex items-center justify-center">
+                <iconify-icon icon="lucide:bell" class="text-[#6A5E53]" width="20"></iconify-icon>
+              </div>
+              <span class="text-sm font-medium">Notifications</span>
+            </div>
+            <div class="flex items-center gap-2 text-[#6A5E53]">
+              <span class="text-xs">Daily reminder</span>
+              <iconify-icon icon="lucide:chevron-right" class="opacity-50" width="16"></iconify-icon>
+            </div>
+          </button>
+          
+          <!-- Setting Item -->
+          <button class="w-full flex items-center justify-between p-4 border-b border-[#E4E0DC]/50 hover:bg-[#F6F5F3]/30">
+            <div class="flex items-center gap-3">
+              <div class="w-10 h-10 bg-[#F6F5F3] rounded-2xl flex items-center justify-center">
+                <iconify-icon icon="lucide:zap" class="text-[#6A5E53]" width="20"></iconify-icon>
+              </div>
+              <span class="text-sm font-medium">Preferred training</span>
+            </div>
+            <div class="flex items-center gap-2 text-[#6A5E53]">
+              <span class="text-xs">Micro-moves</span>
+              <iconify-icon icon="lucide:chevron-right" class="opacity-50" width="16"></iconify-icon>
+            </div>
+          </button>
+
+          <!-- Setting Item -->
+          <button class="w-full flex items-center justify-between p-4 border-b border-[#E4E0DC]/50 hover:bg-[#F6F5F3]/30">
+            <div class="flex items-center gap-3">
+              <div class="w-10 h-10 bg-[#F6F5F3] rounded-2xl flex items-center justify-center">
+                <iconify-icon icon="lucide:flame" class="text-[#6A5E53]" width="20"></iconify-icon>
+              </div>
+              <span class="text-sm font-medium">Energy level default</span>
+            </div>
+            <div class="flex items-center gap-2 text-[#6A5E53]">
+              <span class="text-xs">Medium</span>
+              <iconify-icon icon="lucide:chevron-right" class="opacity-50" width="16"></iconify-icon>
+            </div>
+          </button>
+
+          <!-- Setting Item -->
+          <button class="w-full flex items-center justify-between p-4 hover:bg-[#F6F5F3]/30">
+            <div class="flex items-center gap-3">
+              <div class="w-10 h-10 bg-[#F6F5F3] rounded-2xl flex items-center justify-center">
+                <iconify-icon icon="lucide:info" class="text-[#6A5E53]" width="20"></iconify-icon>
+              </div>
+              <span class="text-sm font-medium">About SportEdge</span>
+            </div>
+            <iconify-icon icon="lucide:chevron-right" class="text-[#6A5E53] opacity-50" width="16"></iconify-icon>
+          </button>
+        </div>
+      </section>
+
+      <footer class="mt-12 text-center">
+        <p class="text-[10px] text-[#6A5E53]/60">SportEdge Version 1.2.4 • Made for tiny victories</p>
+      </footer>
+    </div>
+
+    <!-- Bottom Navigation (Mobile Only) -->
+    <nav class="lg:hidden fixed bottom-0 left-0 right-0 bg-[#FBFAF9] border-t border-[#E5E7EB] h-16 flex items-center justify-around px-2 z-40 shadow-[0_-2px_10px_rgba(0,0,0,0.05)]">
+      <a href="#" class="flex flex-col items-center gap-1 text-[#565d6d]">
+        <iconify-icon icon="lucide:house" width="24"></iconify-icon>
+        <span class="text-[10px]">Home</span>
+      </a>
+      <a href="#" class="flex flex-col items-center gap-1 text-[#565d6d]">
+        <iconify-icon icon="lucide:chart-no-axes-column" width="24"></iconify-icon>
+        <span class="text-[10px]">Progress</span>
+      </a>
+      <a href="#" class="flex flex-col items-center gap-1 text-[#565d6d]">
+        <iconify-icon icon="lucide:message-circle" width="24"></iconify-icon>
+        <span class="text-[10px]">Bolt</span>
+      </a>
+      <a href="#" class="flex flex-col items-center gap-1 text-[#565d6d]">
+        <iconify-icon icon="lucide:activity" width="24"></iconify-icon>
+        <span class="text-[10px]">Activities</span>
+      </a>
+      <a href="#" class="flex flex-col items-center gap-1 text-[#EC9679]">
+        <iconify-icon icon="lucide:user" width="24"></iconify-icon>
+        <span class="text-[10px] font-bold">Profile</span>
+      </a>
+    </nav>
+
+    <!-- About Bottom Sheet (Overlay) -->
+    <div class="fixed inset-0 z-50 flex flex-col justify-end lg:justify-center lg:items-center pointer-events-none">
+      <!-- Backdrop -->
+      <div class="absolute inset-0 glass-overlay pointer-events-auto"></div>
+      
+      <!-- Sheet Content -->
+      <div class="relative w-full lg:max-w-md bg-white rounded-t-[32px] lg:rounded-[32px] bottom-sheet-shadow pointer-events-auto max-h-[85vh] flex flex-col overflow-hidden">
+        <!-- Handle -->
+        <div class="w-12 h-1.5 bg-[#F6F5F3] rounded-full mx-auto mt-3 mb-2 lg:hidden"></div>
+        
+        <!-- Header -->
+        <div class="flex items-center justify-between px-6 py-4">
+          <h2 class="text-xl font-bold">About SportEdge</h2>
+          <button class="w-10 h-10 flex items-center justify-center rounded-full hover:bg-[#F6F5F3]">
+            <iconify-icon icon="lucide:x" class="text-[#6A5E53]" width="20"></iconify-icon>
+          </button>
+        </div>
+
+        <!-- Scrollable Body -->
+        <div class="flex-1 overflow-y-auto px-6 pb-8 no-scrollbar">
+          <div class="inline-flex items-center bg-[#F6F5F3] rounded-full px-4 py-1.5 mb-6">
+            <span class="text-xs font-medium text-[#3F3831]">SportEdge v1.0 — Student project</span>
+          </div>
+          
+          <p class="text-[#1D1A16]/80 leading-relaxed mb-8">
+            SportEdge helps you move a little, every day. No pressure, no guilt, just movement. Our mission is to make fitness accessible and stress-free for everyone.
+          </p>
+
+          <!-- Links -->
+          <div class="space-y-0 mb-8">
+            <button class="w-full flex items-center justify-between py-4 border-b border-[#E4E0DC]">
+              <div class="flex items-center gap-4">
+                <div class="w-9 h-9 bg-[#FDF4F2] rounded-2xl flex items-center justify-center">
+                  <iconify-icon icon="lucide:shield-check" class="text-[#EC9679]" width="20"></iconify-icon>
+                </div>
+                <span class="font-medium">Terms and conditions (CGU)</span>
+              </div>
+              <iconify-icon icon="lucide:chevron-right" class="text-[#6A5E53]" width="20"></iconify-icon>
+            </button>
+            
+            <button class="w-full flex items-center justify-between py-4 border-b border-[#E4E0DC]">
+              <div class="flex items-center gap-4">
+                <div class="w-9 h-9 bg-[#F2FDF9] rounded-2xl flex items-center justify-center">
+                  <iconify-icon icon="lucide:file-text" class="text-[#67E4BB]" width="20"></iconify-icon>
+                </div>
+                <span class="font-medium">Terms of sale (CGV)</span>
+              </div>
+              <iconify-icon icon="lucide:chevron-right" class="text-[#6A5E53]" width="20"></iconify-icon>
+            </button>
+          </div>
+
+          <p class="text-[11px] text-[#6A5E53] text-center leading-relaxed px-4">
+            SportEdge is a student project created as part of an academic program. All rights reserved. Designed with ❤️ for healthy habits.
+          </p>
+        </div>
+      </div>
+    </div>
+
+  </main>
+
+
+
+
+<script>
+/* SportEdge Navigation v2 — od-about.html */
+(function() {
+  var PAGE = 'od-about.html';
+  var IS_OUTDOOR = true;
+
+  /* ── 1. BOTTOM NAV ── */
+  var NAV_MAP = {
+    'home':       'od-home-medium.html',
+    'move':       'od-home-medium.html',
+    'progress':   'od-progress.html',
+    'activities': 'od-activities.html',
+    'profile':    'od-profile.html',
+    'bolt':       'od-bolt.html'
+  };
+
+  document.querySelectorAll('nav a, nav button').forEach(function(el) {
+    var txt = el.innerText.trim().toLowerCase();
+    var alt = (el.querySelector('img') || {}).alt || '';
+    alt = alt.toLowerCase();
+    Object.keys(NAV_MAP).forEach(function(k) {
+      if (txt.indexOf(k) !== -1 || alt.indexOf(k) !== -1) {
+        el.addEventListener('click', function(e) {
+          e.preventDefault(); e.stopPropagation();
+          window.location.href = NAV_MAP[k];
+        });
+      }
+    });
+  });
+
+  /* ── 2. DELEGATION GLOBALE sur tout le document ── */
+  document.addEventListener('click', function(e) {
+    var el = e.target;
+    // Remonter jusqu'à 5 niveaux pour trouver le conteneur cliquable
+    for (var i = 0; i < 5; i++) {
+      if (!el || el === document.body) break;
+      var txt = (el.innerText || '').trim().toLowerCase();
+
+      /* CTA principaux */
+      if (/(start now|let.s go|start session|begin|commencer)/.test(txt)) {
+        e.preventDefault();
+        if (PAGE === 'onboarding.html') {
+          var energy = window._sportedgeEnergy || 'medium';
+          var loc    = window._sportedgeLocation || 'indoor';
+          if (loc === 'outdoor') {
+            window.location.href = 'home-' + energy + '-outdoor.html';
+          } else {
+            window.location.href = 'home-' + energy + '.html';
+          }
+        } else {
+          window.location.href = 'od-home-medium.html';
+        }
+        return;
+      }
+
+      /* Post-session / Done */
+      if (/(done|finish|complete|great job|i did it|well done)/.test(txt) && txt.length < 40) {
+        e.preventDefault(); window.location.href = 'celebration.html'; return;
+      }
+
+      /* Back to home / Return */
+      if (/(back to home|go home|return home)/.test(txt)) {
+        e.preventDefault(); window.location.href = 'od-home-medium.html'; return;
+      }
+
+      /* Save / Confirm overlays */
+      if (/^save/.test(txt) || txt === 'save preferences' || txt === 'confirm') {
+        e.preventDefault(); window.location.href = 'od-profile.html'; return;
+      }
+
+      /* Activities → Libraries */
+      if (PAGE.indexOf('activities') !== -1 || PAGE.indexOf('od-activities') !== -1) {
+        var libMap = {
+          'stretching': 'od-library-stretching.html',
+          'hiit':       'od-library-hiit.html',
+          'cardio':     'od-library-hiit.html',
+          'yoga':       'od-library-yoga.html',
+          'breathwork': 'od-library-yoga.html',
+          'outdoor run':'od-library-outdoor-runs.html',
+          'strength':   'od-library-strength.html',
+          'meditation': 'od-library-meditation.html',
+          'mindful':    'od-library-meditation.html'
+        };
+        Object.keys(libMap).forEach(function(k) {
+          if (txt.indexOf(k) !== -1) {
+            e.preventDefault(); window.location.href = libMap[k]; return;
+          }
+        });
+      }
+
+      /* Profile → overlays */
+      if (PAGE.indexOf('profile') !== -1) {
+        if (txt.indexOf('notification') !== -1) {
+          e.preventDefault(); window.location.href = 'od-notifications.html'; return;
+        }
+        if (txt.indexOf('energy') !== -1) {
+          e.preventDefault(); window.location.href = 'od-energy.html'; return;
+        }
+        if (txt.indexOf('about') !== -1) {
+          e.preventDefault(); window.location.href = 'od-about.html'; return;
+        }
+        if (txt.indexOf('training type') !== -1 || txt.indexOf('preferred') !== -1) {
+          e.preventDefault(); window.location.href = 'od-notifications.html'; return;
+        }
+      }
+
+      /* Library / Overlay → retour */
+      if (/(library|session|celebration|notification|energy|about|notification)/.test(PAGE)) {
+        var isBackEl = (txt === '' || txt === '←' || txt === '‹' || txt === 'back') &&
+                       (el.tagName === 'BUTTON' || el.tagName === 'A');
+        var hasBackImg = el.querySelector && el.querySelector('img[alt*="back"], img[alt*="Back"], img[alt*="arrow"], img[alt*="Arrow"]');
+        if (isBackEl || hasBackImg) {
+          e.preventDefault(); window.history.back(); return;
+        }
+      }
+
+      el = el.parentElement;
+    }
+  });
+
+  /* ── 3. ONBOARDING : sélection énergie + lieu ── */
+  if (PAGE === 'onboarding.html') {
+    window._sportedgeEnergy   = 'medium';
+    window._sportedgeLocation = 'indoor';
+
+    document.querySelectorAll('button, [class*="rounded"]').forEach(function(btn) {
+      var txt = (btn.innerText || '').trim().toLowerCase();
+      if (txt.indexOf('low') !== -1 && txt.length < 30) {
+        btn.addEventListener('click', function() {
+          window._sportedgeEnergy = 'low';
+          highlightSel(btn, 'energy');
+        });
+      } else if (txt.indexOf('high') !== -1 && txt.length < 30) {
+        btn.addEventListener('click', function() {
+          window._sportedgeEnergy = 'high';
+          highlightSel(btn, 'energy');
+        });
+      } else if (txt.indexOf('medium') !== -1 && txt.length < 30) {
+        btn.addEventListener('click', function() {
+          window._sportedgeEnergy = 'medium';
+          highlightSel(btn, 'energy');
+        });
+      } else if (txt.indexOf('trainer') !== -1 || txt.indexOf('outdoor') !== -1) {
+        btn.addEventListener('click', function() {
+          window._sportedgeLocation = 'outdoor';
+          highlightSel(btn, 'location');
+        });
+      } else if (txt.indexOf('mat') !== -1 || txt.indexOf('indoor') !== -1) {
+        btn.addEventListener('click', function() {
+          window._sportedgeLocation = 'indoor';
+          highlightSel(btn, 'location');
+        });
+      }
+    });
+
+    /* CTA footer onboarding */
+    var footerBtn = document.querySelector('footer button');
+    if (footerBtn) {
+      footerBtn.addEventListener('click', function(e) {
+        e.preventDefault(); e.stopPropagation();
+        var e2 = window._sportedgeEnergy;
+        var l  = window._sportedgeLocation;
+        window.location.href = (l === 'outdoor')
+          ? 'home-' + e2 + '-outdoor.html'
+          : 'home-' + e2 + '.html';
+      });
+    }
+  }
+
+  function highlightSel(el, group) {
+    var sel = '[data-group="' + group + '"]';
+    document.querySelectorAll(sel).forEach(function(b) {
+      b.style.borderColor = 'transparent';
+      b.style.backgroundColor = '#F6F5F3';
+    });
+    el.dataset.group = group;
+    el.style.borderColor = '#EC9679';
+    el.style.backgroundColor = '#FDF4F2';
+  }
+
+})();
+</script>
+
+</body>
+</html>

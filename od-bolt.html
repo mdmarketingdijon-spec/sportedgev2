@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SportEdge - Bolt AI Assistant</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/iconify-icon@3.0.2/dist/iconify-icon.min.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&amp;display=swap" type="text/css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&amp;display=swap" type="text/css" rel="stylesheet">
+  <style>
+    body {
+      font-family: "Inter", ui-sans-serif, system-ui, sans-serif;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      color: #171a1f;
+      background-color: #FAFAFA;
+    }
+
+    h1, h2, h3, h4, h5, h6 {
+      font-family: "Outfit", ui-sans-serif, system-ui, sans-serif;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+    }
+
+    * {
+      transition: all 0.2s ease;
+    }
+
+    .glass-panel {
+      background: rgba(255, 255, 255, 0.8);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+    }
+
+    .soft-shadow {
+      box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05), 0 8px 10px -6px rgba(0, 0, 0, 0.05);
+    }
+
+    .no-scrollbar::-webkit-scrollbar {
+      display: none;
+    }
+
+    .no-scrollbar {
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+    }
+
+    .bolt-glow {
+      background: #EC9679;
+      filter: blur(64px);
+      opacity: 0.15;
+    }
+
+    .avatar-shadow {
+      box-shadow: 0px 8.5px 13.75px 0px rgba(236, 150, 121, 0.2), 0px 0px 2px 0px rgba(236, 150, 121, 0.2);
+    }
+  </style>
+</head>
+<body class="min-h-screen flex flex-col lg:flex-row">
+
+  <!-- Desktop Sidebar Navigation -->
+  <aside class="hidden lg:flex flex-col w-64 bg-white border-r border-gray-200 h-screen sticky top-0 p-6">
+    <div class="flex items-center gap-3 mb-10">
+      <div class="bg-[#EC9679] p-1.5 rounded-md">
+        <img src="./assets-od-bolt/IMG_3.svg" class="w-6 h-6" alt="Logo Icon">
+      </div>
+      <span class="text-xl font-bold font-[Outfit]">SportEdge</span>
+    </div>
+    
+    <nav class="flex flex-col gap-2 flex-grow">
+      <a href="#" class="flex items-center gap-3 px-4 py-3 rounded-xl text-gray-500 hover:bg-gray-50">
+        <iconify-icon icon="lucide:house" width="22"></iconify-icon>
+        <span class="font-medium">Home</span>
+      </a>
+      <a href="#" class="flex items-center gap-3 px-4 py-3 rounded-xl text-gray-500 hover:bg-gray-50">
+        <iconify-icon icon="lucide:chart-no-axes-column" width="22"></iconify-icon>
+        <span class="font-medium">Progress</span>
+      </a>
+      <a href="#" class="flex items-center gap-3 px-4 py-3 rounded-xl bg-[#FDF4F2] text-[#EC9679]">
+        <iconify-icon icon="lucide:message-circle" width="22"></iconify-icon>
+        <span class="font-bold">Bolt AI</span>
+      </a>
+      <a href="#" class="flex items-center gap-3 px-4 py-3 rounded-xl text-gray-500 hover:bg-gray-50">
+        <iconify-icon icon="lucide:activity" width="22"></iconify-icon>
+        <span class="font-medium">Activities</span>
+      </a>
+    </nav>
+
+    <div class="mt-auto pt-6 border-t border-gray-100">
+      <a href="#" class="flex items-center gap-3 px-4 py-3 rounded-xl text-gray-500 hover:bg-gray-50">
+        <iconify-icon icon="lucide:user" width="22"></iconify-icon>
+        <span class="font-medium">Profile</span>
+      </a>
+    </div>
+  </aside>
+
+  <!-- Main Content Area -->
+  <main class="flex-1 flex flex-col relative min-h-screen">
+    
+    <!-- Mobile Header -->
+    <header class="lg:hidden bg-white border-b border-gray-100 px-5 py-4 flex items-center justify-between sticky top-0 z-50">
+      <div class="flex items-center gap-3">
+        <div class="bg-[#EC9679] p-1.5 rounded-md">
+          <img src="./assets-od-bolt/IMG_3.svg" class="w-5 h-5" alt="Logo Icon">
+        </div>
+        <span class="text-lg font-bold font-[Outfit]">SportEdge</span>
+      </div>
+      <div class="flex gap-4">
+        <iconify-icon icon="lucide:bell" width="24" class="text-gray-400"></iconify-icon>
+      </div>
+    </header>
+
+    <!-- Content Wrapper -->
+    <div class="flex-1 flex flex-col items-center justify-center px-6 py-12 lg:py-20 relative overflow-hidden">
+      
+      <!-- Background Glow Effect -->
+      <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[300px] h-[300px] bolt-glow rounded-full pointer-events-none"></div>
+
+      <!-- Bolt Avatar Section -->
+      <div class="relative z-10 flex flex-col items-center text-center max-w-md w-full">
+        <div class="w-48 h-48 lg:w-56 lg:h-56 bg-white rounded-full p-2 avatar-shadow mb-8 overflow-hidden">
+          <img src="./assets-od-bolt/IMG_4.webp" alt="Bolt AI Avatar" class="w-full h-full object-cover rounded-full">
+        </div>
+        
+        <h1 class="text-4xl lg:text-5xl mb-4">Bolt</h1>
+        <p class="text-lg lg:text-xl text-gray-500/80 font-medium leading-relaxed max-w-[240px] lg:max-w-xs">
+          I'm here. How are you feeling right now?
+        </p>
+      </div>
+    </div>
+
+    <!-- Interaction Panel -->
+    <section class="bg-white rounded-t-[40px] shadow-[0px_-10px_40px_rgba(0,0,0,0.04)] px-6 pt-10 pb-24 lg:pb-10 w-full max-w-4xl mx-auto lg:mb-8 lg:rounded-[32px] lg:shadow-xl relative z-20">
+      
+      <!-- Quick Suggestions -->
+      <div class="flex overflow-x-auto no-scrollbar gap-3 mb-10 -mx-6 px-6 lg:mx-0 lg:px-0 lg:flex-wrap lg:justify-center">
+        <button class="whitespace-nowrap px-6 py-3.5 bg-[#FDF4F2] border border-[#EC9679]/20 rounded-2xl text-[15px] font-medium hover:bg-[#fceae6]">
+          Suggest a session for me
+        </button>
+        <button class="whitespace-nowrap px-6 py-3.5 bg-[#FDF4F2] border border-[#EC9679]/20 rounded-2xl text-[15px] font-medium hover:bg-[#fceae6]">
+          I only have 5 minutes
+        </button>
+        <button class="whitespace-nowrap px-6 py-3.5 bg-[#FDF4F2] border border-[#EC9679]/20 rounded-2xl text-[15px] font-medium hover:bg-[#fceae6]">
+          I need something calm
+        </button>
+        <button class="whitespace-nowrap px-6 py-3.5 bg-[#FDF4F2] border border-[#EC9679]/20 rounded-2xl text-[15px] font-medium hover:bg-[#fceae6]">
+          Recovery day ideas
+        </button>
+      </div>
+
+      <!-- Voice Interaction -->
+      <div class="flex flex-col items-center mb-10">
+        <button class="w-[72px] h-[72px] bg-[#EC9679] rounded-full flex items-center justify-center shadow-[0px_4px_12px_rgba(236,150,121,0.4)] hover:scale-105 active:scale-95 mb-4">
+          <img src="./assets-od-bolt/IMG_5.svg" class="w-8 h-8" alt="Microphone">
+        </button>
+        <span class="text-[#EC9679] text-xs font-bold tracking-[1.4px] uppercase">Speak to Bolt</span>
+      </div>
+
+      <!-- Text Input -->
+      <div class="relative max-w-lg mx-auto w-full">
+        <input type="text" 
+               placeholder="Or type something..." 
+               class="w-full bg-[#FAFAFA] rounded-full py-4 pl-7 pr-14 shadow-[0px_1px_3px_rgba(23,26,31,0.1)] outline-none focus:ring-2 focus:ring-[#EC9679]/20 text-base">
+        <button class="absolute right-2 top-1/2 -translate-y-1/2 w-10 h-10 flex items-center justify-center text-gray-500 hover:text-[#EC9679]">
+          <img src="./assets-od-bolt/IMG_6.svg" class="w-5 h-5" alt="Send">
+        </button>
+      </div>
+    </section>
+
+    <!-- Mobile Bottom Navigation -->
+    <nav class="lg:hidden fixed bottom-0 left-0 right-0 bg-white border-t border-gray-100 h-16 flex items-center justify-around z-50 px-2">
+      <a href="#" class="flex flex-col items-center gap-1 text-gray-400">
+        <img src="./assets-od-bolt/IMG_7.svg" class="w-6 h-6 opacity-60" alt="Home">
+        <span class="text-[10px]">Home</span>
+      </a>
+      <a href="#" class="flex flex-col items-center gap-1 text-gray-400">
+        <img src="./assets-od-bolt/IMG_8.svg" class="w-6 h-6 opacity-60" alt="Progress">
+        <span class="text-[10px]">Progress</span>
+      </a>
+      <a href="#" class="flex flex-col items-center gap-1 text-[#EC9679]">
+        <img src="./assets-od-bolt/IMG_9.svg" class="w-6 h-6" alt="Bolt">
+        <span class="text-[10px] font-bold">Bolt</span>
+      </a>
+      <a href="#" class="flex flex-col items-center gap-1 text-gray-400">
+        <img src="./assets-od-bolt/IMG_10.svg" class="w-6 h-6 opacity-60" alt="Activities">
+        <span class="text-[10px]">Activities</span>
+      </a>
+      <a href="#" class="flex flex-col items-center gap-1 text-gray-400">
+        <img src="./assets-od-bolt/IMG_11.svg" class="w-6 h-6 opacity-60" alt="Profile">
+        <span class="text-[10px]">Profile</span>
+      </a>
+    </nav>
+
+  </main>
+
+
+
+
+<script>
+/* SportEdge Navigation v2 — od-bolt.html */
+(function() {
+  var PAGE = 'od-bolt.html';
+  var IS_OUTDOOR = true;
+
+  /* ── 1. BOTTOM NAV ── */
+  var NAV_MAP = {
+    'home':       'od-home-medium.html',
+    'move':       'od-home-medium.html',
+    'progress':   'od-progress.html',
+    'activities': 'od-activities.html',
+    'profile':    'od-profile.html',
+    'bolt':       'od-bolt.html'
+  };
+
+  document.querySelectorAll('nav a, nav button').forEach(function(el) {
+    var txt = el.innerText.trim().toLowerCase();
+    var alt = (el.querySelector('img') || {}).alt || '';
+    alt = alt.toLowerCase();
+    Object.keys(NAV_MAP).forEach(function(k) {
+      if (txt.indexOf(k) !== -1 || alt.indexOf(k) !== -1) {
+        el.addEventListener('click', function(e) {
+          e.preventDefault(); e.stopPropagation();
+          window.location.href = NAV_MAP[k];
+        });
+      }
+    });
+  });
+
+  /* ── 2. DELEGATION GLOBALE sur tout le document ── */
+  document.addEventListener('click', function(e) {
+    var el = e.target;
+    // Remonter jusqu'à 5 niveaux pour trouver le conteneur cliquable
+    for (var i = 0; i < 5; i++) {
+      if (!el || el === document.body) break;
+      var txt = (el.innerText || '').trim().toLowerCase();
+
+      /* CTA principaux */
+      if (/(start now|let.s go|start session|begin|commencer)/.test(txt)) {
+        e.preventDefault();
+        if (PAGE === 'onboarding.html') {
+          var energy = window._sportedgeEnergy || 'medium';
+          var loc    = window._sportedgeLocation || 'indoor';
+          if (loc === 'outdoor') {
+            window.location.href = 'home-' + energy + '-outdoor.html';
+          } else {
+            window.location.href = 'home-' + energy + '.html';
+          }
+        } else {
+          window.location.href = 'od-home-medium.html';
+        }
+        return;
+      }
+
+      /* Post-session / Done */
+      if (/(done|finish|complete|great job|i did it|well done)/.test(txt) && txt.length < 40) {
+        e.preventDefault(); window.location.href = 'celebration.html'; return;
+      }
+
+      /* Back to home / Return */
+      if (/(back to home|go home|return home)/.test(txt)) {
+        e.preventDefault(); window.location.href = 'od-home-medium.html'; return;
+      }
+
+      /* Save / Confirm overlays */
+      if (/^save/.test(txt) || txt === 'save preferences' || txt === 'confirm') {
+        e.preventDefault(); window.location.href = 'od-profile.html'; return;
+      }
+
+      /* Activities → Libraries */
+      if (PAGE.indexOf('activities') !== -1 || PAGE.indexOf('od-activities') !== -1) {
+        var libMap = {
+          'stretching': 'od-library-stretching.html',
+          'hiit':       'od-library-hiit.html',
+          'cardio':     'od-library-hiit.html',
+          'yoga':       'od-library-yoga.html',
+          'breathwork': 'od-library-yoga.html',
+          'outdoor run':'od-library-outdoor-runs.html',
+          'strength':   'od-library-strength.html',
+          'meditation': 'od-library-meditation.html',
+          'mindful':    'od-library-meditation.html'
+        };
+        Object.keys(libMap).forEach(function(k) {
+          if (txt.indexOf(k) !== -1) {
+            e.preventDefault(); window.location.href = libMap[k]; return;
+          }
+        });
+      }
+
+      /* Profile → overlays */
+      if (PAGE.indexOf('profile') !== -1) {
+        if (txt.indexOf('notification') !== -1) {
+          e.preventDefault(); window.location.href = 'od-notifications.html'; return;
+        }
+        if (txt.indexOf('energy') !== -1) {
+          e.preventDefault(); window.location.href = 'od-energy.html'; return;
+        }
+        if (txt.indexOf('about') !== -1) {
+          e.preventDefault(); window.location.href = 'od-about.html'; return;
+        }
+        if (txt.indexOf('training type') !== -1 || txt.indexOf('preferred') !== -1) {
+          e.preventDefault(); window.location.href = 'od-notifications.html'; return;
+        }
+      }
+
+      /* Library / Overlay → retour */
+      if (/(library|session|celebration|notification|energy|about|notification)/.test(PAGE)) {
+        var isBackEl = (txt === '' || txt === '←' || txt === '‹' || txt === 'back') &&
+                       (el.tagName === 'BUTTON' || el.tagName === 'A');
+        var hasBackImg = el.querySelector && el.querySelector('img[alt*="back"], img[alt*="Back"], img[alt*="arrow"], img[alt*="Arrow"]');
+        if (isBackEl || hasBackImg) {
+          e.preventDefault(); window.history.back(); return;
+        }
+      }
+
+      el = el.parentElement;
+    }
+  });
+
+  /* ── 3. ONBOARDING : sélection énergie + lieu ── */
+  if (PAGE === 'onboarding.html') {
+    window._sportedgeEnergy   = 'medium';
+    window._sportedgeLocation = 'indoor';
+
+    document.querySelectorAll('button, [class*="rounded"]').forEach(function(btn) {
+      var txt = (btn.innerText || '').trim().toLowerCase();
+      if (txt.indexOf('low') !== -1 && txt.length < 30) {
+        btn.addEventListener('click', function() {
+          window._sportedgeEnergy = 'low';
+          highlightSel(btn, 'energy');
+        });
+      } else if (txt.indexOf('high') !== -1 && txt.length < 30) {
+        btn.addEventListener('click', function() {
+          window._sportedgeEnergy = 'high';
+          highlightSel(btn, 'energy');
+        });
+      } else if (txt.indexOf('medium') !== -1 && txt.length < 30) {
+        btn.addEventListener('click', function() {
+          window._sportedgeEnergy = 'medium';
+          highlightSel(btn, 'energy');
+        });
+      } else if (txt.indexOf('trainer') !== -1 || txt.indexOf('outdoor') !== -1) {
+        btn.addEventListener('click', function() {
+          window._sportedgeLocation = 'outdoor';
+          highlightSel(btn, 'location');
+        });
+      } else if (txt.indexOf('mat') !== -1 || txt.indexOf('indoor') !== -1) {
+        btn.addEventListener('click', function() {
+          window._sportedgeLocation = 'indoor';
+          highlightSel(btn, 'location');
+        });
+      }
+    });
+
+    /* CTA footer onboarding */
+    var footerBtn = document.querySelector('footer button');
+    if (footerBtn) {
+      footerBtn.addEventListener('click', function(e) {
+        e.preventDefault(); e.stopPropagation();
+        var e2 = window._sportedgeEnergy;
+        var l  = window._sportedgeLocation;
+        window.location.href = (l === 'outdoor')
+          ? 'home-' + e2 + '-outdoor.html'
+          : 'home-' + e2 + '.html';
+      });
+    }
+  }
+
+  function highlightSel(el, group) {
+    var sel = '[data-group="' + group + '"]';
+    document.querySelectorAll(sel).forEach(function(b) {
+      b.style.borderColor = 'transparent';
+      b.style.backgroundColor = '#F6F5F3';
+    });
+    el.dataset.group = group;
+    el.style.borderColor = '#EC9679';
+    el.style.backgroundColor = '#FDF4F2';
+  }
+
+})();
+</script>
+
+</body>
+</html>

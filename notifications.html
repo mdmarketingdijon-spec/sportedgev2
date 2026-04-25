@@ -1,0 +1,554 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SportEdge - Profile & Notifications</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/iconify-icon@3.0.2/dist/iconify-icon.min.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&amp;display=swap" type="text/css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&amp;display=swap" type="text/css" rel="stylesheet">
+  <style>
+    body {
+      font-family: "Inter", ui-sans-serif, system-ui, -apple-system, sans-serif;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      color: #1D1A16;
+      background-color: #FBFAF9;
+    }
+
+    h1, h2, h3, h4, h5, h6 {
+      font-family: "Outfit", ui-sans-serif, system-ui, sans-serif;
+      font-weight: 600;
+      letter-spacing: -0.01em;
+    }
+
+    * {
+      transition: all 0.2s ease;
+    }
+
+    ::-webkit-scrollbar {
+      width: 6px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #f1f5f9;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #cbd5e1;
+      border-radius: 10px;
+    }
+
+    .bottom-sheet-shadow {
+      box-shadow: 0 -12px 24px 0 rgba(0, 0, 0, 0.08);
+    }
+
+    .nav-blur {
+      background: rgba(251, 250, 249, 0.85);
+      backdrop-filter: saturate(180%) blur(20px);
+    }
+
+    .custom-radio {
+      appearance: none;
+      width: 24px;
+      height: 24px;
+      border: 2px solid #F6F5F3;
+      border-radius: 50%;
+      outline: none;
+      cursor: pointer;
+      position: relative;
+    }
+
+    .custom-radio:checked {
+      border-color: #EC9679;
+      background-color: #EC9679;
+    }
+
+    .custom-radio:checked::after {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 8px;
+      height: 8px;
+      background: white;
+      border-radius: 50%;
+    }
+  </style>
+</head>
+<body class="min-h-screen flex flex-col lg:flex-row">
+
+  <!-- Desktop Sidebar Navigation -->
+  <aside class="hidden lg:flex flex-col w-64 h-screen sticky top-0 bg-white border-r border-[#E4E0DC] p-6">
+    <div class="mb-10">
+      <h1 class="text-2xl font-bold text-[#EC9679]">SportEdge</h1>
+    </div>
+    <nav class="flex-1 space-y-2">
+      <a href="#" class="flex items-center gap-3 p-3 rounded-xl text-[#6A5E53] hover:bg-[#F6F5F3]">
+        <iconify-icon icon="lucide:house" width="24"></iconify-icon>
+        <span class="font-medium">Home</span>
+      </a>
+      <a href="#" class="flex items-center gap-3 p-3 rounded-xl text-[#6A5E53] hover:bg-[#F6F5F3]">
+        <iconify-icon icon="lucide:chart-no-axes-column" width="24"></iconify-icon>
+        <span class="font-medium">Progress</span>
+      </a>
+      <a href="#" class="flex items-center gap-3 p-3 rounded-xl text-[#6A5E53] hover:bg-[#F6F5F3]">
+        <iconify-icon icon="lucide:message-circle" width="24"></iconify-icon>
+        <span class="font-medium">Bolt</span>
+      </a>
+      <a href="#" class="flex items-center gap-3 p-3 rounded-xl text-[#6A5E53] hover:bg-[#F6F5F3]">
+        <iconify-icon icon="lucide:activity" width="24"></iconify-icon>
+        <span class="font-medium">Activities</span>
+      </a>
+      <a href="#" class="flex items-center gap-3 p-3 rounded-xl bg-[#FDF4F2] text-[#EC9679]">
+        <iconify-icon icon="lucide:user" width="24"></iconify-icon>
+        <span class="font-medium">Profile</span>
+      </a>
+    </nav>
+    <div class="pt-6 border-t border-[#E4E0DC]">
+      <p class="text-[10px] text-[#6A5E53]/60">Version 1.2.4 • Tiny victories</p>
+    </div>
+  </aside>
+
+  <!-- Main Content Area -->
+  <main class="flex-1 relative pb-24 lg:pb-0">
+    
+    <!-- Mobile Header -->
+    <header class="lg:hidden sticky top-0 z-30 bg-[#FBFAF9] border-b border-[#E4E0DC] px-6 py-4 flex items-center justify-center">
+      <h2 class="text-lg font-semibold">Profile</h2>
+    </header>
+
+    <!-- Content Wrapper -->
+    <div class="max-w-4xl mx-auto p-6 lg:p-12 space-y-8">
+      
+      <!-- Profile Section -->
+      <section class="flex flex-col items-center text-center space-y-4">
+        <div class="relative">
+          <div class="absolute inset-0 bg-[#EC9679]/20 rounded-full blur-2xl transform scale-110"></div>
+          <div class="relative w-24 h-24 rounded-full overflow-hidden border-4 border-white shadow-lg">
+            <img src="./assets-notifications/IMG_3.webp" alt="Alex" class="w-full h-full object-cover">
+          </div>
+        </div>
+        <div>
+          <h1 class="text-3xl font-bold tracking-tight">Alex</h1>
+          <p class="text-[#6A5E53] font-medium mt-1">Moving a little, every day. ✨</p>
+        </div>
+      </section>
+
+      <!-- Stats Grid -->
+      <section class="grid grid-cols-3 gap-3 md:gap-6">
+        <div class="bg-[#FDF4F2] border border-[#EC9679]/10 rounded-[26px] p-4 flex flex-col items-center justify-center text-center">
+          <img src="./assets-notifications/IMG_4.svg" alt="Sessions" class="w-4 h-4 mb-2 opacity-70">
+          <span class="text-lg font-bold text-[#43180A]">12</span>
+          <span class="text-[10px] uppercase tracking-widest font-semibold text-[#43180A]/60">Sessions</span>
+        </div>
+        <div class="bg-[#F2FDF9] border border-[#67E4BB]/10 rounded-[26px] p-4 flex flex-col items-center justify-center text-center">
+          <img src="./assets-notifications/IMG_5.svg" alt="Streak" class="w-4 h-4 mb-2 opacity-70">
+          <span class="text-lg font-bold text-[#0B412F]">4 Days</span>
+          <span class="text-[10px] uppercase tracking-widest font-semibold text-[#0B412F]/60">Streak</span>
+        </div>
+        <div class="bg-[#F6F2FD] border border-[#B093EC]/10 rounded-[26px] p-4 flex flex-col items-center justify-center text-center">
+          <img src="./assets-notifications/IMG_6.svg" alt="Fav" class="w-4 h-4 mb-2 opacity-70">
+          <span class="text-lg font-bold text-[#1d0b41]">Stretch</span>
+          <span class="text-[10px] uppercase tracking-widest font-semibold text-[#1d0b41]/60">Fav</span>
+        </div>
+      </section>
+
+      <!-- Weekly Activity Card -->
+      <section class="bg-[#F6F5F3]/50 rounded-[24px] p-5 shadow-sm border border-[#E4E0DC]/30">
+        <div class="flex items-center justify-between mb-6">
+          <div class="flex items-center gap-2">
+            <img src="./assets-notifications/IMG_9.svg" alt="Calendar" class="w-4 h-4">
+            <h3 class="text-sm font-semibold">Weekly Activity</h3>
+          </div>
+          <span class="bg-[#EC9679]/10 border border-[#EC9679]/20 text-[#1D1A16] text-[10px] font-medium px-3 py-1 rounded-full">4/7 Days</span>
+        </div>
+        <div class="flex justify-between items-end px-1">
+          <!-- Day Items -->
+          <div class="flex flex-col items-center gap-3">
+            <span class="text-[10px] font-bold text-[#6A5E53]">M</span>
+            <div class="w-8 h-8 rounded-full bg-[#EC9679] flex items-center justify-center shadow-sm">
+              <img src="./assets-notifications/IMG_10.svg" alt="Done" class="w-4 h-4">
+            </div>
+          </div>
+          <div class="flex flex-col items-center gap-3">
+            <span class="text-[10px] font-bold text-[#6A5E53]">T</span>
+            <div class="w-8 h-8 rounded-full bg-[#EC9679] flex items-center justify-center shadow-sm">
+              <img src="./assets-notifications/IMG_10.svg" alt="Done" class="w-4 h-4">
+            </div>
+          </div>
+          <div class="flex flex-col items-center gap-3">
+            <span class="text-[10px] font-bold text-[#6A5E53]">W</span>
+            <div class="w-8 h-8 rounded-full border-2 border-dashed border-[#6A5E53]/20"></div>
+          </div>
+          <div class="flex flex-col items-center gap-3">
+            <span class="text-[10px] font-bold text-[#6A5E53]">T</span>
+            <div class="w-8 h-8 rounded-full bg-[#EC9679] flex items-center justify-center shadow-sm">
+              <img src="./assets-notifications/IMG_10.svg" alt="Done" class="w-4 h-4">
+            </div>
+          </div>
+          <div class="flex flex-col items-center gap-3">
+            <span class="text-[10px] font-bold text-[#6A5E53]">F</span>
+            <div class="w-8 h-8 rounded-full bg-[#EC9679] flex items-center justify-center shadow-sm">
+              <img src="./assets-notifications/IMG_10.svg" alt="Done" class="w-4 h-4">
+            </div>
+          </div>
+          <div class="flex flex-col items-center gap-3">
+            <span class="text-[10px] font-bold text-[#6A5E53]">S</span>
+            <div class="w-8 h-8 rounded-full border-2 border-dashed border-[#6A5E53]/20"></div>
+          </div>
+          <div class="flex flex-col items-center gap-3">
+            <span class="text-[10px] font-bold text-[#6A5E53]">S</span>
+            <div class="w-8 h-8 rounded-full border-2 border-dashed border-[#6A5E53]/20"></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- App Settings -->
+      <section class="space-y-4">
+        <h3 class="text-[12px] font-bold tracking-[1.2px] uppercase text-[#6A5E53]">App Settings</h3>
+        <div class="bg-white border border-[#E4E0DC] rounded-[26px] overflow-hidden">
+          <!-- Setting Item -->
+          <button class="w-full flex items-center justify-between p-4 hover:bg-[#F6F5F3]/30 border-b border-[#E4E0DC]/50">
+            <div class="flex items-center gap-4">
+              <div class="w-10 h-10 bg-[#F6F5F3] rounded-2xl flex items-center justify-center">
+                <img src="./assets-notifications/IMG_11.svg" alt="Notifications" class="w-5 h-5">
+              </div>
+              <span class="text-sm font-medium">Notifications</span>
+            </div>
+            <div class="flex items-center gap-2 text-[#6A5E53]">
+              <span class="text-xs">Daily reminder</span>
+              <img src="./assets-notifications/IMG_12.svg" alt="Arrow" class="w-4 h-4 opacity-50">
+            </div>
+          </button>
+          <!-- Setting Item -->
+          <button class="w-full flex items-center justify-between p-4 hover:bg-[#F6F5F3]/30 border-b border-[#E4E0DC]/50">
+            <div class="flex items-center gap-4">
+              <div class="w-10 h-10 bg-[#F6F5F3] rounded-2xl flex items-center justify-center">
+                <img src="./assets-notifications/IMG_13.svg" alt="Training" class="w-5 h-5">
+              </div>
+              <span class="text-sm font-medium">Preferred training</span>
+            </div>
+            <div class="flex items-center gap-2 text-[#6A5E53]">
+              <span class="text-xs">Micro-moves</span>
+              <img src="./assets-notifications/IMG_12.svg" alt="Arrow" class="w-4 h-4 opacity-50">
+            </div>
+          </button>
+          <!-- Setting Item -->
+          <button class="w-full flex items-center justify-between p-4 hover:bg-[#F6F5F3]/30 border-b border-[#E4E0DC]/50">
+            <div class="flex items-center gap-4">
+              <div class="w-10 h-10 bg-[#F6F5F3] rounded-2xl flex items-center justify-center">
+                <img src="./assets-notifications/IMG_5.svg" alt="Energy" class="w-5 h-5">
+              </div>
+              <span class="text-sm font-medium">Energy level default</span>
+            </div>
+            <div class="flex items-center gap-2 text-[#6A5E53]">
+              <span class="text-xs">Medium</span>
+              <img src="./assets-notifications/IMG_12.svg" alt="Arrow" class="w-4 h-4 opacity-50">
+            </div>
+          </button>
+          <!-- Setting Item -->
+          <button class="w-full flex items-center justify-between p-4 hover:bg-[#F6F5F3]/30">
+            <div class="flex items-center gap-4">
+              <div class="w-10 h-10 bg-[#F6F5F3] rounded-2xl flex items-center justify-center">
+                <img src="./assets-notifications/IMG_14.svg" alt="About" class="w-5 h-5">
+              </div>
+              <span class="text-sm font-medium">About SportEdge</span>
+            </div>
+            <img src="./assets-notifications/IMG_12.svg" alt="Arrow" class="w-4 h-4 opacity-50">
+          </button>
+        </div>
+      </section>
+
+      <footer class="text-center pb-12">
+        <p class="text-[10px] text-[#6A5E53]/60">SportEdge Version 1.2.4 • Made for tiny victories</p>
+      </footer>
+    </div>
+
+    <!-- Bottom Sheet Overlay (Notifications) -->
+    <div class="fixed inset-0 z-40 bg-black/60 backdrop-blur-[2px] flex items-end justify-center">
+      <div class="w-full max-w-lg bg-[#FBFAF9] rounded-t-[32px] bottom-sheet-shadow max-h-[90vh] overflow-hidden flex flex-col">
+        
+        <!-- Sheet Header -->
+        <div class="p-6 pb-4 flex justify-between items-start">
+          <div class="space-y-1">
+            <h2 class="text-xl font-bold">Notifications</h2>
+            <p class="text-sm text-[#6A5E53]">Choose how SportEdge reminds you to move.</p>
+          </div>
+          <button class="w-10 h-10 bg-[#F6F5F3] rounded-full flex items-center justify-center">
+            <img src="./assets-notifications/IMG_7.svg" alt="Close" class="w-5 h-5">
+          </button>
+        </div>
+
+        <!-- Sheet Content -->
+        <div class="flex-1 overflow-y-auto p-6 space-y-4">
+          
+          <!-- Option 1: Daily -->
+          <div class="space-y-3">
+            <label class="block bg-white border border-[#dee1e6] rounded-[26px] p-5 shadow-sm cursor-pointer hover:border-[#EC9679]/50">
+              <div class="flex justify-between items-start">
+                <div class="space-y-1">
+                  <h4 class="text-[#43180A] font-semibold">Daily reminder</h4>
+                  <p class="text-sm text-[#43180A]/80 leading-relaxed">A gentle nudge every day at your chosen time</p>
+                </div>
+                <input type="radio" name="reminder" class="custom-radio" checked>
+              </div>
+            </label>
+            
+            <!-- Time Picker (Sub-option) -->
+            <div class="bg-[#F6F5F3]/50 rounded-[26px] p-4 flex items-center justify-between ml-2">
+              <div class="flex items-center gap-3">
+                <img src="./assets-notifications/IMG_8.svg" alt="Clock" class="w-4 h-4 text-[#EC9679]">
+                <span class="text-sm font-medium">Remind me at</span>
+              </div>
+              <div class="bg-[#FBFAF9] border border-[#E4E0DC] rounded-[20px] px-4 py-2">
+                <input type="text" value="08:30" class="w-16 text-[#EC9679] font-bold text-center bg-transparent outline-none">
+              </div>
+            </div>
+          </div>
+
+          <!-- Option 2: Weekly -->
+          <label class="block bg-white border border-[#E4E0DC] rounded-[26px] p-5 cursor-pointer hover:border-[#EC9679]/50">
+            <div class="flex justify-between items-start">
+              <div class="space-y-1">
+                <h4 class="font-semibold">Weekly reminder</h4>
+                <p class="text-sm text-[#6A5E53] leading-relaxed">One check-in per week to keep you on track</p>
+              </div>
+              <input type="radio" name="reminder" class="custom-radio">
+            </div>
+          </label>
+
+          <!-- Option 3: None -->
+          <label class="block bg-white border border-[#E4E0DC] rounded-[26px] p-5 cursor-pointer hover:border-[#EC9679]/50">
+            <div class="flex justify-between items-start">
+              <div class="space-y-1">
+                <h4 class="font-semibold">No notifications</h4>
+                <p class="text-sm text-[#6A5E53] leading-relaxed">No reminders, you decide when to move</p>
+              </div>
+              <input type="radio" name="reminder" class="custom-radio">
+            </div>
+          </label>
+        </div>
+
+        <!-- Sheet Footer -->
+        <div class="p-6 pt-2 bg-gradient-to-t from-[#FBFAF9] via-[#FBFAF9] to-transparent">
+          <button class="w-full h-14 bg-[#EC9679] rounded-full text-[#1D1A16] font-bold text-lg shadow-md hover:brightness-95 active:scale-[0.98]">
+            Save preferences
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Mobile Bottom Navigation -->
+    <nav class="lg:hidden fixed bottom-0 left-0 right-0 h-16 nav-blur border-t border-[#E5E7EB] flex items-center justify-around px-2 z-50">
+      <a href="#" class="flex flex-col items-center gap-1 text-[#565d6d]">
+        <img src="./assets-notifications/IMG_15.svg" alt="Home" class="w-6 h-6">
+        <span class="text-[10px]">Home</span>
+      </a>
+      <a href="#" class="flex flex-col items-center gap-1 text-[#565d6d]">
+        <img src="./assets-notifications/IMG_16.svg" alt="Progress" class="w-6 h-6">
+        <span class="text-[10px]">Progress</span>
+      </a>
+      <a href="#" class="flex flex-col items-center gap-1 text-[#565d6d]">
+        <img src="./assets-notifications/IMG_17.svg" alt="Bolt" class="w-6 h-6">
+        <span class="text-[10px]">Bolt</span>
+      </a>
+      <a href="#" class="flex flex-col items-center gap-1 text-[#565d6d]">
+        <img src="./assets-notifications/IMG_18.svg" alt="Activities" class="w-6 h-6">
+        <span class="text-[10px]">Activities</span>
+      </a>
+      <a href="#" class="flex flex-col items-center gap-1 text-[#EC9679]">
+        <img src="./assets-notifications/IMG_19.svg" alt="Profile" class="w-6 h-6">
+        <span class="text-[10px] font-bold">Profile</span>
+      </a>
+    </nav>
+
+  </main>
+
+
+
+<script>
+/* SportEdge Navigation v2 — notifications.html */
+(function() {
+  var PAGE = 'notifications.html';
+  var IS_OUTDOOR = false;
+
+  /* ── 1. BOTTOM NAV ── */
+  var NAV_MAP = {
+    'home':       'home-medium.html',
+    'move':       'home-medium.html',
+    'progress':   'progress.html',
+    'activities': 'activities.html',
+    'profile':    'profile.html',
+    'bolt':       'bolt.html'
+  };
+
+  document.querySelectorAll('nav a, nav button').forEach(function(el) {
+    var txt = el.innerText.trim().toLowerCase();
+    var alt = (el.querySelector('img') || {}).alt || '';
+    alt = alt.toLowerCase();
+    Object.keys(NAV_MAP).forEach(function(k) {
+      if (txt.indexOf(k) !== -1 || alt.indexOf(k) !== -1) {
+        el.addEventListener('click', function(e) {
+          e.preventDefault(); e.stopPropagation();
+          window.location.href = NAV_MAP[k];
+        });
+      }
+    });
+  });
+
+  /* ── 2. DELEGATION GLOBALE sur tout le document ── */
+  document.addEventListener('click', function(e) {
+    var el = e.target;
+    // Remonter jusqu'à 5 niveaux pour trouver le conteneur cliquable
+    for (var i = 0; i < 5; i++) {
+      if (!el || el === document.body) break;
+      var txt = (el.innerText || '').trim().toLowerCase();
+
+      /* CTA principaux */
+      if (/(start now|let.s go|start session|begin|commencer)/.test(txt)) {
+        e.preventDefault();
+        if (PAGE === 'onboarding.html') {
+          var energy = window._sportedgeEnergy || 'medium';
+          var loc    = window._sportedgeLocation || 'indoor';
+          if (loc === 'outdoor') {
+            window.location.href = 'home-' + energy + '-outdoor.html';
+          } else {
+            window.location.href = 'home-' + energy + '.html';
+          }
+        } else {
+          window.location.href = 'home-medium.html';
+        }
+        return;
+      }
+
+      /* Post-session / Done */
+      if (/(done|finish|complete|great job|i did it|well done)/.test(txt) && txt.length < 40) {
+        e.preventDefault(); window.location.href = 'celebration.html'; return;
+      }
+
+      /* Back to home / Return */
+      if (/(back to home|go home|return home)/.test(txt)) {
+        e.preventDefault(); window.location.href = 'home-medium.html'; return;
+      }
+
+      /* Save / Confirm overlays */
+      if (/^save/.test(txt) || txt === 'save preferences' || txt === 'confirm') {
+        e.preventDefault(); window.location.href = 'profile.html'; return;
+      }
+
+      /* Activities → Libraries */
+      if (PAGE.indexOf('activities') !== -1 || PAGE.indexOf('od-activities') !== -1) {
+        var libMap = {
+          'stretching': 'library-stretching.html',
+          'hiit':       'library-hiit.html',
+          'cardio':     'library-hiit.html',
+          'yoga':       'library-yoga.html',
+          'breathwork': 'library-yoga.html',
+          'outdoor run':'library-outdoor-runs.html',
+          'strength':   'library-strength.html',
+          'meditation': 'library-meditation.html',
+          'mindful':    'library-meditation.html'
+        };
+        Object.keys(libMap).forEach(function(k) {
+          if (txt.indexOf(k) !== -1) {
+            e.preventDefault(); window.location.href = libMap[k]; return;
+          }
+        });
+      }
+
+      /* Profile → overlays */
+      if (PAGE.indexOf('profile') !== -1) {
+        if (txt.indexOf('notification') !== -1) {
+          e.preventDefault(); window.location.href = 'notifications.html'; return;
+        }
+        if (txt.indexOf('energy') !== -1) {
+          e.preventDefault(); window.location.href = 'energy.html'; return;
+        }
+        if (txt.indexOf('about') !== -1) {
+          e.preventDefault(); window.location.href = 'about.html'; return;
+        }
+        if (txt.indexOf('training type') !== -1 || txt.indexOf('preferred') !== -1) {
+          e.preventDefault(); window.location.href = 'notifications.html'; return;
+        }
+      }
+
+      /* Library / Overlay → retour */
+      if (/(library|session|celebration|notification|energy|about|notification)/.test(PAGE)) {
+        var isBackEl = (txt === '' || txt === '←' || txt === '‹' || txt === 'back') &&
+                       (el.tagName === 'BUTTON' || el.tagName === 'A');
+        var hasBackImg = el.querySelector && el.querySelector('img[alt*="back"], img[alt*="Back"], img[alt*="arrow"], img[alt*="Arrow"]');
+        if (isBackEl || hasBackImg) {
+          e.preventDefault(); window.history.back(); return;
+        }
+      }
+
+      el = el.parentElement;
+    }
+  });
+
+  /* ── 3. ONBOARDING : sélection énergie + lieu ── */
+  if (PAGE === 'onboarding.html') {
+    window._sportedgeEnergy   = 'medium';
+    window._sportedgeLocation = 'indoor';
+
+    document.querySelectorAll('button, [class*="rounded"]').forEach(function(btn) {
+      var txt = (btn.innerText || '').trim().toLowerCase();
+      if (txt.indexOf('low') !== -1 && txt.length < 30) {
+        btn.addEventListener('click', function() {
+          window._sportedgeEnergy = 'low';
+          highlightSel(btn, 'energy');
+        });
+      } else if (txt.indexOf('high') !== -1 && txt.length < 30) {
+        btn.addEventListener('click', function() {
+          window._sportedgeEnergy = 'high';
+          highlightSel(btn, 'energy');
+        });
+      } else if (txt.indexOf('medium') !== -1 && txt.length < 30) {
+        btn.addEventListener('click', function() {
+          window._sportedgeEnergy = 'medium';
+          highlightSel(btn, 'energy');
+        });
+      } else if (txt.indexOf('trainer') !== -1 || txt.indexOf('outdoor') !== -1) {
+        btn.addEventListener('click', function() {
+          window._sportedgeLocation = 'outdoor';
+          highlightSel(btn, 'location');
+        });
+      } else if (txt.indexOf('mat') !== -1 || txt.indexOf('indoor') !== -1) {
+        btn.addEventListener('click', function() {
+          window._sportedgeLocation = 'indoor';
+          highlightSel(btn, 'location');
+        });
+      }
+    });
+
+    /* CTA footer onboarding */
+    var footerBtn = document.querySelector('footer button');
+    if (footerBtn) {
+      footerBtn.addEventListener('click', function(e) {
+        e.preventDefault(); e.stopPropagation();
+        var e2 = window._sportedgeEnergy;
+        var l  = window._sportedgeLocation;
+        window.location.href = (l === 'outdoor')
+          ? 'home-' + e2 + '-outdoor.html'
+          : 'home-' + e2 + '.html';
+      });
+    }
+  }
+
+  function highlightSel(el, group) {
+    var sel = '[data-group="' + group + '"]';
+    document.querySelectorAll(sel).forEach(function(b) {
+      b.style.borderColor = 'transparent';
+      b.style.backgroundColor = '#F6F5F3';
+    });
+    el.dataset.group = group;
+    el.style.borderColor = '#EC9679';
+    el.style.backgroundColor = '#FDF4F2';
+  }
+
+})();
+</script>
+
+</body>
+</html>

@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Workout Completion - Success</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/iconify-icon@3.0.2/dist/iconify-icon.min.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&amp;display=swap" type="text/css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&amp;display=swap" type="text/css" rel="stylesheet">
+  <style>
+    body {
+      font-family: "Inter", ui-sans-serif, system-ui, -apple-system, sans-serif;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      color: #1D1A16;
+    }
+
+    h1, h2, h3, h4, h5, h6 {
+      font-family: "Outfit", ui-sans-serif, system-ui, sans-serif;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+    }
+
+    .glass-card {
+      background: rgba(255, 255, 255, 0.8);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid rgba(255, 255, 255, 0.3);
+    }
+
+    .bg-mesh-gradient {
+      background-color: #FDF4F2;
+      background-image: 
+        radial-gradient(at 80% 10%, rgba(236, 150, 121, 0.15) 0px, transparent 40%),
+        radial-gradient(at 20% 90%, rgba(103, 228, 187, 0.15) 0px, transparent 40%);
+    }
+
+    .text-balance {
+      text-wrap: balance;
+    }
+
+    .animate-float {
+      animation: float 6s ease-in-out infinite;
+    }
+
+    @keyframes float {
+      0% { transform: translateY(0px); }
+      50% { transform: translateY(-10px); }
+      100% { transform: translateY(0px); }
+    }
+
+    * {
+      transition: all 0.2s ease;
+    }
+
+    .streak-badge {
+      background: #67E4BB;
+      box-shadow: 0px 2px 4px 0px rgba(0, 0, 0, 0.05);
+    }
+
+    .main-button {
+      background: #EC9679;
+      box-shadow: 0px 4px 12px rgba(236, 150, 121, 0.3);
+    }
+
+    .main-button:hover {
+      background: #e58564;
+      transform: translateY(-1px);
+    }
+
+    .main-button:active {
+      transform: translateY(1px);
+    }
+  </style>
+</head>
+<body class="bg-mesh-gradient min-h-screen flex flex-col items-center justify-center p-4 md:p-8">
+
+  <!-- Main Container -->
+  <main class="w-full max-w-[375px] md:max-w-2xl lg:max-w-4xl flex flex-col items-center relative">
+    
+    <!-- Status Bar (Mobile Only) -->
+    <div class="w-full flex justify-between items-center px-6 py-2 md:hidden">
+      <img src="./assets-celebration/IMG_1.svg" alt="Time" class="h-5">
+      <img src="./assets-celebration/IMG_2.svg" alt="Status Icons" class="h-5">
+    </div>
+
+    <!-- Top Illustration Area -->
+    <div class="relative mt-8 mb-6 md:mt-12">
+      <!-- Decorative Blur Backgrounds -->
+      <div class="absolute -top-10 left-1/2 -translate-x-1/2 w-48 h-48 bg-[#EC9679]/20 rounded-full blur-3xl"></div>
+      
+      <!-- Profile/App Icon Circle -->
+      <div class="relative w-32 h-32 rounded-full bg-[#FBEAE4] border-[4px] border-[#FBFAF9] shadow-lg flex items-center justify-center animate-float">
+        <!-- Sparkle Badge -->
+        <div class="absolute -top-1 -right-1 w-8 h-8 bg-white rounded-full border-2 border-[#FBFAF9] shadow-sm flex items-center justify-center">
+          <img src="./assets-celebration/IMG_3.svg" alt="Sparkle" class="w-4 h-4">
+        </div>
+        
+        <!-- App Icon -->
+        <div class="w-20 h-20 bg-white rounded-[26px] shadow-sm flex items-center justify-center overflow-hidden">
+          <img src="./assets-celebration/IMG_4.webp" alt="App Logo" class="w-16 h-16 object-contain">
+        </div>
+      </div>
+    </div>
+
+    <!-- Streak Badge -->
+    <div class="streak-badge px-5 py-1.5 rounded-full flex items-center gap-2 mb-8">
+      <img src="./assets-celebration/IMG_5.svg" alt="Flame" class="w-4 h-4">
+      <span class="text-white font-medium text-sm">7 Day Streak!</span>
+    </div>
+
+    <!-- Hero Text -->
+    <div class="text-center px-6 mb-10 md:max-w-lg">
+      <h1 class="text-[30px] md:text-4xl leading-tight mb-3">You did it! That counts.</h1>
+      <p class="text-[#6A5E53] text-base md:text-lg leading-relaxed text-balance">
+        Small moves lead to big changes. You're showing up for yourself today.
+      </p>
+    </div>
+
+    <!-- Stats Card -->
+    <div class="w-full bg-white rounded-[32px] shadow-sm p-6 mb-6 md:grid md:grid-cols-2 md:gap-0 md:p-0 overflow-hidden">
+      <!-- Duration -->
+      <div class="flex flex-col items-center justify-center py-4 md:py-10 border-b md:border-b-0 md:border-r border-[#E4E0DC]/50">
+        <div class="w-11 h-11 bg-[#F6F5F3] rounded-2xl flex items-center justify-center mb-3">
+          <img src="./assets-celebration/IMG_7.svg" alt="Clock" class="w-5 h-5">
+        </div>
+        <span class="text-[10px] font-semibold tracking-widest text-[#6A5E53] uppercase mb-1">Duration</span>
+        <span class="text-lg font-bold">12 min</span>
+      </div>
+      
+      <!-- Activity -->
+      <div class="flex flex-col items-center justify-center py-4 md:py-10">
+        <div class="w-11 h-11 bg-[#F6F5F3] rounded-2xl flex items-center justify-center mb-3">
+          <img src="./assets-celebration/IMG_6.svg" alt="Activity" class="w-5 h-5">
+        </div>
+        <span class="text-[10px] font-semibold tracking-widest text-[#6A5E53] uppercase mb-1">Activity</span>
+        <span class="text-lg font-bold">Full body HIIT</span>
+      </div>
+    </div>
+
+    <!-- Quote Card -->
+    <div class="w-full bg-[#ECE5FA]/30 border border-[#B093EC]/10 rounded-[26px] p-4 flex items-start gap-3 mb-10 md:max-w-md">
+      <div class="w-7 h-7 rounded-full bg-[#e0fcf7] overflow-hidden flex-shrink-0">
+        <img src="./assets-celebration/IMG_8.webp" alt="Coach" class="w-full h-full object-cover">
+      </div>
+      <p class="text-sm leading-snug text-[#1D1A16]/80 italic">
+        "Consistency is better than intensity. See you tomorrow!"
+      </p>
+    </div>
+
+    <!-- Action Button -->
+    <div class="w-full flex flex-col items-center gap-4 mt-auto md:mt-4">
+      <button class="main-button w-full h-16 rounded-full flex items-center justify-center gap-2 px-6 group">
+        <span class="text-lg font-bold">See your progression</span>
+        <img src="./assets-celebration/IMG_9.svg" alt="Arrow" class="w-5 h-5 group-hover:translate-x-1 transition-transform">
+      </button>
+      
+      <span class="text-[#6A5E53] text-xs font-medium">Session saved to your history</span>
+    </div>
+
+    <!-- Desktop Decorative Elements -->
+    <div class="hidden lg:block absolute -bottom-20 -left-40 w-64 h-64 bg-[#67E4BB]/10 rounded-full blur-[64px] -z-10"></div>
+    <div class="hidden lg:block absolute top-40 -right-40 w-48 h-48 bg-[#EC9679]/10 rounded-full blur-[64px] -z-10"></div>
+
+  </main>
+
+
+
+
+<script>
+/* SportEdge Navigation v2 — celebration.html */
+(function() {
+  var PAGE = 'celebration.html';
+  var IS_OUTDOOR = false;
+
+  /* ── 1. BOTTOM NAV ── */
+  var NAV_MAP = {
+    'home':       'home-medium.html',
+    'move':       'home-medium.html',
+    'progress':   'progress.html',
+    'activities': 'activities.html',
+    'profile':    'profile.html',
+    'bolt':       'bolt.html'
+  };
+
+  document.querySelectorAll('nav a, nav button').forEach(function(el) {
+    var txt = el.innerText.trim().toLowerCase();
+    var alt = (el.querySelector('img') || {}).alt || '';
+    alt = alt.toLowerCase();
+    Object.keys(NAV_MAP).forEach(function(k) {
+      if (txt.indexOf(k) !== -1 || alt.indexOf(k) !== -1) {
+        el.addEventListener('click', function(e) {
+          e.preventDefault(); e.stopPropagation();
+          window.location.href = NAV_MAP[k];
+        });
+      }
+    });
+  });
+
+  /* ── 2. DELEGATION GLOBALE sur tout le document ── */
+  document.addEventListener('click', function(e) {
+    var el = e.target;
+    // Remonter jusqu'à 5 niveaux pour trouver le conteneur cliquable
+    for (var i = 0; i < 5; i++) {
+      if (!el || el === document.body) break;
+      var txt = (el.innerText || '').trim().toLowerCase();
+
+      /* CTA principaux */
+      if (/(start now|let.s go|start session|begin|commencer)/.test(txt)) {
+        e.preventDefault();
+        if (PAGE === 'onboarding.html') {
+          var energy = window._sportedgeEnergy || 'medium';
+          var loc    = window._sportedgeLocation || 'indoor';
+          if (loc === 'outdoor') {
+            window.location.href = 'home-' + energy + '-outdoor.html';
+          } else {
+            window.location.href = 'home-' + energy + '.html';
+          }
+        } else {
+          window.location.href = 'home-medium.html';
+        }
+        return;
+      }
+
+      /* Post-session / Done */
+      if (/(done|finish|complete|great job|i did it|well done)/.test(txt) && txt.length < 40) {
+        e.preventDefault(); window.location.href = 'celebration.html'; return;
+      }
+
+      /* Back to home / Return */
+      if (/(back to home|go home|return home)/.test(txt)) {
+        e.preventDefault(); window.location.href = 'home-medium.html'; return;
+      }
+
+      /* Save / Confirm overlays */
+      if (/^save/.test(txt) || txt === 'save preferences' || txt === 'confirm') {
+        e.preventDefault(); window.location.href = 'profile.html'; return;
+      }
+
+      /* Activities → Libraries */
+      if (PAGE.indexOf('activities') !== -1 || PAGE.indexOf('od-activities') !== -1) {
+        var libMap = {
+          'stretching': 'library-stretching.html',
+          'hiit':       'library-hiit.html',
+          'cardio':     'library-hiit.html',
+          'yoga':       'library-yoga.html',
+          'breathwork': 'library-yoga.html',
+          'outdoor run':'library-outdoor-runs.html',
+          'strength':   'library-strength.html',
+          'meditation': 'library-meditation.html',
+          'mindful':    'library-meditation.html'
+        };
+        Object.keys(libMap).forEach(function(k) {
+          if (txt.indexOf(k) !== -1) {
+            e.preventDefault(); window.location.href = libMap[k]; return;
+          }
+        });
+      }
+
+      /* Profile → overlays */
+      if (PAGE.indexOf('profile') !== -1) {
+        if (txt.indexOf('notification') !== -1) {
+          e.preventDefault(); window.location.href = 'notifications.html'; return;
+        }
+        if (txt.indexOf('energy') !== -1) {
+          e.preventDefault(); window.location.href = 'energy.html'; return;
+        }
+        if (txt.indexOf('about') !== -1) {
+          e.preventDefault(); window.location.href = 'about.html'; return;
+        }
+        if (txt.indexOf('training type') !== -1 || txt.indexOf('preferred') !== -1) {
+          e.preventDefault(); window.location.href = 'notifications.html'; return;
+        }
+      }
+
+      /* Library / Overlay → retour */
+      if (/(library|session|celebration|notification|energy|about|notification)/.test(PAGE)) {
+        var isBackEl = (txt === '' || txt === '←' || txt === '‹' || txt === 'back') &&
+                       (el.tagName === 'BUTTON' || el.tagName === 'A');
+        var hasBackImg = el.querySelector && el.querySelector('img[alt*="back"], img[alt*="Back"], img[alt*="arrow"], img[alt*="Arrow"]');
+        if (isBackEl || hasBackImg) {
+          e.preventDefault(); window.history.back(); return;
+        }
+      }
+
+      el = el.parentElement;
+    }
+  });
+
+  /* ── 3. ONBOARDING : sélection énergie + lieu ── */
+  if (PAGE === 'onboarding.html') {
+    window._sportedgeEnergy   = 'medium';
+    window._sportedgeLocation = 'indoor';
+
+    document.querySelectorAll('button, [class*="rounded"]').forEach(function(btn) {
+      var txt = (btn.innerText || '').trim().toLowerCase();
+      if (txt.indexOf('low') !== -1 && txt.length < 30) {
+        btn.addEventListener('click', function() {
+          window._sportedgeEnergy = 'low';
+          highlightSel(btn, 'energy');
+        });
+      } else if (txt.indexOf('high') !== -1 && txt.length < 30) {
+        btn.addEventListener('click', function() {
+          window._sportedgeEnergy = 'high';
+          highlightSel(btn, 'energy');
+        });
+      } else if (txt.indexOf('medium') !== -1 && txt.length < 30) {
+        btn.addEventListener('click', function() {
+          window._sportedgeEnergy = 'medium';
+          highlightSel(btn, 'energy');
+        });
+      } else if (txt.indexOf('trainer') !== -1 || txt.indexOf('outdoor') !== -1) {
+        btn.addEventListener('click', function() {
+          window._sportedgeLocation = 'outdoor';
+          highlightSel(btn, 'location');
+        });
+      } else if (txt.indexOf('mat') !== -1 || txt.indexOf('indoor') !== -1) {
+        btn.addEventListener('click', function() {
+          window._sportedgeLocation = 'indoor';
+          highlightSel(btn, 'location');
+        });
+      }
+    });
+
+    /* CTA footer onboarding */
+    var footerBtn = document.querySelector('footer button');
+    if (footerBtn) {
+      footerBtn.addEventListener('click', function(e) {
+        e.preventDefault(); e.stopPropagation();
+        var e2 = window._sportedgeEnergy;
+        var l  = window._sportedgeLocation;
+        window.location.href = (l === 'outdoor')
+          ? 'home-' + e2 + '-outdoor.html'
+          : 'home-' + e2 + '.html';
+      });
+    }
+  }
+
+  function highlightSel(el, group) {
+    var sel = '[data-group="' + group + '"]';
+    document.querySelectorAll(sel).forEach(function(b) {
+      b.style.borderColor = 'transparent';
+      b.style.backgroundColor = '#F6F5F3';
+    });
+    el.dataset.group = group;
+    el.style.borderColor = '#EC9679';
+    el.style.backgroundColor = '#FDF4F2';
+  }
+
+})();
+</script>
+
+</body>
+</html>

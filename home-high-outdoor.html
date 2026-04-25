@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SportEdge - Fitness Dashboard</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/iconify-icon@3.0.2/dist/iconify-icon.min.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&amp;display=swap" type="text/css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&amp;display=swap" type="text/css" rel="stylesheet">
+  <style>
+    body {
+      font-family: "Inter", ui-sans-serif, system-ui, -apple-system, sans-serif;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      color: #1D1A16;
+      background-color: #FBFAF9;
+    }
+
+    h1, h2, h3, h4, h5, h6 {
+      font-family: "Outfit", ui-sans-serif, system-ui, sans-serif;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+    }
+
+    * {
+      transition: all 0.2s ease;
+    }
+
+    ::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #f1f5f9;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #cbd5e1;
+      border-radius: 4px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: #94a3b8;
+    }
+
+    .glass-card {
+      background: rgba(255, 255, 255, 0.8);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+    }
+
+    .hide-scrollbar::-webkit-scrollbar {
+      display: none;
+    }
+    .hide-scrollbar {
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+    }
+
+    .safe-bottom {
+      padding-bottom: env(safe-area-inset-bottom);
+    }
+
+    .safe-top {
+      padding-top: env(safe-area-inset-top);
+    }
+  </style>
+</head>
+<body class="min-h-screen flex flex-col lg:flex-row">
+
+  <!-- Desktop Sidebar Navigation -->
+  <aside class="hidden lg:flex flex-col w-64 h-screen sticky top-0 bg-white border-r border-[#E4E0DC] p-6 z-50">
+    <div class="flex items-center gap-3 mb-10">
+      <img src="./assets-home-high-outdoor/IMG_3.webp" alt="Logo" class="w-10 h-10 rounded-lg shadow-sm">
+      <span class="font-[Outfit] text-xl font-bold">SportEdge</span>
+    </div>
+    
+    <nav class="flex-1 space-y-2">
+      <a href="#" class="flex items-center gap-3 px-4 py-3 rounded-xl bg-[#FBEAE4] text-[#EC9679] font-semibold">
+        <iconify-icon icon="lucide:house" width="24"></iconify-icon>
+        <span>Home</span>
+      </a>
+      <a href="#" class="flex items-center gap-3 px-4 py-3 rounded-xl text-[#6A5E53] hover:bg-gray-50">
+        <iconify-icon icon="lucide:chart-no-axes-column" width="24"></iconify-icon>
+        <span>Progress</span>
+      </a>
+      <a href="#" class="flex items-center gap-3 px-4 py-3 rounded-xl text-[#6A5E53] hover:bg-gray-50">
+        <iconify-icon icon="lucide:message-circle" width="24"></iconify-icon>
+        <span>Bolt AI</span>
+      </a>
+      <a href="#" class="flex items-center gap-3 px-4 py-3 rounded-xl text-[#6A5E53] hover:bg-gray-50">
+        <iconify-icon icon="lucide:activity" width="24"></iconify-icon>
+        <span>Activities</span>
+      </a>
+    </nav>
+
+    <div class="mt-auto pt-6 border-t border-[#E4E0DC]">
+      <div class="flex items-center gap-3">
+        <img src="./assets-home-high-outdoor/IMG_4.webp" alt="Profile" class="w-10 h-10 rounded-full object-cover">
+        <div>
+          <p class="text-sm font-bold">Alex Johnson</p>
+          <p class="text-xs text-[#6A5E53]">Pro Member</p>
+        </div>
+      </div>
+    </div>
+  </aside>
+
+  <!-- Main Content Area -->
+  <main class="flex-1 flex flex-col min-h-screen pb-24 lg:pb-10">
+    
+    <!-- Mobile Header -->
+    <header class="lg:hidden sticky top-0 z-40 bg-[#FBFAF9]/95 backdrop-blur-sm border-b border-[#E4E0DC] px-6 py-4 flex items-center justify-between">
+      <img src="./assets-home-high-outdoor/IMG_3.webp" alt="Logo" class="w-8 h-8 rounded-lg shadow-sm">
+      <h1 class="font-[Outfit] text-lg font-semibold">SportEdge</h1>
+      <img src="./assets-home-high-outdoor/IMG_4.webp" alt="Profile" class="w-8 h-8 rounded-full object-cover">
+    </header>
+
+    <!-- Content Container -->
+    <div class="max-w-5xl mx-auto w-full px-6 pt-8 lg:pt-12">
+      
+      <!-- Welcome Section -->
+      <section class="mb-8">
+        <h2 class="text-3xl lg:text-4xl font-bold mb-1">Hi, Alex! 👋</h2>
+        <p class="text-[#6A5E53] text-lg">Ready for a burst of energy?</p>
+      </section>
+
+      <!-- Daily Suggestion Section -->
+      <section class="mb-10">
+        <div class="flex items-center gap-4 mb-6">
+          <span class="text-[#EC9679] text-xs font-bold tracking-widest uppercase whitespace-nowrap">Daily Suggestion</span>
+          <div class="h-[1px] bg-[#E4E0DC] w-full"></div>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+          <!-- Main Workout Card -->
+          <div class="lg:col-span-7 bg-white rounded-[32px] border border-[#E4E0DC]/40 shadow-sm overflow-hidden group hover:shadow-md transition-shadow">
+            <div class="relative h-52 lg:h-64 overflow-hidden">
+              <img src="./assets-home-high-outdoor/IMG_5.webp" alt="Tempo Run" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+              <div class="absolute top-4 left-4">
+                <span class="bg-[#FEE2E2] border border-[#FECACA] text-[#B91C1C] text-xs font-bold px-3 py-1 rounded-full">High</span>
+              </div>
+            </div>
+            
+            <div class="p-6 lg:p-8">
+              <div class="flex items-center justify-between mb-4">
+                <h3 class="text-xl lg:text-2xl font-bold">Tempo Run</h3>
+                <div class="flex items-center gap-1.5 bg-[#F6F5F3] px-3 py-1 rounded-full text-[#6A5E53] text-xs font-bold">
+                  <iconify-icon icon="lucide:clock" width="14"></iconify-icon>
+                  <span>35 min</span>
+                </div>
+              </div>
+              
+              <p class="text-[#6A5E53] text-sm lg:text-base leading-relaxed mb-8">
+                Challenge your threshold. A sustained effort run that helps you improve your cardiovascular efficiency.
+              </p>
+
+              <button class="w-full bg-[#EC9679] hover:bg-[#e08566] text-[#1D1A16] font-bold py-4 rounded-full flex items-center justify-center gap-2 shadow-sm active:scale-[0.98]">
+                <span>Let's go</span>
+                <iconify-icon icon="lucide:circle-play" width="20"></iconify-icon>
+              </button>
+            </div>
+          </div>
+
+          <!-- Quote & Stats Column -->
+          <div class="lg:col-span-5 flex flex-col gap-6">
+            <!-- Motivational Quote -->
+            <div class="bg-[#ECE5FA] border border-[#B093EC]/10 rounded-[26px] p-6 flex gap-4 items-start">
+              <div class="bg-white p-3 rounded-full shadow-sm flex-shrink-0">
+                <iconify-icon icon="lucide:trending-up" class="text-[#B093EC]" width="24"></iconify-icon>
+              </div>
+              <p class="text-[#43180A]/70 text-sm italic leading-relaxed">
+                "Every step you take outside is a victory for your well-being. Focus on the feeling, not the finish line."
+              </p>
+            </div>
+
+            <!-- Streak Section -->
+            <div class="mt-4">
+              <h4 class="text-lg font-semibold mb-4">Keep the streak alive</h4>
+              <div class="grid grid-cols-2 gap-4">
+                <!-- Streak Card -->
+                <div class="bg-[#FBEAE4] border border-[#EC9679]/10 rounded-[26px] p-5">
+                  <div class="bg-white w-8 h-8 rounded-full shadow-sm flex items-center justify-center mb-4">
+                    <iconify-icon icon="lucide:flame" class="text-[#EC9679]" width="16"></iconify-icon>
+                  </div>
+                  <p class="text-[#43180A] text-sm font-bold">4 Day Streak</p>
+                  <p class="text-[#43180A]/60 text-[10px]">Doing great!</p>
+                </div>
+
+                <!-- Sessions Card -->
+                <div class="bg-[#F2FDF9] border border-[#67E4BB]/10 rounded-[26px] p-5">
+                  <div class="bg-white w-8 h-8 rounded-full shadow-sm flex items-center justify-center mb-4">
+                    <iconify-icon icon="lucide:zap" class="text-[#67E4BB]" width="16"></iconify-icon>
+                  </div>
+                  <p class="text-[#0B412F] text-sm font-bold">12 Sessions</p>
+                  <p class="text-[#0B412F]/60 text-[10px]">This month</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <!-- Mobile Bottom Navigation -->
+    <nav class="lg:hidden fixed bottom-0 left-0 right-0 bg-white border-t border-[#E5E7EB] shadow-[0_-2px_10px_rgba(0,0,0,0.05)] px-2 py-2 flex justify-around items-center z-50 safe-bottom">
+      <a href="#" class="flex flex-col items-center gap-1 px-3 py-1 text-[#EC9679]">
+        <iconify-icon icon="lucide:house" width="24"></iconify-icon>
+        <span class="text-[10px] font-bold">Home</span>
+      </a>
+      <a href="#" class="flex flex-col items-center gap-1 px-3 py-1 text-[#565d6d]">
+        <iconify-icon icon="lucide:chart-no-axes-column" width="24"></iconify-icon>
+        <span class="text-[10px]">Progress</span>
+      </a>
+      <a href="#" class="flex flex-col items-center gap-1 px-3 py-1 text-[#565d6d]">
+        <iconify-icon icon="lucide:message-circle" width="24"></iconify-icon>
+        <span class="text-[10px]">Bolt</span>
+      </a>
+      <a href="#" class="flex flex-col items-center gap-1 px-3 py-1 text-[#565d6d]">
+        <iconify-icon icon="lucide:activity" width="24"></iconify-icon>
+        <span class="text-[10px]">Activities</span>
+      </a>
+      <a href="#" class="flex flex-col items-center gap-1 px-3 py-1 text-[#565d6d]">
+        <iconify-icon icon="lucide:user" width="24"></iconify-icon>
+        <span class="text-[10px]">Profile</span>
+      </a>
+    </nav>
+
+  </main>
+
+
+
+
+<script>
+/* SportEdge Navigation v2 — home-high-outdoor.html */
+(function() {
+  var PAGE = 'home-high-outdoor.html';
+  var IS_OUTDOOR = true;
+
+  /* ── 1. BOTTOM NAV ── */
+  var NAV_MAP = {
+    'home':       'od-home-medium.html',
+    'move':       'od-home-medium.html',
+    'progress':   'od-progress.html',
+    'activities': 'od-activities.html',
+    'profile':    'od-profile.html',
+    'bolt':       'od-bolt.html'
+  };
+
+  document.querySelectorAll('nav a, nav button').forEach(function(el) {
+    var txt = el.innerText.trim().toLowerCase();
+    var alt = (el.querySelector('img') || {}).alt || '';
+    alt = alt.toLowerCase();
+    Object.keys(NAV_MAP).forEach(function(k) {
+      if (txt.indexOf(k) !== -1 || alt.indexOf(k) !== -1) {
+        el.addEventListener('click', function(e) {
+          e.preventDefault(); e.stopPropagation();
+          window.location.href = NAV_MAP[k];
+        });
+      }
+    });
+  });
+
+  /* ── 2. DELEGATION GLOBALE sur tout le document ── */
+  document.addEventListener('click', function(e) {
+    var el = e.target;
+    // Remonter jusqu'à 5 niveaux pour trouver le conteneur cliquable
+    for (var i = 0; i < 5; i++) {
+      if (!el || el === document.body) break;
+      var txt = (el.innerText || '').trim().toLowerCase();
+
+      /* CTA principaux */
+      if (/(start now|let.s go|start session|begin|commencer)/.test(txt)) {
+        e.preventDefault();
+        if (PAGE === 'onboarding.html') {
+          var energy = window._sportedgeEnergy || 'medium';
+          var loc    = window._sportedgeLocation || 'indoor';
+          if (loc === 'outdoor') {
+            window.location.href = 'home-' + energy + '-outdoor.html';
+          } else {
+            window.location.href = 'home-' + energy + '.html';
+          }
+        } else {
+          window.location.href = 'od-home-medium.html';
+        }
+        return;
+      }
+
+      /* Post-session / Done */
+      if (/(done|finish|complete|great job|i did it|well done)/.test(txt) && txt.length < 40) {
+        e.preventDefault(); window.location.href = 'celebration.html'; return;
+      }
+
+      /* Back to home / Return */
+      if (/(back to home|go home|return home)/.test(txt)) {
+        e.preventDefault(); window.location.href = 'od-home-medium.html'; return;
+      }
+
+      /* Save / Confirm overlays */
+      if (/^save/.test(txt) || txt === 'save preferences' || txt === 'confirm') {
+        e.preventDefault(); window.location.href = 'od-profile.html'; return;
+      }
+
+      /* Activities → Libraries */
+      if (PAGE.indexOf('activities') !== -1 || PAGE.indexOf('od-activities') !== -1) {
+        var libMap = {
+          'stretching': 'od-library-stretching.html',
+          'hiit':       'od-library-hiit.html',
+          'cardio':     'od-library-hiit.html',
+          'yoga':       'od-library-yoga.html',
+          'breathwork': 'od-library-yoga.html',
+          'outdoor run':'od-library-outdoor-runs.html',
+          'strength':   'od-library-strength.html',
+          'meditation': 'od-library-meditation.html',
+          'mindful':    'od-library-meditation.html'
+        };
+        Object.keys(libMap).forEach(function(k) {
+          if (txt.indexOf(k) !== -1) {
+            e.preventDefault(); window.location.href = libMap[k]; return;
+          }
+        });
+      }
+
+      /* Profile → overlays */
+      if (PAGE.indexOf('profile') !== -1) {
+        if (txt.indexOf('notification') !== -1) {
+          e.preventDefault(); window.location.href = 'od-notifications.html'; return;
+        }
+        if (txt.indexOf('energy') !== -1) {
+          e.preventDefault(); window.location.href = 'od-energy.html'; return;
+        }
+        if (txt.indexOf('about') !== -1) {
+          e.preventDefault(); window.location.href = 'od-about.html'; return;
+        }
+        if (txt.indexOf('training type') !== -1 || txt.indexOf('preferred') !== -1) {
+          e.preventDefault(); window.location.href = 'od-notifications.html'; return;
+        }
+      }
+
+      /* Library / Overlay → retour */
+      if (/(library|session|celebration|notification|energy|about|notification)/.test(PAGE)) {
+        var isBackEl = (txt === '' || txt === '←' || txt === '‹' || txt === 'back') &&
+                       (el.tagName === 'BUTTON' || el.tagName === 'A');
+        var hasBackImg = el.querySelector && el.querySelector('img[alt*="back"], img[alt*="Back"], img[alt*="arrow"], img[alt*="Arrow"]');
+        if (isBackEl || hasBackImg) {
+          e.preventDefault(); window.history.back(); return;
+        }
+      }
+
+      el = el.parentElement;
+    }
+  });
+
+  /* ── 3. ONBOARDING : sélection énergie + lieu ── */
+  if (PAGE === 'onboarding.html') {
+    window._sportedgeEnergy   = 'medium';
+    window._sportedgeLocation = 'indoor';
+
+    document.querySelectorAll('button, [class*="rounded"]').forEach(function(btn) {
+      var txt = (btn.innerText || '').trim().toLowerCase();
+      if (txt.indexOf('low') !== -1 && txt.length < 30) {
+        btn.addEventListener('click', function() {
+          window._sportedgeEnergy = 'low';
+          highlightSel(btn, 'energy');
+        });
+      } else if (txt.indexOf('high') !== -1 && txt.length < 30) {
+        btn.addEventListener('click', function() {
+          window._sportedgeEnergy = 'high';
+          highlightSel(btn, 'energy');
+        });
+      } else if (txt.indexOf('medium') !== -1 && txt.length < 30) {
+        btn.addEventListener('click', function() {
+          window._sportedgeEnergy = 'medium';
+          highlightSel(btn, 'energy');
+        });
+      } else if (txt.indexOf('trainer') !== -1 || txt.indexOf('outdoor') !== -1) {
+        btn.addEventListener('click', function() {
+          window._sportedgeLocation = 'outdoor';
+          highlightSel(btn, 'location');
+        });
+      } else if (txt.indexOf('mat') !== -1 || txt.indexOf('indoor') !== -1) {
+        btn.addEventListener('click', function() {
+          window._sportedgeLocation = 'indoor';
+          highlightSel(btn, 'location');
+        });
+      }
+    });
+
+    /* CTA footer onboarding */
+    var footerBtn = document.querySelector('footer button');
+    if (footerBtn) {
+      footerBtn.addEventListener('click', function(e) {
+        e.preventDefault(); e.stopPropagation();
+        var e2 = window._sportedgeEnergy;
+        var l  = window._sportedgeLocation;
+        window.location.href = (l === 'outdoor')
+          ? 'home-' + e2 + '-outdoor.html'
+          : 'home-' + e2 + '.html';
+      });
+    }
+  }
+
+  function highlightSel(el, group) {
+    var sel = '[data-group="' + group + '"]';
+    document.querySelectorAll(sel).forEach(function(b) {
+      b.style.borderColor = 'transparent';
+      b.style.backgroundColor = '#F6F5F3';
+    });
+    el.dataset.group = group;
+    el.style.borderColor = '#EC9679';
+    el.style.backgroundColor = '#FDF4F2';
+  }
+
+})();
+</script>
+
+</body>
+</html>

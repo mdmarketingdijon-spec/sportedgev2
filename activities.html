@@ -1,0 +1,494 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Activities - Movement App</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/iconify-icon@3.0.2/dist/iconify-icon.min.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&amp;display=swap" type="text/css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&amp;display=swap" type="text/css" rel="stylesheet">
+  <style>
+    body {
+      font-family: "Inter", ui-sans-serif, system-ui, -apple-system, sans-serif;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      color: #1D1A16;
+      background-color: #FBFAF9;
+    }
+
+    h1, h2, h3, h4, h5, h6 {
+      font-family: "Outfit", ui-sans-serif, system-ui, sans-serif;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      line-height: 1.2;
+    }
+
+    * {
+      transition: all 0.2s ease;
+    }
+
+    ::-webkit-scrollbar {
+      width: 6px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #f1f5f9;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #cbd5e1;
+      border-radius: 10px;
+    }
+
+    .text-gradient-peach {
+      background: linear-gradient(to right, #EC9679, #F2B599);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .card-shadow {
+      box-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.05);
+    }
+
+    .safe-bottom {
+      padding-bottom: env(safe-area-inset-bottom);
+    }
+
+    @media (min-width: 1024px) {
+      .main-content-grid {
+        display: grid;
+        grid-template-columns: 280px 1fr 320px;
+      }
+    }
+  </style>
+</head>
+<body class="min-h-screen flex flex-col lg:flex-row">
+
+  <!-- Desktop Sidebar Navigation -->
+  <aside class="hidden lg:flex flex-col w-64 xl:w-72 bg-white border-r border-[#E4E0DC] h-screen sticky top-0 p-6">
+    <div class="mb-10 px-2">
+      <h1 class="text-2xl font-bold text-[#EC9679]">Move.</h1>
+    </div>
+    <nav class="flex-1 space-y-2">
+      <a href="#" class="flex items-center gap-3 px-4 py-3 rounded-xl text-[#6A5E53] hover:bg-[#F6F5F3]">
+        <iconify-icon icon="lucide:house" width="22"></iconify-icon>
+        <span class="font-medium">Home</span>
+      </a>
+      <a href="#" class="flex items-center gap-3 px-4 py-3 rounded-xl text-[#6A5E53] hover:bg-[#F6F5F3]">
+        <iconify-icon icon="lucide:chart-no-axes-column" width="22"></iconify-icon>
+        <span class="font-medium">Progress</span>
+      </a>
+      <a href="#" class="flex items-center gap-3 px-4 py-3 rounded-xl text-[#6A5E53] hover:bg-[#F6F5F3]">
+        <iconify-icon icon="lucide:message-circle" width="22"></iconify-icon>
+        <span class="font-medium">Bolt</span>
+      </a>
+      <a href="#" class="flex items-center gap-3 px-4 py-3 rounded-xl bg-[#FDF4F2] text-[#EC9679]">
+        <iconify-icon icon="lucide:activity" width="22"></iconify-icon>
+        <span class="font-bold">Activities</span>
+      </a>
+      <a href="#" class="flex items-center gap-3 px-4 py-3 rounded-xl text-[#6A5E53] hover:bg-[#F6F5F3]">
+        <iconify-icon icon="lucide:user" width="22"></iconify-icon>
+        <span class="font-medium">Profile</span>
+      </a>
+    </nav>
+    <div class="mt-auto pt-6 border-t border-[#E4E0DC]">
+      <div class="flex items-center gap-3 px-2">
+        <div class="w-10 h-10 rounded-full bg-[#EC9679]/20 flex items-center justify-center">
+          <iconify-icon icon="lucide:user" class="text-[#EC9679]"></iconify-icon>
+        </div>
+        <div>
+          <p class="text-sm font-bold">Alex Johnson</p>
+          <p class="text-xs text-[#6A5E53]">Pro Member</p>
+        </div>
+      </div>
+    </div>
+  </aside>
+
+  <!-- Main Content Area -->
+  <main class="flex-1 flex flex-col min-h-screen">
+    
+    <!-- Mobile Header -->
+    <header class="lg:hidden sticky top-0 z-30 bg-[#FBFAF9] border-b border-[#E4E0DC]">
+      <!-- Status Bar Simulation (Mobile Only) -->
+      <div class="flex justify-between items-center px-6 py-2 h-10">
+        <img src="./assets-activities/IMG_1.svg" alt="Time" class="h-4">
+        <img src="./assets-activities/IMG_2.svg" alt="Status Icons" class="h-4">
+      </div>
+      <!-- Title Bar -->
+      <div class="flex items-center justify-center h-14">
+        <h2 class="text-lg font-semibold">Activities</h2>
+      </div>
+    </header>
+
+    <!-- Content Scrollable Area -->
+    <div class="flex-1 overflow-y-auto px-5 py-6 md:px-10 md:py-10 lg:px-12">
+      
+      <!-- Hero Section -->
+      <section class="max-w-5xl mx-auto mb-8">
+        <h1 class="text-[26px] md:text-4xl lg:text-5xl leading-tight mb-2">
+          What do you feel<br>
+          <span class="text-[#EC9679]">like today?</span>
+        </h1>
+        <p class="text-[#6A5E53] font-medium text-sm md:text-base mb-8">
+          Find the perfect move for your energy.
+        </p>
+
+        <!-- Search Bar -->
+        <div class="relative group max-w-2xl">
+          <div class="absolute inset-y-0 left-4 flex items-center pointer-events-none">
+            <img src="./assets-activities/IMG_3.svg" alt="Search" class="w-5 h-5 opacity-60">
+          </div>
+          <input type="text" 
+                 placeholder="Search movements..." 
+                 class="w-full h-14 pl-12 pr-4 bg-[#F6F5F3]/50 border border-transparent focus:border-[#EC9679]/30 focus:bg-white rounded-[20px] outline-none text-base transition-all">
+        </div>
+      </section>
+
+      <!-- Activity Grid -->
+      <section class="max-w-5xl mx-auto grid grid-cols-2 md:grid-cols-3 xl:grid-cols-3 gap-4 md:gap-6 mb-10">
+        
+        <!-- Stretching & Mobility -->
+        <div class="bg-[#FBEAE4] rounded-[24px] p-5 border border-[#E4E0DC]/40 card-shadow hover:scale-[1.02] cursor-pointer flex flex-col h-[164px] md:h-[200px]">
+          <div class="w-12 h-12 bg-white/80 rounded-full flex items-center justify-center shadow-sm mb-auto">
+            <img src="./assets-activities/IMG_4.svg" alt="Stretching" class="w-6 h-6">
+          </div>
+          <div>
+            <h3 class="text-[15px] md:text-lg font-semibold leading-tight mb-1">Stretching & Mobility</h3>
+            <p class="text-[12px] md:text-sm text-[#6A5E53]/80 font-medium">8 Sessions</p>
+          </div>
+        </div>
+
+        <!-- HIIT & Cardio -->
+        <div class="bg-[#E1FAF1] rounded-[24px] p-5 border border-[#E4E0DC]/40 card-shadow hover:scale-[1.02] cursor-pointer flex flex-col h-[164px] md:h-[200px]">
+          <div class="w-12 h-12 bg-white/80 rounded-full flex items-center justify-center shadow-sm mb-auto">
+            <img src="./assets-activities/IMG_5.svg" alt="HIIT" class="w-6 h-6">
+          </div>
+          <div>
+            <h3 class="text-[15px] md:text-lg font-semibold leading-tight mb-1">HIIT & Cardio</h3>
+            <p class="text-[12px] md:text-sm text-[#6A5E53]/80 font-medium">12 Sessions</p>
+          </div>
+        </div>
+
+        <!-- Yoga & Breathwork -->
+        <div class="bg-[#ECE5FA] rounded-[24px] p-5 border border-[#E4E0DC]/40 card-shadow hover:scale-[1.02] cursor-pointer flex flex-col h-[164px] md:h-[200px]">
+          <div class="w-12 h-12 bg-white/80 rounded-full flex items-center justify-center shadow-sm mb-auto">
+            <img src="./assets-activities/IMG_6.svg" alt="Yoga" class="w-6 h-6">
+          </div>
+          <div>
+            <h3 class="text-[15px] md:text-lg font-semibold leading-tight mb-1">Yoga & Breathwork</h3>
+            <p class="text-[12px] md:text-sm text-[#6A5E53]/80 font-medium">6 Sessions</p>
+          </div>
+        </div>
+
+        <!-- Outdoor Runs -->
+        <div class="bg-[#FEF5E1] rounded-[24px] p-5 border border-[#E4E0DC]/40 card-shadow hover:scale-[1.02] cursor-pointer flex flex-col h-[164px] md:h-[200px]">
+          <div class="w-12 h-12 bg-white/80 rounded-full flex items-center justify-center shadow-sm mb-auto">
+            <img src="./assets-activities/IMG_7.svg" alt="Runs" class="w-6 h-6">
+          </div>
+          <div>
+            <h3 class="text-[15px] md:text-lg font-semibold leading-tight mb-1">Outdoor Runs</h3>
+            <p class="text-[12px] md:text-sm text-[#6A5E53]/80 font-medium">5 Sessions</p>
+          </div>
+        </div>
+
+        <!-- Strength & Body -->
+        <div class="bg-[#E2F4FD] rounded-[24px] p-5 border border-[#E4E0DC]/40 card-shadow hover:scale-[1.02] cursor-pointer flex flex-col h-[164px] md:h-[200px]">
+          <div class="w-12 h-12 bg-white/80 rounded-full flex items-center justify-center shadow-sm mb-auto">
+            <img src="./assets-activities/IMG_8.svg" alt="Strength" class="w-6 h-6">
+          </div>
+          <div>
+            <h3 class="text-[15px] md:text-lg font-semibold leading-tight mb-1">Strength & Body</h3>
+            <p class="text-[12px] md:text-sm text-[#6A5E53]/80 font-medium">10 Sessions</p>
+          </div>
+        </div>
+
+        <!-- Mindful Meditation -->
+        <div class="bg-[#FBEAE4]/40 rounded-[24px] p-5 border border-[#E4E0DC]/40 card-shadow hover:scale-[1.02] cursor-pointer flex flex-col h-[164px] md:h-[200px]">
+          <div class="w-12 h-12 bg-white/80 rounded-full flex items-center justify-center shadow-sm mb-auto">
+            <img src="./assets-activities/IMG_9.svg" alt="Meditation" class="w-6 h-6">
+          </div>
+          <div>
+            <h3 class="text-[15px] md:text-lg font-semibold leading-tight mb-1">Mindful Meditation</h3>
+            <p class="text-[12px] md:text-sm text-[#6A5E53]/80 font-medium">4 Sessions</p>
+          </div>
+        </div>
+
+      </section>
+
+      <!-- Quick Tip Section -->
+      <section class="max-w-5xl mx-auto mb-24 lg:mb-10">
+        <div class="bg-[#FDF4F2] rounded-[28px] p-6 md:p-8 border border-[#EC9679]/10">
+          <div class="flex items-center gap-4 mb-4">
+            <div class="w-9 h-9 bg-[#EC9679]/20 rounded-full flex items-center justify-center">
+              <img src="./assets-activities/IMG_9.svg" alt="Tip" class="w-5 h-5">
+            </div>
+            <h3 class="text-lg font-bold">Quick Tip</h3>
+          </div>
+          <p class="text-[#6A5E53] leading-relaxed text-sm md:text-base">
+            Don't worry about the length. Even 5 minutes of <span class="text-[#1D1A16] font-semibold">Stretching</span> can reset your focus for the afternoon.
+          </p>
+        </div>
+      </section>
+    </div>
+
+    <!-- Mobile Bottom Navigation -->
+    <nav class="lg:hidden fixed bottom-0 left-0 right-0 bg-[#FBFAF9] border-t border-[#E5E7EB] shadow-[0_-2px_10px_0_rgba(0,0,0,0.05)] z-40 safe-bottom">
+      <div class="flex justify-around items-center h-16">
+        <a href="#" class="flex flex-col items-center justify-center gap-1 px-2">
+          <img src="./assets-activities/IMG_10.svg" alt="Home" class="w-6 h-6 opacity-60">
+          <span class="text-[10px] text-[#565d6d]">Home</span>
+        </a>
+        <a href="#" class="flex flex-col items-center justify-center gap-1 px-2">
+          <img src="./assets-activities/IMG_11.svg" alt="Progress" class="w-6 h-6 opacity-60">
+          <span class="text-[10px] text-[#565d6d]">Progress</span>
+        </a>
+        <a href="#" class="flex flex-col items-center justify-center gap-1 px-2">
+          <img src="./assets-activities/IMG_12.svg" alt="Bolt" class="w-6 h-6 opacity-60">
+          <span class="text-[10px] text-[#565d6d]">Bolt</span>
+        </a>
+        <a href="#" class="flex flex-col items-center justify-center gap-1 px-2">
+          <img src="./assets-activities/IMG_13.svg" alt="Activities" class="w-6 h-6">
+          <span class="text-[10px] font-bold text-[#EC9679]">Activities</span>
+        </a>
+        <a href="#" class="flex flex-col items-center justify-center gap-1 px-2">
+          <img src="./assets-activities/IMG_14.svg" alt="Profile" class="w-6 h-6 opacity-60">
+          <span class="text-[10px] text-[#565d6d]">Profile</span>
+        </a>
+      </div>
+    </nav>
+  </main>
+
+  <!-- Desktop Right Panel (Creative Expansion) -->
+  <aside class="hidden xl:flex flex-col w-80 bg-white border-l border-[#E4E0DC] p-8 h-screen sticky top-0">
+    <div class="mb-8">
+      <h3 class="text-xl font-bold mb-4">Daily Progress</h3>
+      <div class="bg-[#F6F5F3] rounded-2xl p-5">
+        <div class="flex justify-between items-end mb-2">
+          <span class="text-sm font-medium text-[#6A5E53]">Today's Goal</span>
+          <span class="text-lg font-bold">75%</span>
+        </div>
+        <div class="w-full bg-white rounded-full h-2">
+          <div class="bg-[#EC9679] h-2 rounded-full" style="width: 75%"></div>
+        </div>
+        <p class="text-xs text-[#6A5E53] mt-3">3 out of 4 sessions completed</p>
+      </div>
+    </div>
+
+    <div>
+      <h3 class="text-xl font-bold mb-4">Upcoming</h3>
+      <div class="space-y-4">
+        <div class="flex items-center gap-4 p-3 rounded-xl hover:bg-[#F6F5F3] cursor-pointer">
+          <div class="w-12 h-12 bg-[#E1FAF1] rounded-xl flex items-center justify-center">
+            <iconify-icon icon="lucide:flame" class="text-[#67E4BB]"></iconify-icon>
+          </div>
+          <div>
+            <p class="text-sm font-bold">Morning HIIT</p>
+            <p class="text-xs text-[#6A5E53]">Tomorrow, 08:00 AM</p>
+          </div>
+        </div>
+        <div class="flex items-center gap-4 p-3 rounded-xl hover:bg-[#F6F5F3] cursor-pointer">
+          <div class="w-12 h-12 bg-[#ECE5FA] rounded-xl flex items-center justify-center">
+            <iconify-icon icon="lucide:wind" class="text-[#B093EC]"></iconify-icon>
+          </div>
+          <div>
+            <p class="text-sm font-bold">Evening Yoga</p>
+            <p class="text-xs text-[#6A5E53]">Friday, 06:30 PM</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="mt-auto">
+      <button class="w-full bg-[#1D1A16] text-white py-4 rounded-2xl font-bold hover:bg-black transition-colors">
+        Start New Session
+      </button>
+    </div>
+  </aside>
+
+
+
+
+<script>
+/* SportEdge Navigation v2 — activities.html */
+(function() {
+  var PAGE = 'activities.html';
+  var IS_OUTDOOR = false;
+
+  /* ── 1. BOTTOM NAV ── */
+  var NAV_MAP = {
+    'home':       'home-medium.html',
+    'move':       'home-medium.html',
+    'progress':   'progress.html',
+    'activities': 'activities.html',
+    'profile':    'profile.html',
+    'bolt':       'bolt.html'
+  };
+
+  document.querySelectorAll('nav a, nav button').forEach(function(el) {
+    var txt = el.innerText.trim().toLowerCase();
+    var alt = (el.querySelector('img') || {}).alt || '';
+    alt = alt.toLowerCase();
+    Object.keys(NAV_MAP).forEach(function(k) {
+      if (txt.indexOf(k) !== -1 || alt.indexOf(k) !== -1) {
+        el.addEventListener('click', function(e) {
+          e.preventDefault(); e.stopPropagation();
+          window.location.href = NAV_MAP[k];
+        });
+      }
+    });
+  });
+
+  /* ── 2. DELEGATION GLOBALE sur tout le document ── */
+  document.addEventListener('click', function(e) {
+    var el = e.target;
+    // Remonter jusqu'à 5 niveaux pour trouver le conteneur cliquable
+    for (var i = 0; i < 5; i++) {
+      if (!el || el === document.body) break;
+      var txt = (el.innerText || '').trim().toLowerCase();
+
+      /* CTA principaux */
+      if (/(start now|let.s go|start session|begin|commencer)/.test(txt)) {
+        e.preventDefault();
+        if (PAGE === 'onboarding.html') {
+          var energy = window._sportedgeEnergy || 'medium';
+          var loc    = window._sportedgeLocation || 'indoor';
+          if (loc === 'outdoor') {
+            window.location.href = 'home-' + energy + '-outdoor.html';
+          } else {
+            window.location.href = 'home-' + energy + '.html';
+          }
+        } else {
+          window.location.href = 'home-medium.html';
+        }
+        return;
+      }
+
+      /* Post-session / Done */
+      if (/(done|finish|complete|great job|i did it|well done)/.test(txt) && txt.length < 40) {
+        e.preventDefault(); window.location.href = 'celebration.html'; return;
+      }
+
+      /* Back to home / Return */
+      if (/(back to home|go home|return home)/.test(txt)) {
+        e.preventDefault(); window.location.href = 'home-medium.html'; return;
+      }
+
+      /* Save / Confirm overlays */
+      if (/^save/.test(txt) || txt === 'save preferences' || txt === 'confirm') {
+        e.preventDefault(); window.location.href = 'profile.html'; return;
+      }
+
+      /* Activities → Libraries */
+      if (PAGE.indexOf('activities') !== -1 || PAGE.indexOf('od-activities') !== -1) {
+        var libMap = {
+          'stretching': 'library-stretching.html',
+          'hiit':       'library-hiit.html',
+          'cardio':     'library-hiit.html',
+          'yoga':       'library-yoga.html',
+          'breathwork': 'library-yoga.html',
+          'outdoor run':'library-outdoor-runs.html',
+          'strength':   'library-strength.html',
+          'meditation': 'library-meditation.html',
+          'mindful':    'library-meditation.html'
+        };
+        Object.keys(libMap).forEach(function(k) {
+          if (txt.indexOf(k) !== -1) {
+            e.preventDefault(); window.location.href = libMap[k]; return;
+          }
+        });
+      }
+
+      /* Profile → overlays */
+      if (PAGE.indexOf('profile') !== -1) {
+        if (txt.indexOf('notification') !== -1) {
+          e.preventDefault(); window.location.href = 'notifications.html'; return;
+        }
+        if (txt.indexOf('energy') !== -1) {
+          e.preventDefault(); window.location.href = 'energy.html'; return;
+        }
+        if (txt.indexOf('about') !== -1) {
+          e.preventDefault(); window.location.href = 'about.html'; return;
+        }
+        if (txt.indexOf('training type') !== -1 || txt.indexOf('preferred') !== -1) {
+          e.preventDefault(); window.location.href = 'notifications.html'; return;
+        }
+      }
+
+      /* Library / Overlay → retour */
+      if (/(library|session|celebration|notification|energy|about|notification)/.test(PAGE)) {
+        var isBackEl = (txt === '' || txt === '←' || txt === '‹' || txt === 'back') &&
+                       (el.tagName === 'BUTTON' || el.tagName === 'A');
+        var hasBackImg = el.querySelector && el.querySelector('img[alt*="back"], img[alt*="Back"], img[alt*="arrow"], img[alt*="Arrow"]');
+        if (isBackEl || hasBackImg) {
+          e.preventDefault(); window.history.back(); return;
+        }
+      }
+
+      el = el.parentElement;
+    }
+  });
+
+  /* ── 3. ONBOARDING : sélection énergie + lieu ── */
+  if (PAGE === 'onboarding.html') {
+    window._sportedgeEnergy   = 'medium';
+    window._sportedgeLocation = 'indoor';
+
+    document.querySelectorAll('button, [class*="rounded"]').forEach(function(btn) {
+      var txt = (btn.innerText || '').trim().toLowerCase();
+      if (txt.indexOf('low') !== -1 && txt.length < 30) {
+        btn.addEventListener('click', function() {
+          window._sportedgeEnergy = 'low';
+          highlightSel(btn, 'energy');
+        });
+      } else if (txt.indexOf('high') !== -1 && txt.length < 30) {
+        btn.addEventListener('click', function() {
+          window._sportedgeEnergy = 'high';
+          highlightSel(btn, 'energy');
+        });
+      } else if (txt.indexOf('medium') !== -1 && txt.length < 30) {
+        btn.addEventListener('click', function() {
+          window._sportedgeEnergy = 'medium';
+          highlightSel(btn, 'energy');
+        });
+      } else if (txt.indexOf('trainer') !== -1 || txt.indexOf('outdoor') !== -1) {
+        btn.addEventListener('click', function() {
+          window._sportedgeLocation = 'outdoor';
+          highlightSel(btn, 'location');
+        });
+      } else if (txt.indexOf('mat') !== -1 || txt.indexOf('indoor') !== -1) {
+        btn.addEventListener('click', function() {
+          window._sportedgeLocation = 'indoor';
+          highlightSel(btn, 'location');
+        });
+      }
+    });
+
+    /* CTA footer onboarding */
+    var footerBtn = document.querySelector('footer button');
+    if (footerBtn) {
+      footerBtn.addEventListener('click', function(e) {
+        e.preventDefault(); e.stopPropagation();
+        var e2 = window._sportedgeEnergy;
+        var l  = window._sportedgeLocation;
+        window.location.href = (l === 'outdoor')
+          ? 'home-' + e2 + '-outdoor.html'
+          : 'home-' + e2 + '.html';
+      });
+    }
+  }
+
+  function highlightSel(el, group) {
+    var sel = '[data-group="' + group + '"]';
+    document.querySelectorAll(sel).forEach(function(b) {
+      b.style.borderColor = 'transparent';
+      b.style.backgroundColor = '#F6F5F3';
+    });
+    el.dataset.group = group;
+    el.style.borderColor = '#EC9679';
+    el.style.backgroundColor = '#FDF4F2';
+  }
+
+})();
+</script>
+
+</body>
+</html>

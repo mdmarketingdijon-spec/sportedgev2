@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Gentle Flow - Standing Side Stretch</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/iconify-icon@3.0.2/dist/iconify-icon.min.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&amp;display=swap" type="text/css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&amp;display=swap" type="text/css" rel="stylesheet">
+  <style>
+    body {
+      font-family: "Inter", ui-sans-serif, system-ui, -apple-system, sans-serif;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      color: #1D1A16;
+      background-color: #FBFAF9;
+    }
+
+    h1, h2, h3, h4, h5, h6 {
+      font-family: "Outfit", ui-sans-serif, system-ui, sans-serif;
+      font-weight: 600;
+      letter-spacing: -0.02em;
+    }
+
+    .timer-display {
+      font-family: "Outfit", ui-sans-serif, system-ui, sans-serif;
+      font-variant-numeric: tabular-nums;
+      letter-spacing: -0.05em;
+    }
+
+    .text-label {
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      font-weight: 600;
+      font-size: 0.75rem;
+    }
+
+    .glass-effect {
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+    }
+
+    .soft-shadow {
+      box-shadow: 0 10px 30px -10px rgba(234, 153, 123, 0.3);
+    }
+
+    * {
+      transition: all 0.2s ease;
+    }
+
+    ::-webkit-scrollbar {
+      width: 8px;
+      height: 8px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #f1f5f9;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #cbd5e1;
+      border-radius: 4px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: #94a3b8;
+    }
+
+    /* Custom background blobs */
+    .blob-orange {
+      background: rgba(236, 150, 121, 0.08);
+      filter: blur(64px);
+    }
+    .blob-green {
+      background: rgba(103, 228, 187, 0.08);
+      filter: blur(64px);
+    }
+  </style>
+</head>
+<body class="min-h-screen flex flex-col items-center justify-center overflow-x-hidden">
+
+  <!-- Background Decorative Elements -->
+  <div class="fixed top-[-10%] right-[-10%] w-[300px] h-[300px] rounded-full blob-orange -z-10"></div>
+  <div class="fixed bottom-[20%] left-[-10%] w-[250px] h-[250px] rounded-full blob-green -z-10"></div>
+
+  <!-- Main App Container -->
+  <main class="relative w-full max-w-md min-h-screen flex flex-col px-6 py-4 md:max-w-4xl md:flex-row md:items-center md:gap-12 lg:gap-24">
+    
+    <!-- Left Side: Visual Content (Image & Header) -->
+    <div class="flex-1 flex flex-col items-center md:items-start">
+      <!-- Status Bar (Mobile Only) -->
+      <div class="w-full flex justify-between items-center mb-6 md:hidden">
+        <img src="./assets-session-high-outdoor/IMG_1.svg" alt="Time" class="h-6">
+        <img src="./assets-session-high-outdoor/IMG_2.svg" alt="Status Icons" class="h-6">
+      </div>
+
+      <!-- Header Section -->
+      <header class="text-center md:text-left w-full mb-8">
+        <div class="inline-block px-3 py-1 bg-[#F2FDF9] rounded-full mb-4">
+          <span class="text-[10px] md:text-xs font-bold text-[#67E4BB] tracking-widest uppercase">Gentle Flow</span>
+        </div>
+        <h1 class="text-2xl md:text-4xl lg:text-5xl text-[#1D1A16] mb-2">Standing Side Stretch</h1>
+        <p class="text-sm md:text-base text-[#6A5E53]">Focus on your breathing</p>
+      </header>
+
+      <!-- Exercise Illustration -->
+      <div class="relative w-full aspect-square max-w-[280px] md:max-w-[400px] mx-auto md:mx-0">
+        <div class="absolute inset-0 bg-[#FBEAE4] rounded-full border-[4px] border-[#EC9679]/10 shadow-sm"></div>
+        <div class="relative w-full h-full p-8 flex items-center justify-center">
+          <img src="./assets-session-high-outdoor/IMG_3.webp" alt="Standing Side Stretch Illustration" class="w-full h-full object-contain">
+        </div>
+      </div>
+    </div>
+
+    <!-- Right Side: Controls & Progress -->
+    <div class="flex-1 flex flex-col items-center md:items-start w-full mt-12 md:mt-0">
+      
+      <!-- Timer Section -->
+      <div class="text-center md:text-left mb-12 w-full">
+        <span class="text-label text-[#6A5E53] block mb-2">Remaining</span>
+        <span class="timer-display text-7xl md:text-8xl lg:text-9xl font-bold text-[#EC9679]">08:42</span>
+      </div>
+
+      <!-- Progress Section -->
+      <div class="w-full mb-10">
+        <div class="flex justify-between items-center mb-3">
+          <span class="text-label text-[#6A5E53]">Session Progress</span>
+          <span class="text-xs font-bold text-[#67E4BB]">65%</span>
+        </div>
+        <div class="h-2 w-full bg-[#FDF3EF] rounded-full overflow-hidden">
+          <div class="h-full bg-[#EC9679] rounded-full" style="width: 65%"></div>
+        </div>
+      </div>
+
+      <!-- Action Buttons -->
+      <div class="w-full space-y-4">
+        <button class="w-full h-14 bg-[#EC9679] hover:bg-[#e08565] text-[#1D1A16] font-semibold text-lg rounded-full flex items-center justify-center gap-2 soft-shadow active:scale-95">
+          <img src="./assets-session-high-outdoor/IMG_4.svg" alt="Check" class="w-5 h-5">
+          <span>Done</span>
+        </button>
+        
+        <button class="w-full h-10 flex items-center justify-center gap-2 text-[#6A5E53] hover:text-[#1D1A16] font-medium text-sm rounded-full active:scale-95">
+          <img src="./assets-session-high-outdoor/IMG_5.svg" alt="Skip" class="w-4 h-4">
+          <span>Skip this exercise</span>
+        </button>
+      </div>
+
+      <!-- Desktop Metadata (Visible only on larger screens) -->
+      <div class="hidden md:grid grid-cols-2 gap-4 mt-12 w-full border-t border-[#EC9679]/10 pt-8">
+        <div>
+          <span class="text-[10px] text-[#6A5E53] uppercase tracking-widest block mb-1">Difficulty</span>
+          <span class="text-sm font-semibold">Beginner Friendly</span>
+        </div>
+        <div>
+          <span class="text-[10px] text-[#6A5E53] uppercase tracking-widest block mb-1">Target Area</span>
+          <span class="text-sm font-semibold">Obliques & Spine</span>
+        </div>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- Desktop Sidebar Navigation (Hidden on Mobile) -->
+  <aside class="hidden lg:flex fixed left-0 top-0 h-full w-20 flex-col items-center py-8 bg-white/50 border-r border-[#EC9679]/10 glass-effect">
+    <div class="mb-12">
+      <iconify-icon icon="ph:leaf-fill" width="32" height="32" class="text-[#EC9679]"></iconify-icon>
+    </div>
+    <nav class="flex flex-col gap-8">
+      <button class="p-3 rounded-xl bg-[#EC9679] text-white shadow-md">
+        <iconify-icon icon="ri:timer-fill" width="24" height="24"></iconify-icon>
+      </button>
+      <button class="p-3 rounded-xl text-[#6A5E53] hover:bg-[#FBEAE4] hover:text-[#EC9679]">
+        <iconify-icon icon="ri:calendar-line" width="24" height="24"></iconify-icon>
+      </button>
+      <button class="p-3 rounded-xl text-[#6A5E53] hover:bg-[#FBEAE4] hover:text-[#EC9679]">
+        <iconify-icon icon="ri:bar-chart-line" width="24" height="24"></iconify-icon>
+      </button>
+      <button class="p-3 rounded-xl text-[#6A5E53] hover:bg-[#FBEAE4] hover:text-[#EC9679]">
+        <iconify-icon icon="ri:settings-4-line" width="24" height="24"></iconify-icon>
+      </button>
+    </nav>
+  </aside>
+
+
+
+
+<script>
+/* SportEdge Navigation v2 — session-high-outdoor.html */
+(function() {
+  var PAGE = 'session-high-outdoor.html';
+  var IS_OUTDOOR = true;
+
+  /* ── 1. BOTTOM NAV ── */
+  var NAV_MAP = {
+    'home':       'od-home-medium.html',
+    'move':       'od-home-medium.html',
+    'progress':   'od-progress.html',
+    'activities': 'od-activities.html',
+    'profile':    'od-profile.html',
+    'bolt':       'od-bolt.html'
+  };
+
+  document.querySelectorAll('nav a, nav button').forEach(function(el) {
+    var txt = el.innerText.trim().toLowerCase();
+    var alt = (el.querySelector('img') || {}).alt || '';
+    alt = alt.toLowerCase();
+    Object.keys(NAV_MAP).forEach(function(k) {
+      if (txt.indexOf(k) !== -1 || alt.indexOf(k) !== -1) {
+        el.addEventListener('click', function(e) {
+          e.preventDefault(); e.stopPropagation();
+          window.location.href = NAV_MAP[k];
+        });
+      }
+    });
+  });
+
+  /* ── 2. DELEGATION GLOBALE sur tout le document ── */
+  document.addEventListener('click', function(e) {
+    var el = e.target;
+    // Remonter jusqu'à 5 niveaux pour trouver le conteneur cliquable
+    for (var i = 0; i < 5; i++) {
+      if (!el || el === document.body) break;
+      var txt = (el.innerText || '').trim().toLowerCase();
+
+      /* CTA principaux */
+      if (/(start now|let.s go|start session|begin|commencer)/.test(txt)) {
+        e.preventDefault();
+        if (PAGE === 'onboarding.html') {
+          var energy = window._sportedgeEnergy || 'medium';
+          var loc    = window._sportedgeLocation || 'indoor';
+          if (loc === 'outdoor') {
+            window.location.href = 'home-' + energy + '-outdoor.html';
+          } else {
+            window.location.href = 'home-' + energy + '.html';
+          }
+        } else {
+          window.location.href = 'od-home-medium.html';
+        }
+        return;
+      }
+
+      /* Post-session / Done */
+      if (/(done|finish|complete|great job|i did it|well done)/.test(txt) && txt.length < 40) {
+        e.preventDefault(); window.location.href = 'celebration.html'; return;
+      }
+
+      /* Back to home / Return */
+      if (/(back to home|go home|return home)/.test(txt)) {
+        e.preventDefault(); window.location.href = 'od-home-medium.html'; return;
+      }
+
+      /* Save / Confirm overlays */
+      if (/^save/.test(txt) || txt === 'save preferences' || txt === 'confirm') {
+        e.preventDefault(); window.location.href = 'od-profile.html'; return;
+      }
+
+      /* Activities → Libraries */
+      if (PAGE.indexOf('activities') !== -1 || PAGE.indexOf('od-activities') !== -1) {
+        var libMap = {
+          'stretching': 'od-library-stretching.html',
+          'hiit':       'od-library-hiit.html',
+          'cardio':     'od-library-hiit.html',
+          'yoga':       'od-library-yoga.html',
+          'breathwork': 'od-library-yoga.html',
+          'outdoor run':'od-library-outdoor-runs.html',
+          'strength':   'od-library-strength.html',
+          'meditation': 'od-library-meditation.html',
+          'mindful':    'od-library-meditation.html'
+        };
+        Object.keys(libMap).forEach(function(k) {
+          if (txt.indexOf(k) !== -1) {
+            e.preventDefault(); window.location.href = libMap[k]; return;
+          }
+        });
+      }
+
+      /* Profile → overlays */
+      if (PAGE.indexOf('profile') !== -1) {
+        if (txt.indexOf('notification') !== -1) {
+          e.preventDefault(); window.location.href = 'od-notifications.html'; return;
+        }
+        if (txt.indexOf('energy') !== -1) {
+          e.preventDefault(); window.location.href = 'od-energy.html'; return;
+        }
+        if (txt.indexOf('about') !== -1) {
+          e.preventDefault(); window.location.href = 'od-about.html'; return;
+        }
+        if (txt.indexOf('training type') !== -1 || txt.indexOf('preferred') !== -1) {
+          e.preventDefault(); window.location.href = 'od-notifications.html'; return;
+        }
+      }
+
+      /* Library / Overlay → retour */
+      if (/(library|session|celebration|notification|energy|about|notification)/.test(PAGE)) {
+        var isBackEl = (txt === '' || txt === '←' || txt === '‹' || txt === 'back') &&
+                       (el.tagName === 'BUTTON' || el.tagName === 'A');
+        var hasBackImg = el.querySelector && el.querySelector('img[alt*="back"], img[alt*="Back"], img[alt*="arrow"], img[alt*="Arrow"]');
+        if (isBackEl || hasBackImg) {
+          e.preventDefault(); window.history.back(); return;
+        }
+      }
+
+      el = el.parentElement;
+    }
+  });
+
+  /* ── 3. ONBOARDING : sélection énergie + lieu ── */
+  if (PAGE === 'onboarding.html') {
+    window._sportedgeEnergy   = 'medium';
+    window._sportedgeLocation = 'indoor';
+
+    document.querySelectorAll('button, [class*="rounded"]').forEach(function(btn) {
+      var txt = (btn.innerText || '').trim().toLowerCase();
+      if (txt.indexOf('low') !== -1 && txt.length < 30) {
+        btn.addEventListener('click', function() {
+          window._sportedgeEnergy = 'low';
+          highlightSel(btn, 'energy');
+        });
+      } else if (txt.indexOf('high') !== -1 && txt.length < 30) {
+        btn.addEventListener('click', function() {
+          window._sportedgeEnergy = 'high';
+          highlightSel(btn, 'energy');
+        });
+      } else if (txt.indexOf('medium') !== -1 && txt.length < 30) {
+        btn.addEventListener('click', function() {
+          window._sportedgeEnergy = 'medium';
+          highlightSel(btn, 'energy');
+        });
+      } else if (txt.indexOf('trainer') !== -1 || txt.indexOf('outdoor') !== -1) {
+        btn.addEventListener('click', function() {
+          window._sportedgeLocation = 'outdoor';
+          highlightSel(btn, 'location');
+        });
+      } else if (txt.indexOf('mat') !== -1 || txt.indexOf('indoor') !== -1) {
+        btn.addEventListener('click', function() {
+          window._sportedgeLocation = 'indoor';
+          highlightSel(btn, 'location');
+        });
+      }
+    });
+
+    /* CTA footer onboarding */
+    var footerBtn = document.querySelector('footer button');
+    if (footerBtn) {
+      footerBtn.addEventListener('click', function(e) {
+        e.preventDefault(); e.stopPropagation();
+        var e2 = window._sportedgeEnergy;
+        var l  = window._sportedgeLocation;
+        window.location.href = (l === 'outdoor')
+          ? 'home-' + e2 + '-outdoor.html'
+          : 'home-' + e2 + '.html';
+      });
+    }
+  }
+
+  function highlightSel(el, group) {
+    var sel = '[data-group="' + group + '"]';
+    document.querySelectorAll(sel).forEach(function(b) {
+      b.style.borderColor = 'transparent';
+      b.style.backgroundColor = '#F6F5F3';
+    });
+    el.dataset.group = group;
+    el.style.borderColor = '#EC9679';
+    el.style.backgroundColor = '#FDF4F2';
+  }
+
+})();
+</script>
+
+</body>
+</html>

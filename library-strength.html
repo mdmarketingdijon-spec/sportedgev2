@@ -1,0 +1,575 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Strength & Body - Build Your Base</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/iconify-icon@3.0.2/dist/iconify-icon.min.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&amp;display=swap" type="text/css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&amp;display=swap" type="text/css" rel="stylesheet">
+  <style>
+    body {
+      font-family: "Inter", ui-sans-serif, system-ui, -apple-system, sans-serif;
+      color: #1D1A16;
+      background-color: #FBFAF9;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    h1, h2, h3, h4, h5, h6 {
+      font-family: "Outfit", ui-sans-serif, system-ui, -apple-system, sans-serif;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      color: #1D1A16;
+    }
+
+    * {
+      transition: all 0.2s ease;
+    }
+
+    ::-webkit-scrollbar {
+      width: 8px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #f1f5f9;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #cbd5e1;
+      border-radius: 4px;
+    }
+
+    .font-outfit { font-family: "Outfit", sans-serif; }
+    .font-inter { font-family: "Inter", sans-serif; }
+
+    .card-shadow {
+      box-shadow: 0px 4px 8px 0px rgba(0, 0, 0, 0.06);
+    }
+
+    .session-button-spacing {
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+    }
+
+    * { -webkit-tap-highlight-color: transparent; }
+
+    .nav-active {
+      color: #EC9679;
+    }
+  </style>
+</head>
+<body class="pb-24 lg:pb-0 lg:pl-64">
+
+  <!-- Desktop Sidebar Navigation -->
+  <aside class="hidden lg:flex fixed left-0 top-0 h-full w-64 bg-white border-r border-[#E4E0DC] flex-col z-50">
+    <div class="p-6">
+      <h1 class="text-2xl text-[#EC9679]">Bolt</h1>
+    </div>
+    <nav class="flex-1 px-4 space-y-2 mt-4">
+      <a href="#" class="flex items-center gap-3 p-3 rounded-xl hover:bg-[#F6F5F3] text-[#6A5E53]">
+        <iconify-icon icon="lucide:house" width="24"></iconify-icon>
+        <span class="font-medium">Home</span>
+      </a>
+      <a href="#" class="flex items-center gap-3 p-3 rounded-xl hover:bg-[#F6F5F3] text-[#6A5E53]">
+        <iconify-icon icon="lucide:chart-no-axes-column" width="24"></iconify-icon>
+        <span class="font-medium">Progress</span>
+      </a>
+      <a href="#" class="flex items-center gap-3 p-3 rounded-xl bg-[#F6F5F3] text-[#EC9679]">
+        <iconify-icon icon="lucide:activity" width="24"></iconify-icon>
+        <span class="font-medium">Activities</span>
+      </a>
+      <a href="#" class="flex items-center gap-3 p-3 rounded-xl hover:bg-[#F6F5F3] text-[#6A5E53]">
+        <iconify-icon icon="lucide:user" width="24"></iconify-icon>
+        <span class="font-medium">Profile</span>
+      </a>
+    </nav>
+    <div class="p-6 border-t border-[#E4E0DC]">
+      <div class="flex items-center gap-3">
+        <div class="w-10 h-10 rounded-full bg-[#E4E0DC] overflow-hidden">
+          <img src="./assets-library-strength/IMG_21.svg" alt="Profile" class="w-full h-full object-cover">
+        </div>
+        <div>
+          <p class="text-sm font-semibold">Alex Johnson</p>
+          <p class="text-xs text-[#6A5E53]">Pro Member</p>
+        </div>
+      </div>
+    </div>
+  </aside>
+
+  <!-- Mobile Header -->
+  <header class="lg:hidden sticky top-0 bg-[#FBFAF9] z-40 border-b border-[#E4E0DC]">
+    <!-- Status Bar Placeholder (Mobile Only) -->
+    <div class="h-10 flex justify-between items-center px-6">
+      <img src="./assets-library-strength/IMG_1.svg" alt="Time" class="h-4">
+      <img src="./assets-library-strength/IMG_2.svg" alt="Status" class="h-4">
+    </div>
+    <!-- Navigation Bar -->
+    <div class="h-16 flex items-center justify-between px-2">
+      <button class="p-2 text-[#6A5E53]">
+        <img src="./assets-library-strength/IMG_3.svg" alt="Back" class="w-6 h-6">
+      </button>
+      <h2 class="text-lg font-semibold font-outfit">Strength & Body</h2>
+      <button class="p-2 text-[#6A5E53]">
+        <img src="./assets-library-strength/IMG_4.svg" alt="Dumbbell" class="w-6 h-6">
+      </button>
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <main class="max-w-7xl mx-auto px-5 py-8 lg:py-12">
+    <!-- Hero Section -->
+    <section class="mb-10 lg:mb-16">
+      <h1 class="text-3xl lg:text-5xl mb-4">Build Your Base</h1>
+      <p class="text-[#6A5E53] text-sm lg:text-lg max-w-2xl leading-relaxed">
+        Gentle resistance routines designed to strengthen your body without the burn-out. No heavy gear required.
+      </p>
+    </section>
+
+    <!-- Workout Grid -->
+    <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6 lg:gap-8">
+      
+      <!-- Card 1 -->
+      <article class="bg-white rounded-[32px] overflow-hidden card-shadow flex flex-col h-full">
+        <div class="relative aspect-[16/9] bg-[#F6F5F3]">
+          <img src="./assets-library-strength/IMG_5.webp" alt="Minimalist Core Strength" class="w-full h-full object-cover">
+          <span class="absolute top-4 left-4 px-3 py-0.5 bg-[#DBEAFE] border border-[#BFDBFE] text-[#1D4ED8] text-xs font-bold rounded-full">Low</span>
+        </div>
+        <div class="p-6 flex flex-col flex-1">
+          <div class="flex justify-between items-start mb-8">
+            <h3 class="text-xl font-outfit leading-tight pr-4">Minimalist Core Strength</h3>
+            <div class="flex items-center gap-1 text-[#6A5E53] text-xs font-medium whitespace-nowrap mt-1">
+              <img src="./assets-library-strength/IMG_6.svg" alt="Clock" class="w-3.5 h-3.5">
+              <span>10 min</span>
+            </div>
+          </div>
+          <div class="mt-auto">
+            <a href="#" class="inline-flex items-center gap-2 text-[#EC9679] text-xs font-bold session-button-spacing hover:opacity-80">
+              Begin Session
+              <img src="./assets-library-strength/IMG_7.svg" alt="Arrow" class="w-3 h-3">
+            </a>
+          </div>
+        </div>
+      </article>
+
+      <!-- Card 2 -->
+      <article class="bg-white rounded-[32px] overflow-hidden card-shadow flex flex-col h-full">
+        <div class="relative aspect-[16/9] bg-[#F6F5F3]">
+          <img src="./assets-library-strength/IMG_8.webp" alt="Bodyweight Power Hour" class="w-full h-full object-cover">
+          <span class="absolute top-4 left-4 px-3 py-0.5 bg-[#DBEAFE] border border-[#BFDBFE] text-[#1D4ED8] text-xs font-bold rounded-full">Low</span>
+        </div>
+        <div class="p-6 flex flex-col flex-1">
+          <div class="flex justify-between items-start mb-8">
+            <h3 class="text-xl font-outfit leading-tight pr-4">Bodyweight Power Hour</h3>
+            <div class="flex items-center gap-1 text-[#6A5E53] text-xs font-medium whitespace-nowrap mt-1">
+              <img src="./assets-library-strength/IMG_6.svg" alt="Clock" class="w-3.5 h-3.5">
+              <span>20 min</span>
+            </div>
+          </div>
+          <div class="mt-auto">
+            <a href="#" class="inline-flex items-center gap-2 text-[#EC9679] text-xs font-bold session-button-spacing hover:opacity-80">
+              Begin Session
+              <img src="./assets-library-strength/IMG_7.svg" alt="Arrow" class="w-3 h-3">
+            </a>
+          </div>
+        </div>
+      </article>
+
+      <!-- Card 3 -->
+      <article class="bg-white rounded-[32px] overflow-hidden card-shadow flex flex-col h-full">
+        <div class="relative aspect-[16/9] bg-[#F6F5F3]">
+          <img src="./assets-library-strength/IMG_9.webp" alt="Primal Movement Flow" class="w-full h-full object-cover">
+          <span class="absolute top-4 left-4 px-3 py-0.5 bg-[#DBEAFE] border border-[#BFDBFE] text-[#1D4ED8] text-xs font-bold rounded-full">Low</span>
+        </div>
+        <div class="p-6 flex flex-col flex-1">
+          <div class="flex justify-between items-start mb-8">
+            <h3 class="text-xl font-outfit leading-tight pr-4">Primal Movement Flow</h3>
+            <div class="flex items-center gap-1 text-[#6A5E53] text-xs font-medium whitespace-nowrap mt-1">
+              <img src="./assets-library-strength/IMG_6.svg" alt="Clock" class="w-3.5 h-3.5">
+              <span>15 min</span>
+            </div>
+          </div>
+          <div class="mt-auto">
+            <a href="#" class="inline-flex items-center gap-2 text-[#EC9679] text-xs font-bold session-button-spacing hover:opacity-80">
+              Begin Session
+              <img src="./assets-library-strength/IMG_7.svg" alt="Arrow" class="w-3 h-3">
+            </a>
+          </div>
+        </div>
+      </article>
+
+      <!-- Card 4 -->
+      <article class="bg-white rounded-[32px] overflow-hidden card-shadow flex flex-col h-full">
+        <div class="relative aspect-[16/9] bg-[#F6F5F3]">
+          <img src="./assets-library-strength/IMG_10.webp" alt="Wall-Assisted Strength" class="w-full h-full object-cover">
+          <span class="absolute top-4 left-4 px-3 py-0.5 bg-[#F3E8FF] border border-[#E9D5FF] text-[#7E22CE] text-xs font-bold rounded-full">Medium</span>
+        </div>
+        <div class="p-6 flex flex-col flex-1">
+          <div class="flex justify-between items-start mb-8">
+            <h3 class="text-xl font-outfit leading-tight pr-4">Wall-Assisted Strength</h3>
+            <div class="flex items-center gap-1 text-[#6A5E53] text-xs font-medium whitespace-nowrap mt-1">
+              <img src="./assets-library-strength/IMG_6.svg" alt="Clock" class="w-3.5 h-3.5">
+              <span>12 min</span>
+            </div>
+          </div>
+          <div class="mt-auto">
+            <a href="#" class="inline-flex items-center gap-2 text-[#EC9679] text-xs font-bold session-button-spacing hover:opacity-80">
+              Begin Session
+              <img src="./assets-library-strength/IMG_7.svg" alt="Arrow" class="w-3 h-3">
+            </a>
+          </div>
+        </div>
+      </article>
+
+      <!-- Card 5 -->
+      <article class="bg-white rounded-[32px] overflow-hidden card-shadow flex flex-col h-full">
+        <div class="relative aspect-[16/9] bg-[#F6F5F3]">
+          <img src="./assets-library-strength/IMG_11.webp" alt="The Slow & Steady Burn" class="w-full h-full object-cover">
+          <span class="absolute top-4 left-4 px-3 py-0.5 bg-[#F3E8FF] border border-[#E9D5FF] text-[#7E22CE] text-xs font-bold rounded-full">Medium</span>
+        </div>
+        <div class="p-6 flex flex-col flex-1">
+          <div class="flex justify-between items-start mb-8">
+            <h3 class="text-xl font-outfit leading-tight pr-4">The Slow & Steady Burn</h3>
+            <div class="flex items-center gap-1 text-[#6A5E53] text-xs font-medium whitespace-nowrap mt-1">
+              <img src="./assets-library-strength/IMG_6.svg" alt="Clock" class="w-3.5 h-3.5">
+              <span>18 min</span>
+            </div>
+          </div>
+          <div class="mt-auto">
+            <a href="#" class="inline-flex items-center gap-2 text-[#EC9679] text-xs font-bold session-button-spacing hover:opacity-80">
+              Begin Session
+              <img src="./assets-library-strength/IMG_7.svg" alt="Arrow" class="w-3 h-3">
+            </a>
+          </div>
+        </div>
+      </article>
+
+      <!-- Card 6 -->
+      <article class="bg-white rounded-[32px] overflow-hidden card-shadow flex flex-col h-full">
+        <div class="relative aspect-[16/9] bg-[#F6F5F3]">
+          <img src="./assets-library-strength/IMG_12.webp" alt="Lower Body Grounding" class="w-full h-full object-cover">
+          <span class="absolute top-4 left-4 px-3 py-0.5 bg-[#FEE2E2] border border-[#FECACA] text-[#B91C1C] text-xs font-bold rounded-full">High</span>
+        </div>
+        <div class="p-6 flex flex-col flex-1">
+          <div class="flex justify-between items-start mb-8">
+            <h3 class="text-xl font-outfit leading-tight pr-4">Lower Body Grounding</h3>
+            <div class="flex items-center gap-1 text-[#6A5E53] text-xs font-medium whitespace-nowrap mt-1">
+              <img src="./assets-library-strength/IMG_6.svg" alt="Clock" class="w-3.5 h-3.5">
+              <span>15 min</span>
+            </div>
+          </div>
+          <div class="mt-auto">
+            <a href="#" class="inline-flex items-center gap-2 text-[#EC9679] text-xs font-bold session-button-spacing hover:opacity-80">
+              Begin Session
+              <img src="./assets-library-strength/IMG_7.svg" alt="Arrow" class="w-3 h-3">
+            </a>
+          </div>
+        </div>
+      </article>
+
+      <!-- Card 7 -->
+      <article class="bg-white rounded-[32px] overflow-hidden card-shadow flex flex-col h-full">
+        <div class="relative aspect-[16/9] bg-[#F6F5F3]">
+          <img src="./assets-library-strength/IMG_13.webp" alt="Upper Body Activation" class="w-full h-full object-cover">
+          <span class="absolute top-4 left-4 px-3 py-0.5 bg-[#FEE2E2] border border-[#FECACA] text-[#B91C1C] text-xs font-bold rounded-full">High</span>
+        </div>
+        <div class="p-6 flex flex-col flex-1">
+          <div class="flex justify-between items-start mb-8">
+            <h3 class="text-xl font-outfit leading-tight pr-4">Upper Body Activation</h3>
+            <div class="flex items-center gap-1 text-[#6A5E53] text-xs font-medium whitespace-nowrap mt-1">
+              <img src="./assets-library-strength/IMG_6.svg" alt="Clock" class="w-3.5 h-3.5">
+              <span>10 min</span>
+            </div>
+          </div>
+          <div class="mt-auto">
+            <a href="#" class="inline-flex items-center gap-2 text-[#EC9679] text-xs font-bold session-button-spacing hover:opacity-80">
+              Begin Session
+              <img src="./assets-library-strength/IMG_7.svg" alt="Arrow" class="w-3 h-3">
+            </a>
+          </div>
+        </div>
+      </article>
+
+      <!-- Card 8 -->
+      <article class="bg-white rounded-[32px] overflow-hidden card-shadow flex flex-col h-full">
+        <div class="relative aspect-[16/9] bg-[#F6F5F3]">
+          <img src="./assets-library-strength/IMG_14.webp" alt="Dumbbell Foundational" class="w-full h-full object-cover">
+          <span class="absolute top-4 left-4 px-3 py-0.5 bg-[#FEE2E2] border border-[#FECACA] text-[#B91C1C] text-xs font-bold rounded-full">High</span>
+        </div>
+        <div class="p-6 flex flex-col flex-1">
+          <div class="flex justify-between items-start mb-8">
+            <h3 class="text-xl font-outfit leading-tight pr-4">Dumbbell Foundational</h3>
+            <div class="flex items-center gap-1 text-[#6A5E53] text-xs font-medium whitespace-nowrap mt-1">
+              <img src="./assets-library-strength/IMG_6.svg" alt="Clock" class="w-3.5 h-3.5">
+              <span>20 min</span>
+            </div>
+          </div>
+          <div class="mt-auto">
+            <a href="#" class="inline-flex items-center gap-2 text-[#EC9679] text-xs font-bold session-button-spacing hover:opacity-80">
+              Begin Session
+              <img src="./assets-library-strength/IMG_7.svg" alt="Arrow" class="w-3 h-3">
+            </a>
+          </div>
+        </div>
+      </article>
+
+      <!-- Card 9 -->
+      <article class="bg-white rounded-[32px] overflow-hidden card-shadow flex flex-col h-full">
+        <div class="relative aspect-[16/9] bg-[#F6F5F3]">
+          <img src="./assets-library-strength/IMG_15.webp" alt="Stability Ball Basics" class="w-full h-full object-cover">
+          <span class="absolute top-4 left-4 px-3 py-0.5 bg-[#DBEAFE] border border-[#BFDBFE] text-[#1D4ED8] text-xs font-bold rounded-full">Low</span>
+        </div>
+        <div class="p-6 flex flex-col flex-1">
+          <div class="flex justify-between items-start mb-8">
+            <h3 class="text-xl font-outfit leading-tight pr-4">Stability Ball Basics</h3>
+            <div class="flex items-center gap-1 text-[#6A5E53] text-xs font-medium whitespace-nowrap mt-1">
+              <img src="./assets-library-strength/IMG_6.svg" alt="Clock" class="w-3.5 h-3.5">
+              <span>15 min</span>
+            </div>
+          </div>
+          <div class="mt-auto">
+            <a href="#" class="inline-flex items-center gap-2 text-[#EC9679] text-xs font-bold session-button-spacing hover:opacity-80">
+              Begin Session
+              <img src="./assets-library-strength/IMG_7.svg" alt="Arrow" class="w-3 h-3">
+            </a>
+          </div>
+        </div>
+      </article>
+
+      <!-- Card 10 -->
+      <article class="bg-white rounded-[32px] overflow-hidden card-shadow flex flex-col h-full">
+        <div class="relative aspect-[16/9] bg-[#F6F5F3]">
+          <img src="./assets-library-strength/IMG_16.webp" alt="The Weekend Warrior" class="w-full h-full object-cover">
+          <span class="absolute top-4 left-4 px-3 py-0.5 bg-[#F3E8FF] border border-[#E9D5FF] text-[#7E22CE] text-xs font-bold rounded-full">Medium</span>
+        </div>
+        <div class="p-6 flex flex-col flex-1">
+          <div class="flex justify-between items-start mb-8">
+            <h3 class="text-xl font-outfit leading-tight pr-4">The Weekend Warrior</h3>
+            <div class="flex items-center gap-1 text-[#6A5E53] text-xs font-medium whitespace-nowrap mt-1">
+              <img src="./assets-library-strength/IMG_6.svg" alt="Clock" class="w-3.5 h-3.5">
+              <span>25 min</span>
+            </div>
+          </div>
+          <div class="mt-auto">
+            <a href="#" class="inline-flex items-center gap-2 text-[#EC9679] text-xs font-bold session-button-spacing hover:opacity-80">
+              Begin Session
+              <img src="./assets-library-strength/IMG_7.svg" alt="Arrow" class="w-3 h-3">
+            </a>
+          </div>
+        </div>
+      </article>
+
+    </div>
+  </main>
+
+  <!-- Mobile Bottom Navigation -->
+  <nav class="lg:hidden fixed bottom-0 left-0 w-full bg-[#FBFAF9] border-t border-[#E4E0DC] flex justify-around items-center h-16 z-50 px-2">
+    <a href="#" class="flex flex-col items-center justify-center text-[#6A5E53]">
+      <img src="./assets-library-strength/IMG_17.svg" alt="Home" class="w-6 h-6">
+      <span class="text-[10px] mt-1">Home</span>
+    </a>
+    <a href="#" class="flex flex-col items-center justify-center text-[#6A5E53]">
+      <img src="./assets-library-strength/IMG_18.svg" alt="Progress" class="w-6 h-6">
+      <span class="text-[10px] mt-1">Progress</span>
+    </a>
+    <a href="#" class="flex flex-col items-center justify-center text-[#6A5E53]">
+      <img src="./assets-library-strength/IMG_19.svg" alt="Bolt" class="w-6 h-6">
+      <span class="text-[10px] mt-1">Bolt</span>
+    </a>
+    <a href="#" class="flex flex-col items-center justify-center text-[#EC9679]">
+      <img src="./assets-library-strength/IMG_20.svg" alt="Activities" class="w-6 h-6">
+      <span class="text-[10px] mt-1 font-bold">Activities</span>
+    </a>
+    <a href="#" class="flex flex-col items-center justify-center text-[#6A5E53]">
+      <img src="./assets-library-strength/IMG_21.svg" alt="Profile" class="w-6 h-6">
+      <span class="text-[10px] mt-1">Profile</span>
+    </a>
+  </nav>
+
+
+
+
+<script>
+/* SportEdge Navigation v2 — library-strength.html */
+(function() {
+  var PAGE = 'library-strength.html';
+  var IS_OUTDOOR = false;
+
+  /* ── 1. BOTTOM NAV ── */
+  var NAV_MAP = {
+    'home':       'home-medium.html',
+    'move':       'home-medium.html',
+    'progress':   'progress.html',
+    'activities': 'activities.html',
+    'profile':    'profile.html',
+    'bolt':       'bolt.html'
+  };
+
+  document.querySelectorAll('nav a, nav button').forEach(function(el) {
+    var txt = el.innerText.trim().toLowerCase();
+    var alt = (el.querySelector('img') || {}).alt || '';
+    alt = alt.toLowerCase();
+    Object.keys(NAV_MAP).forEach(function(k) {
+      if (txt.indexOf(k) !== -1 || alt.indexOf(k) !== -1) {
+        el.addEventListener('click', function(e) {
+          e.preventDefault(); e.stopPropagation();
+          window.location.href = NAV_MAP[k];
+        });
+      }
+    });
+  });
+
+  /* ── 2. DELEGATION GLOBALE sur tout le document ── */
+  document.addEventListener('click', function(e) {
+    var el = e.target;
+    // Remonter jusqu'à 5 niveaux pour trouver le conteneur cliquable
+    for (var i = 0; i < 5; i++) {
+      if (!el || el === document.body) break;
+      var txt = (el.innerText || '').trim().toLowerCase();
+
+      /* CTA principaux */
+      if (/(start now|let.s go|start session|begin|commencer)/.test(txt)) {
+        e.preventDefault();
+        if (PAGE === 'onboarding.html') {
+          var energy = window._sportedgeEnergy || 'medium';
+          var loc    = window._sportedgeLocation || 'indoor';
+          if (loc === 'outdoor') {
+            window.location.href = 'home-' + energy + '-outdoor.html';
+          } else {
+            window.location.href = 'home-' + energy + '.html';
+          }
+        } else {
+          window.location.href = 'home-medium.html';
+        }
+        return;
+      }
+
+      /* Post-session / Done */
+      if (/(done|finish|complete|great job|i did it|well done)/.test(txt) && txt.length < 40) {
+        e.preventDefault(); window.location.href = 'celebration.html'; return;
+      }
+
+      /* Back to home / Return */
+      if (/(back to home|go home|return home)/.test(txt)) {
+        e.preventDefault(); window.location.href = 'home-medium.html'; return;
+      }
+
+      /* Save / Confirm overlays */
+      if (/^save/.test(txt) || txt === 'save preferences' || txt === 'confirm') {
+        e.preventDefault(); window.location.href = 'profile.html'; return;
+      }
+
+      /* Activities → Libraries */
+      if (PAGE.indexOf('activities') !== -1 || PAGE.indexOf('od-activities') !== -1) {
+        var libMap = {
+          'stretching': 'library-stretching.html',
+          'hiit':       'library-hiit.html',
+          'cardio':     'library-hiit.html',
+          'yoga':       'library-yoga.html',
+          'breathwork': 'library-yoga.html',
+          'outdoor run':'library-outdoor-runs.html',
+          'strength':   'library-strength.html',
+          'meditation': 'library-meditation.html',
+          'mindful':    'library-meditation.html'
+        };
+        Object.keys(libMap).forEach(function(k) {
+          if (txt.indexOf(k) !== -1) {
+            e.preventDefault(); window.location.href = libMap[k]; return;
+          }
+        });
+      }
+
+      /* Profile → overlays */
+      if (PAGE.indexOf('profile') !== -1) {
+        if (txt.indexOf('notification') !== -1) {
+          e.preventDefault(); window.location.href = 'notifications.html'; return;
+        }
+        if (txt.indexOf('energy') !== -1) {
+          e.preventDefault(); window.location.href = 'energy.html'; return;
+        }
+        if (txt.indexOf('about') !== -1) {
+          e.preventDefault(); window.location.href = 'about.html'; return;
+        }
+        if (txt.indexOf('training type') !== -1 || txt.indexOf('preferred') !== -1) {
+          e.preventDefault(); window.location.href = 'notifications.html'; return;
+        }
+      }
+
+      /* Library / Overlay → retour */
+      if (/(library|session|celebration|notification|energy|about|notification)/.test(PAGE)) {
+        var isBackEl = (txt === '' || txt === '←' || txt === '‹' || txt === 'back') &&
+                       (el.tagName === 'BUTTON' || el.tagName === 'A');
+        var hasBackImg = el.querySelector && el.querySelector('img[alt*="back"], img[alt*="Back"], img[alt*="arrow"], img[alt*="Arrow"]');
+        if (isBackEl || hasBackImg) {
+          e.preventDefault(); window.history.back(); return;
+        }
+      }
+
+      el = el.parentElement;
+    }
+  });
+
+  /* ── 3. ONBOARDING : sélection énergie + lieu ── */
+  if (PAGE === 'onboarding.html') {
+    window._sportedgeEnergy   = 'medium';
+    window._sportedgeLocation = 'indoor';
+
+    document.querySelectorAll('button, [class*="rounded"]').forEach(function(btn) {
+      var txt = (btn.innerText || '').trim().toLowerCase();
+      if (txt.indexOf('low') !== -1 && txt.length < 30) {
+        btn.addEventListener('click', function() {
+          window._sportedgeEnergy = 'low';
+          highlightSel(btn, 'energy');
+        });
+      } else if (txt.indexOf('high') !== -1 && txt.length < 30) {
+        btn.addEventListener('click', function() {
+          window._sportedgeEnergy = 'high';
+          highlightSel(btn, 'energy');
+        });
+      } else if (txt.indexOf('medium') !== -1 && txt.length < 30) {
+        btn.addEventListener('click', function() {
+          window._sportedgeEnergy = 'medium';
+          highlightSel(btn, 'energy');
+        });
+      } else if (txt.indexOf('trainer') !== -1 || txt.indexOf('outdoor') !== -1) {
+        btn.addEventListener('click', function() {
+          window._sportedgeLocation = 'outdoor';
+          highlightSel(btn, 'location');
+        });
+      } else if (txt.indexOf('mat') !== -1 || txt.indexOf('indoor') !== -1) {
+        btn.addEventListener('click', function() {
+          window._sportedgeLocation = 'indoor';
+          highlightSel(btn, 'location');
+        });
+      }
+    });
+
+    /* CTA footer onboarding */
+    var footerBtn = document.querySelector('footer button');
+    if (footerBtn) {
+      footerBtn.addEventListener('click', function(e) {
+        e.preventDefault(); e.stopPropagation();
+        var e2 = window._sportedgeEnergy;
+        var l  = window._sportedgeLocation;
+        window.location.href = (l === 'outdoor')
+          ? 'home-' + e2 + '-outdoor.html'
+          : 'home-' + e2 + '.html';
+      });
+    }
+  }
+
+  function highlightSel(el, group) {
+    var sel = '[data-group="' + group + '"]';
+    document.querySelectorAll(sel).forEach(function(b) {
+      b.style.borderColor = 'transparent';
+      b.style.backgroundColor = '#F6F5F3';
+    });
+    el.dataset.group = group;
+    el.style.borderColor = '#EC9679';
+    el.style.backgroundColor = '#FDF4F2';
+  }
+
+})();
+</script>
+
+</body>
+</html>

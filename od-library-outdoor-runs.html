@@ -1,0 +1,473 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Outdoor Runs - Activities</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/iconify-icon@3.0.2/dist/iconify-icon.min.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&amp;display=swap" type="text/css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&amp;display=swap" type="text/css" rel="stylesheet">
+  <style>
+    body {
+      font-family: "Inter", ui-sans-serif, system-ui, sans-serif;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      color: #1D1A16;
+      background-color: #FBFAF9;
+    }
+
+    h1, h2, h3, h4, h5, h6 {
+      font-family: "Outfit", ui-sans-serif, system-ui, sans-serif;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      line-height: 1.2;
+      color: #1D1A16;
+    }
+
+    * {
+      transition: all 0.2s ease;
+    }
+
+    ::-webkit-scrollbar {
+      width: 6px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #f1f5f9;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #cbd5e1;
+      border-radius: 10px;
+    }
+
+    .font-outfit { font-family: "Outfit", sans-serif; }
+    .font-inter { font-family: "Inter", sans-serif; }
+    
+    .tap-highlight-none {
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    /* Custom shadow for cards */
+    .card-shadow {
+      box-shadow: 0px 2px 4px 0px rgba(0, 0, 0, 0.05);
+    }
+  </style>
+</head>
+<body class="min-h-screen flex flex-col lg:flex-row">
+
+  <!-- Desktop Sidebar Navigation -->
+  <aside class="hidden lg:flex flex-col w-64 bg-white border-r border-[#E4E0DC]/40 h-screen sticky top-0 p-6">
+    <div class="mb-10 px-2">
+      <h2 class="text-2xl font-black text-[#EC9679]">BOLT</h2>
+    </div>
+    <nav class="flex flex-col gap-2 flex-1">
+      <a href="#" class="flex items-center gap-3 px-4 py-3 rounded-xl text-[#6A5E53] hover:bg-[#F6F5F3]">
+        <iconify-icon icon="lucide:house" width="22"></iconify-icon>
+        <span class="font-medium">Home</span>
+      </a>
+      <a href="#" class="flex items-center gap-3 px-4 py-3 rounded-xl text-[#6A5E53] hover:bg-[#F6F5F3]">
+        <iconify-icon icon="lucide:chart-no-axes-column" width="22"></iconify-icon>
+        <span class="font-medium">Progress</span>
+      </a>
+      <a href="#" class="flex items-center gap-3 px-4 py-3 rounded-xl text-[#6A5E53] hover:bg-[#F6F5F3]">
+        <iconify-icon icon="lucide:message-circle" width="22"></iconify-icon>
+        <span class="font-medium">Bolt AI</span>
+      </a>
+      <a href="#" class="flex items-center gap-3 px-4 py-3 rounded-xl bg-[#FDF4F2] text-[#EC9679]">
+        <iconify-icon icon="lucide:activity" width="22"></iconify-icon>
+        <span class="font-bold">Activities</span>
+      </a>
+      <a href="#" class="flex items-center gap-3 px-4 py-3 rounded-xl text-[#6A5E53] hover:bg-[#F6F5F3]">
+        <iconify-icon icon="lucide:user" width="22"></iconify-icon>
+        <span class="font-medium">Profile</span>
+      </a>
+    </nav>
+    <div class="mt-auto pt-6 border-t border-[#E4E0DC]/40">
+      <button class="flex items-center gap-3 px-4 py-3 w-full rounded-xl text-[#6A5E53] hover:bg-[#F6F5F3]">
+        <iconify-icon icon="lucide:settings" width="22"></iconify-icon>
+        <span class="font-medium">Settings</span>
+      </button>
+    </div>
+  </aside>
+
+  <div class="flex-1 flex flex-col min-h-screen">
+    <!-- Header -->
+    <header class="sticky top-0 z-50 bg-[#FBFAF9] border-b border-[#E4E0DC]/40 px-4 py-3 lg:px-8 lg:py-4 flex items-center justify-between">
+      <div class="flex items-center gap-3">
+        <button class="p-2 hover:bg-[#F6F5F3] rounded-full tap-highlight-none">
+          <img src="./assets-od-library-outdoor-runs/IMG_3.svg" alt="Back" class="w-6 h-6">
+        </button>
+        <h1 class="text-lg lg:text-xl font-semibold font-outfit">Outdoor Runs</h1>
+      </div>
+      <button class="p-2 hover:bg-[#F6F5F3] rounded-full tap-highlight-none">
+        <img src="./assets-od-library-outdoor-runs/IMG_4.svg" alt="More" class="w-5 h-5">
+      </button>
+    </header>
+
+    <!-- Main Content -->
+    <main class="flex-1 max-w-7xl mx-auto w-full px-6 py-8 lg:px-12 lg:py-12 pb-24 lg:pb-12">
+      
+      <!-- Hero Section -->
+      <section class="mb-10 lg:mb-16 max-w-2xl">
+        <h2 class="text-3xl lg:text-4xl font-extrabold font-outfit mb-4">Ready for a breath of fresh air?</h2>
+        <p class="text-[#6A5E53] text-sm lg:text-base leading-relaxed">
+          Explore our curated selection of outdoor runs. No pressure, just move at your own pace.
+        </p>
+      </section>
+
+      <!-- Runs Grid -->
+      <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6 lg:gap-8">
+        
+        <!-- Card 1: Easy Morning Walk-Run -->
+        <article class="bg-white rounded-[32px] overflow-hidden border border-[#E4E0DC]/40 card-shadow flex flex-col group hover:shadow-lg transition-shadow">
+          <div class="relative h-48 lg:h-56 overflow-hidden">
+            <img src="./assets-od-library-outdoor-runs/IMG_5.webp" alt="Easy Morning Walk-Run" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+            <div class="absolute top-4 left-4">
+              <span class="px-3 py-1 bg-[#DBEAFE] border border-[#BFDBFE] text-[#1D4ED8] text-[12px] font-semibold rounded-full">Low</span>
+            </div>
+          </div>
+          <div class="p-6 flex flex-col flex-1">
+            <div class="flex justify-between items-start mb-3">
+              <h3 class="text-lg font-bold font-outfit leading-tight">Easy Morning Walk-Run</h3>
+              <div class="flex items-center gap-1.5 bg-[#F6F5F3]/50 px-2.5 py-1 rounded-full shrink-0">
+                <img src="./assets-od-library-outdoor-runs/IMG_6.svg" alt="Clock" class="w-3.5 h-3.5">
+                <span class="text-[12px] font-bold text-[#6A5E53]">20 min</span>
+              </div>
+            </div>
+            <p class="text-[#6A5E53] text-sm leading-relaxed mb-6 flex-1">
+              A gentle introduction to outdoor movement. Perfect for early risers looking to wake up.
+            </p>
+            <a href="#" class="inline-flex items-center gap-2 text-[#EC9679] text-[12px] font-bold uppercase tracking-widest hover:gap-3 transition-all">
+              Begin Session
+              <img src="./assets-od-library-outdoor-runs/IMG_7.svg" alt="Arrow" class="w-3 h-3">
+            </a>
+          </div>
+        </article>
+
+        <!-- Card 2: Recovery Jog -->
+        <article class="bg-white rounded-[32px] overflow-hidden border border-[#E4E0DC]/40 card-shadow flex flex-col group hover:shadow-lg transition-shadow">
+          <div class="relative h-48 lg:h-56 overflow-hidden">
+            <img src="./assets-od-library-outdoor-runs/IMG_8.webp" alt="Recovery Jog" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+            <div class="absolute top-4 left-4">
+              <span class="px-3 py-1 bg-[#DBEAFE] border border-[#BFDBFE] text-[#1D4ED8] text-[12px] font-semibold rounded-full">Low</span>
+            </div>
+          </div>
+          <div class="p-6 flex flex-col flex-1">
+            <div class="flex justify-between items-start mb-3">
+              <h3 class="text-lg font-bold font-outfit leading-tight">Recovery Jog</h3>
+              <div class="flex items-center gap-1.5 bg-[#F6F5F3]/50 px-2.5 py-1 rounded-full shrink-0">
+                <img src="./assets-od-library-outdoor-runs/IMG_6.svg" alt="Clock" class="w-3.5 h-3.5">
+                <span class="text-[12px] font-bold text-[#6A5E53]">25 min</span>
+              </div>
+            </div>
+            <p class="text-[#6A5E53] text-sm leading-relaxed mb-6 flex-1">
+              Keep the momentum without the stress. A slow-paced, conversational run.
+            </p>
+            <a href="#" class="inline-flex items-center gap-2 text-[#EC9679] text-[12px] font-bold uppercase tracking-widest hover:gap-3 transition-all">
+              Begin Session
+              <img src="./assets-od-library-outdoor-runs/IMG_7.svg" alt="Arrow" class="w-3 h-3">
+            </a>
+          </div>
+        </article>
+
+        <!-- Card 3: Steady-State Run -->
+        <article class="bg-white rounded-[32px] overflow-hidden border border-[#E4E0DC]/40 card-shadow flex flex-col group hover:shadow-lg transition-shadow">
+          <div class="relative h-48 lg:h-56 overflow-hidden">
+            <img src="./assets-od-library-outdoor-runs/IMG_9.webp" alt="Steady-State Run" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+            <div class="absolute top-4 left-4">
+              <span class="px-3 py-1 bg-[#F3E8FF] border border-[#E9D5FF] text-[#7E22CE] text-[12px] font-semibold rounded-full">Medium</span>
+            </div>
+          </div>
+          <div class="p-6 flex flex-col flex-1">
+            <div class="flex justify-between items-start mb-3">
+              <h3 class="text-lg font-bold font-outfit leading-tight">Steady-State Run</h3>
+              <div class="flex items-center gap-1.5 bg-[#F6F5F3]/50 px-2.5 py-1 rounded-full shrink-0">
+                <img src="./assets-od-library-outdoor-runs/IMG_6.svg" alt="Clock" class="w-3.5 h-3.5">
+                <span class="text-[12px] font-bold text-[#6A5E53]">30 min</span>
+              </div>
+            </div>
+            <p class="text-[#6A5E53] text-sm leading-relaxed mb-6 flex-1">
+              Find your rhythm. This session focuses on maintaining a comfortable, consistent aerobic pace to build your endurance base.
+            </p>
+            <a href="#" class="inline-flex items-center gap-2 text-[#EC9679] text-[12px] font-bold uppercase tracking-widest hover:gap-3 transition-all">
+              Begin Session
+              <img src="./assets-od-library-outdoor-runs/IMG_7.svg" alt="Arrow" class="w-3 h-3">
+            </a>
+          </div>
+        </article>
+
+        <!-- Card 4: Tempo Run -->
+        <article class="bg-white rounded-[32px] overflow-hidden border border-[#E4E0DC]/40 card-shadow flex flex-col group hover:shadow-lg transition-shadow">
+          <div class="relative h-48 lg:h-56 overflow-hidden">
+            <img src="./assets-od-library-outdoor-runs/IMG_10.webp" alt="Tempo Run" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+            <div class="absolute top-4 left-4">
+              <span class="px-3 py-1 bg-[#FEE2E2] border border-[#FECACA] text-[#B91C1C] text-[12px] font-semibold rounded-full">High</span>
+            </div>
+          </div>
+          <div class="p-6 flex flex-col flex-1">
+            <div class="flex justify-between items-start mb-3">
+              <h3 class="text-lg font-bold font-outfit leading-tight">Tempo Run</h3>
+              <div class="flex items-center gap-1.5 bg-[#F6F5F3]/50 px-2.5 py-1 rounded-full shrink-0">
+                <img src="./assets-od-library-outdoor-runs/IMG_6.svg" alt="Clock" class="w-3.5 h-3.5">
+                <span class="text-[12px] font-bold text-[#6A5E53]">35 min</span>
+              </div>
+            </div>
+            <p class="text-[#6A5E53] text-sm leading-relaxed mb-6 flex-1">
+              Challenge your threshold. A sustained effort run that helps you improve your cardiovascular efficiency.
+            </p>
+            <a href="#" class="inline-flex items-center gap-2 text-[#EC9679] text-[12px] font-bold uppercase tracking-widest hover:gap-3 transition-all">
+              Begin Session
+              <img src="./assets-od-library-outdoor-runs/IMG_7.svg" alt="Arrow" class="w-3 h-3">
+            </a>
+          </div>
+        </article>
+
+        <!-- Card 5: Hill Sprint Session -->
+        <article class="bg-white rounded-[32px] overflow-hidden border border-[#E4E0DC]/40 card-shadow flex flex-col group hover:shadow-lg transition-shadow">
+          <div class="relative h-48 lg:h-56 overflow-hidden">
+            <img src="./assets-od-library-outdoor-runs/IMG_11.webp" alt="Hill Sprint Session" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+            <div class="absolute top-4 left-4">
+              <span class="px-3 py-1 bg-[#FEE2E2] border border-[#FECACA] text-[#B91C1C] text-[12px] font-semibold rounded-full">High</span>
+            </div>
+          </div>
+          <div class="p-6 flex flex-col flex-1">
+            <div class="flex justify-between items-start mb-3">
+              <h3 class="text-lg font-bold font-outfit leading-tight">Hill Sprint Session</h3>
+              <div class="flex items-center gap-1.5 bg-[#F6F5F3]/50 px-2.5 py-1 rounded-full shrink-0">
+                <img src="./assets-od-library-outdoor-runs/IMG_6.svg" alt="Clock" class="w-3.5 h-3.5">
+                <span class="text-[12px] font-bold text-[#6A5E53]">30 min</span>
+              </div>
+            </div>
+            <p class="text-[#6A5E53] text-sm leading-relaxed mb-6 flex-1">
+              Build power and resilience. Repeated uphill intervals designed to challenge your strength.
+            </p>
+            <a href="#" class="inline-flex items-center gap-2 text-[#EC9679] text-[12px] font-bold uppercase tracking-widest hover:gap-3 transition-all">
+              Begin Session
+              <img src="./assets-od-library-outdoor-runs/IMG_7.svg" alt="Arrow" class="w-3 h-3">
+            </a>
+          </div>
+        </article>
+
+        <!-- Quote Card -->
+        <div class="bg-[#FDF4F2] rounded-[24px] p-8 border border-[#EC9679]/10 flex items-center justify-center text-center md:col-span-2 xl:col-span-1">
+          <p class="text-[#43180A]/80 text-sm lg:text-base leading-relaxed italic font-inter">
+            "Every step you take outside is a victory for your well-being. Focus on the feeling, not the finish line."
+          </p>
+        </div>
+
+      </div>
+    </main>
+
+    <!-- Mobile Bottom Navigation -->
+    <nav class="lg:hidden fixed bottom-0 left-0 right-0 bg-[#FBFAF9] border-t border-[#E5E7EB] h-16 flex items-center justify-around px-2 z-50 shadow-[0px_-2px_10px_0px_rgba(0,0,0,0.05)]">
+      <a href="#" class="flex flex-col items-center justify-center gap-1 flex-1 text-[#565d6d]">
+        <img src="./assets-od-library-outdoor-runs/IMG_12.svg" alt="Home" class="w-6 h-6">
+        <span class="text-[10px]">Home</span>
+      </a>
+      <a href="#" class="flex flex-col items-center justify-center gap-1 flex-1 text-[#565d6d]">
+        <img src="./assets-od-library-outdoor-runs/IMG_13.svg" alt="Progress" class="w-6 h-6">
+        <span class="text-[10px]">Progress</span>
+      </a>
+      <a href="#" class="flex flex-col items-center justify-center gap-1 flex-1 text-[#565d6d]">
+        <img src="./assets-od-library-outdoor-runs/IMG_14.svg" alt="Bolt" class="w-6 h-6">
+        <span class="text-[10px]">Bolt</span>
+      </a>
+      <a href="#" class="flex flex-col items-center justify-center gap-1 flex-1 text-[#EC9679]">
+        <img src="./assets-od-library-outdoor-runs/IMG_15.svg" alt="Activities" class="w-6 h-6">
+        <span class="text-[10px] font-bold">Activities</span>
+      </a>
+      <a href="#" class="flex flex-col items-center justify-center gap-1 flex-1 text-[#565d6d]">
+        <img src="./assets-od-library-outdoor-runs/IMG_16.svg" alt="Profile" class="w-6 h-6">
+        <span class="text-[10px]">Profile</span>
+      </a>
+    </nav>
+  </div>
+
+
+
+
+<script>
+/* SportEdge Navigation v2 — od-library-outdoor-runs.html */
+(function() {
+  var PAGE = 'od-library-outdoor-runs.html';
+  var IS_OUTDOOR = true;
+
+  /* ── 1. BOTTOM NAV ── */
+  var NAV_MAP = {
+    'home':       'od-home-medium.html',
+    'move':       'od-home-medium.html',
+    'progress':   'od-progress.html',
+    'activities': 'od-activities.html',
+    'profile':    'od-profile.html',
+    'bolt':       'od-bolt.html'
+  };
+
+  document.querySelectorAll('nav a, nav button').forEach(function(el) {
+    var txt = el.innerText.trim().toLowerCase();
+    var alt = (el.querySelector('img') || {}).alt || '';
+    alt = alt.toLowerCase();
+    Object.keys(NAV_MAP).forEach(function(k) {
+      if (txt.indexOf(k) !== -1 || alt.indexOf(k) !== -1) {
+        el.addEventListener('click', function(e) {
+          e.preventDefault(); e.stopPropagation();
+          window.location.href = NAV_MAP[k];
+        });
+      }
+    });
+  });
+
+  /* ── 2. DELEGATION GLOBALE sur tout le document ── */
+  document.addEventListener('click', function(e) {
+    var el = e.target;
+    // Remonter jusqu'à 5 niveaux pour trouver le conteneur cliquable
+    for (var i = 0; i < 5; i++) {
+      if (!el || el === document.body) break;
+      var txt = (el.innerText || '').trim().toLowerCase();
+
+      /* CTA principaux */
+      if (/(start now|let.s go|start session|begin|commencer)/.test(txt)) {
+        e.preventDefault();
+        if (PAGE === 'onboarding.html') {
+          var energy = window._sportedgeEnergy || 'medium';
+          var loc    = window._sportedgeLocation || 'indoor';
+          if (loc === 'outdoor') {
+            window.location.href = 'home-' + energy + '-outdoor.html';
+          } else {
+            window.location.href = 'home-' + energy + '.html';
+          }
+        } else {
+          window.location.href = 'od-home-medium.html';
+        }
+        return;
+      }
+
+      /* Post-session / Done */
+      if (/(done|finish|complete|great job|i did it|well done)/.test(txt) && txt.length < 40) {
+        e.preventDefault(); window.location.href = 'celebration.html'; return;
+      }
+
+      /* Back to home / Return */
+      if (/(back to home|go home|return home)/.test(txt)) {
+        e.preventDefault(); window.location.href = 'od-home-medium.html'; return;
+      }
+
+      /* Save / Confirm overlays */
+      if (/^save/.test(txt) || txt === 'save preferences' || txt === 'confirm') {
+        e.preventDefault(); window.location.href = 'od-profile.html'; return;
+      }
+
+      /* Activities → Libraries */
+      if (PAGE.indexOf('activities') !== -1 || PAGE.indexOf('od-activities') !== -1) {
+        var libMap = {
+          'stretching': 'od-library-stretching.html',
+          'hiit':       'od-library-hiit.html',
+          'cardio':     'od-library-hiit.html',
+          'yoga':       'od-library-yoga.html',
+          'breathwork': 'od-library-yoga.html',
+          'outdoor run':'od-library-outdoor-runs.html',
+          'strength':   'od-library-strength.html',
+          'meditation': 'od-library-meditation.html',
+          'mindful':    'od-library-meditation.html'
+        };
+        Object.keys(libMap).forEach(function(k) {
+          if (txt.indexOf(k) !== -1) {
+            e.preventDefault(); window.location.href = libMap[k]; return;
+          }
+        });
+      }
+
+      /* Profile → overlays */
+      if (PAGE.indexOf('profile') !== -1) {
+        if (txt.indexOf('notification') !== -1) {
+          e.preventDefault(); window.location.href = 'od-notifications.html'; return;
+        }
+        if (txt.indexOf('energy') !== -1) {
+          e.preventDefault(); window.location.href = 'od-energy.html'; return;
+        }
+        if (txt.indexOf('about') !== -1) {
+          e.preventDefault(); window.location.href = 'od-about.html'; return;
+        }
+        if (txt.indexOf('training type') !== -1 || txt.indexOf('preferred') !== -1) {
+          e.preventDefault(); window.location.href = 'od-notifications.html'; return;
+        }
+      }
+
+      /* Library / Overlay → retour */
+      if (/(library|session|celebration|notification|energy|about|notification)/.test(PAGE)) {
+        var isBackEl = (txt === '' || txt === '←' || txt === '‹' || txt === 'back') &&
+                       (el.tagName === 'BUTTON' || el.tagName === 'A');
+        var hasBackImg = el.querySelector && el.querySelector('img[alt*="back"], img[alt*="Back"], img[alt*="arrow"], img[alt*="Arrow"]');
+        if (isBackEl || hasBackImg) {
+          e.preventDefault(); window.history.back(); return;
+        }
+      }
+
+      el = el.parentElement;
+    }
+  });
+
+  /* ── 3. ONBOARDING : sélection énergie + lieu ── */
+  if (PAGE === 'onboarding.html') {
+    window._sportedgeEnergy   = 'medium';
+    window._sportedgeLocation = 'indoor';
+
+    document.querySelectorAll('button, [class*="rounded"]').forEach(function(btn) {
+      var txt = (btn.innerText || '').trim().toLowerCase();
+      if (txt.indexOf('low') !== -1 && txt.length < 30) {
+        btn.addEventListener('click', function() {
+          window._sportedgeEnergy = 'low';
+          highlightSel(btn, 'energy');
+        });
+      } else if (txt.indexOf('high') !== -1 && txt.length < 30) {
+        btn.addEventListener('click', function() {
+          window._sportedgeEnergy = 'high';
+          highlightSel(btn, 'energy');
+        });
+      } else if (txt.indexOf('medium') !== -1 && txt.length < 30) {
+        btn.addEventListener('click', function() {
+          window._sportedgeEnergy = 'medium';
+          highlightSel(btn, 'energy');
+        });
+      } else if (txt.indexOf('trainer') !== -1 || txt.indexOf('outdoor') !== -1) {
+        btn.addEventListener('click', function() {
+          window._sportedgeLocation = 'outdoor';
+          highlightSel(btn, 'location');
+        });
+      } else if (txt.indexOf('mat') !== -1 || txt.indexOf('indoor') !== -1) {
+        btn.addEventListener('click', function() {
+          window._sportedgeLocation = 'indoor';
+          highlightSel(btn, 'location');
+        });
+      }
+    });
+
+    /* CTA footer onboarding */
+    var footerBtn = document.querySelector('footer button');
+    if (footerBtn) {
+      footerBtn.addEventListener('click', function(e) {
+        e.preventDefault(); e.stopPropagation();
+        var e2 = window._sportedgeEnergy;
+        var l  = window._sportedgeLocation;
+        window.location.href = (l === 'outdoor')
+          ? 'home-' + e2 + '-outdoor.html'
+          : 'home-' + e2 + '.html';
+      });
+    }
+  }
+
+  function highlightSel(el, group) {
+    var sel = '[data-group="' + group + '"]';
+    document.querySelectorAll(sel).forEach(function(b) {
+      b.style.borderColor = 'transparent';
+      b.style.backgroundColor = '#F6F5F3';
+    });
+    el.dataset.group = group;
+    el.style.borderColor = '#EC9679';
+    el.style.backgroundColor = '#FDF4F2';
+  }
+
+})();
+</script>
+
+</body>
+</html>
