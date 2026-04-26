@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html><head><meta charset="UTF-8"><title>API Test</title></head>
+<body style="font-family:sans-serif;padding:20px;max-width:800px">
+<h2>Test APIs d'exercices</h2>
+<div id="results"></div>
+
+<script>
+var log = document.getElementById('results');
+function add(msg, color) {
+  var p = document.createElement('p');
+  p.style.color = color || '#333';
+  p.textContent = msg;
+  log.appendChild(p);
+}
+
+// Test 1: ExerciseDB via RapidAPI (nécessite clé)
+add('Test 1: exercisedb.dev...', '#888');
+fetch('https://exercisedb.dev/api/exercises/0089')
+  .then(r => r.json())
+  .then(d => add('✓ exercisedb.dev OK - gifUrl: ' + (d.gifUrl||'none'), 'green'))
+  .catch(e => add('✗ exercisedb.dev FAILED: ' + e.message, 'red'));
+
+// Test 2: wger.de (open source, public)
+add('Test 2: wger.de...', '#888');
+fetch('https://wger.de/api/v2/exercise/18/?format=json')
+  .then(r => r.json())
+  .then(d => add('✓ wger.de OK: ' + JSON.stringify(Object.keys(d)), 'green'))
+  .catch(e => add('✗ wger.de FAILED: ' + e.message, 'red'));
+
+// Test 3: wger exerciseimage
+add('Test 3: wger exerciseimage...', '#888');
+fetch('https://wger.de/api/v2/exerciseimage/?format=json&limit=3')
+  .then(r => r.json())
+  .then(d => add('✓ wger images OK: ' + d.results.map(x=>x.image).join(' | '), 'green'))
+  .catch(e => add('✗ wger images FAILED: ' + e.message, 'red'));
+
+// Test 4: free-exercise-db (github raw)
+add('Test 4: github raw images...', '#888');
+var img = new Image();
+img.onload = () => add('✓ GitHub raw image OK', 'green');
+img.onerror = () => add('✗ GitHub raw image FAILED', 'red');
+img.src = 'https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Air_Bike/0.jpg';
+
+// Test 5: ExerciseDB API alternative endpoint
+add('Test 5: exercisedb.p.rapidapi.com (sans clé)...', '#888');
+fetch('https://exercisedb.p.rapidapi.com/exercises?limit=1&offset=0', {
+  headers: {'X-RapidAPI-Key': 'demo', 'X-RapidAPI-Host': 'exercisedb.p.rapidapi.com'}
+})
+  .then(r => r.json())
+  .then(d => add('✓ RapidAPI OK: ' + JSON.stringify(d).substring(0,100), 'green'))
+  .catch(e => add('✗ RapidAPI FAILED: ' + e.message, 'red'));
+
+// Test 6: musclewiki (autre source)
+add('Test 6: musclewiki.com...', '#888');
+fetch('https://musclewiki.com/data/exercises/')
+  .then(r => r.json())
+  .then(d => add('✓ musclewiki OK: ' + JSON.stringify(d).substring(0,80), 'green'))
+  .catch(e => add('✗ musclewiki FAILED: ' + e.message, 'red'));
+</script>
+</body></html>
