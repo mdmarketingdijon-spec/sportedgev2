@@ -1,70 +1,26 @@
 <!DOCTYPE html>
-<html><head><meta charset="UTF-8"><title>Proxy Test - Trouver les bons noms</title></head>
-<body style="font-family:sans-serif;padding:20px;max-width:900px">
-<h2>Test proxy — recherche des bons termes ExerciseDB</h2>
-<p id="global-status" style="color:#888">Lancement des tests...</p>
-<div id="results"></div>
+<html><head><meta charset="UTF-8"><title>API Debug</title></head>
+<body style="font-family:monospace;padding:20px;font-size:13px;">
+<h2>ExerciseDB API Debug</h2>
+
+<h3>Test 1: Liste des 5 premiers exercices</h3>
+<pre id="r1">Loading...</pre>
+
+<h3>Test 2: Body parts disponibles</h3>
+<pre id="r2">Loading...</pre>
+
+<h3>Test 3: Recherche "squat"</h3>
+<pre id="r3">Loading...</pre>
 
 <script>
-// Liste des termes à tester
-var TERMS = [
-  'jumping jack',
-  'jumping jacks', 
-  'jack',
-  'squat',
-  'push up',
-  'push-up',
-  'pushup',
-  'mountain climber',
-  'burpee',
-  'high knee',
-  'high knees',
-  'plank',
-  'lunge',
-  'glute bridge',
-  'bridge',
-  'run',
-  'jog',
-  'stretch',
-  'yoga',
-  'cobra',
-  'child',
-  'downward'
-];
-
-var results = document.getElementById('results');
-var done = 0;
-
-TERMS.forEach(function(term) {
-  var row = document.createElement('div');
-  row.style.cssText = 'display:flex;align-items:center;gap:12px;padding:8px;border-bottom:1px solid #eee;';
-  row.innerHTML = '<span style="width:200px;font-size:13px;color:#666">' + term + '</span>'
-    + '<span id="r-'+term.replace(/ /g,'-')+'" style="font-size:13px">...</span>'
-    + '<img id="img-'+term.replace(/ /g,'-')+'" style="height:60px;display:none;border-radius:6px;">';
-  results.appendChild(row);
-
-  fetch('/api/exercise?name=' + encodeURIComponent(term))
-    .then(function(r){ return r.json(); })
-    .then(function(data){
-      done++;
-      document.getElementById('global-status').textContent = done + '/' + TERMS.length + ' tests terminés';
-      var id = term.replace(/ /g,'-');
-      var el = document.getElementById('r-'+id);
-      var img = document.getElementById('img-'+id);
-      if(data.gifUrl) {
-        el.innerHTML = '<span style="color:green">✓ ' + data.name + '</span>';
-        el.style.width = '300px';
-        img.src = data.gifUrl;
-        img.style.display = 'block';
-        img.onerror = function(){ this.style.display='none'; el.innerHTML += ' <span style="color:red">(gif bloqué)</span>'; };
-      } else {
-        el.innerHTML = '<span style="color:red">✗ ' + (data.error||'no result') + '</span>';
-      }
-    })
-    .catch(function(e){
-      done++;
-      document.getElementById('r-'+term.replace(/ /g,'-')).innerHTML = '<span style="color:red">✗ ' + e.message + '</span>';
-    });
-});
+function load(id, url) {
+  fetch(url)
+    .then(r => r.json())
+    .then(d => { document.getElementById(id).textContent = JSON.stringify(d, null, 2).substring(0, 1000); })
+    .catch(e => { document.getElementById(id).textContent = 'ERROR: ' + e.message; });
+}
+load('r1', '/api/exercise?debug=list');
+load('r2', '/api/exercise?debug=bodyparts');
+load('r3', '/api/exercise?name=squat');
 </script>
 </body></html>
