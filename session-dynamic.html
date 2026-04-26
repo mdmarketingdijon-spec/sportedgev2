@@ -253,6 +253,8 @@ var INTENSITY_COLORS = {
 };
 
 var EX_DB_BASE = 'https://exercisedb.dev/api/exercises';
+var GIF_MAP = {"0089": "https://v2.exercisedb.io/image/ZQblhNMiLmzBSB", "0630": "https://v2.exercisedb.io/image/kkKV2IIflXWwEq", "0218": "https://v2.exercisedb.io/image/JLl6X-qlMz3Z84", "0041": "https://v2.exercisedb.io/image/rKlGBKSqBqY0rM", "0082": "https://v2.exercisedb.io/image/iXL2lsQrxz8kgq", "0023": "https://v2.exercisedb.io/image/Uf-Qnq3FyDZUKv", "0030": "https://v2.exercisedb.io/image/LBWyoV9HicnDHB", "0635": "https://v2.exercisedb.io/image/fCqmrLCXbXiCB0", "0029": "https://v2.exercisedb.io/image/4mILgqHBH8Yp1A", "0157": "https://v2.exercisedb.io/image/hRLJhfRJ7HwXDM", "0048": "https://v2.exercisedb.io/image/m4JWIZjBDlJWVy", "0310": "https://v2.exercisedb.io/image/wBcLqkH-RgqrWt", "0311": "https://v2.exercisedb.io/image/XeNO01DxMiY2Lj", "0317": "https://v2.exercisedb.io/image/2Lv3mPz3XKVSSY", "0318": "https://v2.exercisedb.io/image/xTpB-TFO2PV4yM", "0651": "https://v2.exercisedb.io/image/RBXFhYc7pBp9Wk", "0285": "https://v2.exercisedb.io/image/wBcLqkH-RgqrWt", "1316": "https://v2.exercisedb.io/image/sxkHK0GrMH6Knw", "1411": "https://v2.exercisedb.io/image/5Zy0cRNFSWRNWV"};
+
 var EX_DB_BACKUP = 'https://exercisedb.p.rapidapi.com/exercises/exercise';
 
 // ── State ──────────────────────────────────────────────────────
@@ -418,65 +420,36 @@ function loadGif(exerciseId, exIdx) {
   document.getElementById('gifLoading').style.display = 'flex';
   document.getElementById('exGif').style.display = 'none';
 
-  // Essayer exercisedb.dev en premier
-  var url = EX_DB_BASE + '/' + exerciseId;
-  
-  fetch(url)
+  // 1. Essayer d'abord les URLs directes (pas de CORS)
+  if (GIF_MAP[exerciseId]) {
+    var directUrl = GIF_MAP[exerciseId];
+    gifCache[exerciseId] = directUrl;
+    if (currentIdx === exIdx) {
+      showGif(directUrl);
+    }
+    return;
+  }
+
+  // 2. Fallback : fetch depuis l'API
+  fetch(EX_DB_BASE + '/' + exerciseId)
     .then(function(r) {
       if (!r.ok) throw new Error('HTTP ' + r.status);
       return r.json();
     })
     .then(function(data) {
-      var gifUrl = data.gifUrl || data.gifurl || data.gif || '';
-      if (gifUrl && currentIdx === exIdx) {
+      var gifUrl = data.gifUrl || data.gifurl || '';
+      if (gifUrl) {
         gifCache[exerciseId] = gifUrl;
-        showGif(gifUrl);
-      } else if (!gifUrl) {
+        if (currentIdx === exIdx) showGif(gifUrl);
+      } else {
         if (currentIdx === exIdx) showGifFallback(session.exercises[exIdx].name);
       }
     })
-    .catch(function(err) {
-      console.warn('ExerciseDB failed:', err.message);
+    .catch(function() {
       if (currentIdx === exIdx) showGifFallback(session.exercises[exIdx].name);
     });
 }
 
-function showGif(url) {
-  var img = document.getElementById('exGif');
-  var fb = document.getElementById('gifFallback');
-  if (fb) fb.style.display = 'none';
-  document.getElementById('gifLoading').style.display = 'none';
-  img.src = url;
-  img.style.display = 'block';
-  img.onerror = function() {
-    this.style.display = 'none';
-    showGifFallback(session.exercises[currentIdx].name);
-  };
-}
-
-function showGifFallback(name) {
-  document.getElementById('gifLoading').style.display = 'none';
-  document.getElementById('exGif').style.display = 'none';
-  var container = document.querySelector('.gif-container');
-  var fb = document.getElementById('gifFallback');
-  if (!fb) {
-    fb = document.createElement('div');
-    fb.id = 'gifFallback';
-    fb.style.cssText = 'position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;padding:20px;text-align:center;';
-    container.appendChild(fb);
-  }
-  var cat = session ? session.category : '';
-  var icon = (cat.indexOf('Yoga') !== -1 || cat.indexOf('Breath') !== -1) ? '🧘' :
-             cat.indexOf('Meditation') !== -1 ? '🌿' :
-             (cat.indexOf('Stretching') !== -1 || cat.indexOf('Mobility') !== -1) ? '🤸' :
-             (cat.indexOf('Outdoor') !== -1 || cat.indexOf('Run') !== -1) ? '🏃' :
-             (cat.indexOf('HIIT') !== -1 || cat.indexOf('Cardio') !== -1) ? '⚡' : '💪';
-  fb.innerHTML =
-    '<div style="font-size:72px;animation:pulse-icon 1.5s ease-in-out infinite">' + icon + '</div>' +
-    '<div style="font-size:17px;font-weight:600;color:#1D1A16;max-width:200px;line-height:1.3">' + name + '</div>' +
-    '<div style="font-size:12px;color:#888;background:#fff;border-radius:8px;padding:6px 12px">Follow the tip below</div>';
-  fb.style.display = 'flex';
-}
 
 function preloadGifs() {
   for (var i = 1; i <= 2 && i < session.exercises.length; i++) {
