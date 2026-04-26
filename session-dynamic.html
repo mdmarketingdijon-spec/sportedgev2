@@ -33,6 +33,7 @@ body { font-family: 'Outfit', sans-serif; background: #FBFAF9; color: #1D1A16; m
 .pulse-dot { width: 8px; height: 8px; border-radius: 50%; background: #EC9679; animation: pulse-dot 1.2s ease-in-out infinite; display: inline-block; }
 @keyframes pulse-dot { 0%,100%{transform:scale(1)} 50%{transform:scale(1.3)} }
 </style>
+<script src="https://www.youtube.com/iframe_api"></script>
 </head>
 <body>
 
@@ -244,8 +245,10 @@ function loadEx(idx) {
 
   // Reset overlays
   hide('restOverlay'); hide('meditationOverlay'); hide('gifFallback');
-  var oldFrame = document.getElementById('yt-frame');
-  if (oldFrame) oldFrame.remove();
+  // Nettoyer le player YouTube précédent
+  if (ytPlayer) { try { ytPlayer.destroy(); } catch(e) {} ytPlayer = null; }
+  var oldDiv = document.getElementById('yt-player-div');
+  if (oldDiv) oldDiv.remove();
   document.getElementById('exGif').style.display = 'none';
   document.getElementById('gifLoading').style.display = 'flex';
 
@@ -271,17 +274,21 @@ function loadEx(idx) {
   isPlaying = false;
 }
 
-var YT_MAP = {"Jumping Jacks": "c4DAnQ6DtF8", "Squat Jump": "Qgpxx1Bxmgs", "Mountain Climbers": "wrn1Cm_yfEU", "Burpee": "xRdGC6cFY0s", "High Knees": "nGaXj3kkmrU", "Push Up": "IODxDxX7oi4", "Lateral Shuffle": "c4DAnQ6DtF8", "Plank Hold": "wrn1Cm_yfEU", "Plank": "wrn1Cm_yfEU", "Squat": "P-yaD24bUE8", "Reverse Lunge": "7AWLfjXYjTE", "Lunge": "7AWLfjXYjTE", "Glute Bridge": "oGEvMX1DlM0", "Dead Bug": "WDIpL0pjun0", "Bird Dog": "WDIpL0pjun0", "Calf Raise": "DlS-GAF8Edg", "Tricep Dip": "IODxDxX7oi4", "Upper Body Activation": "IODxDxX7oi4", "Dumbbell Foundational": "P-yaD24bUE8", "Stability Ball Basics": "WDIpL0pjun0", "Neck Rolls": "U20I89tTv2U", "Shoulder Roll": "U20I89tTv2U", "Chest Opener": "U20I89tTv2U", "Side Stretch": "U20I89tTv2U", "Standing Forward Fold": "7AWLfjXYjTE", "Hip Circle": "U20I89tTv2U", "Hip Flexor": "7AWLfjXYjTE", "Low Lunge": "7AWLfjXYjTE", "Forward Fold": "7AWLfjXYjTE", "Child's Pose": "oGEvMX1DlM0", "Cobra Pose": "oGEvMX1DlM0", "Downward Dog": "9X3OKE6xZqw", "Three-Legged Dog": "9X3OKE6xZqw", "Warrior": "U20I89tTv2U", "Mountain Pose": "U20I89tTv2U", "Sun Salutation": "U20I89tTv2U", "Vinyasa Flow": "LHC96BuPv8I", "Plank to Chaturanga": "IODxDxX7oi4", "Restorative Yoga": "oGEvMX1DlM0", "Breathwork": "U20I89tTv2U", "Pranayama": "U20I89tTv2U", "Body Scan": "oGEvMX1DlM0", "Breath": "U20I89tTv2U", "Morning Clarity": "U20I89tTv2U", "Mindful": "oGEvMX1DlM0", "Easy Jog": "nGaXj3kkmrU", "Recovery Jog": "nGaXj3kkmrU", "Walk": "nGaXj3kkmrU", "Run": "nGaXj3kkmrU", "Sprint": "c4DAnQ6DtF8", "Supine": "oGEvMX1DlM0", "Savasana": "oGEvMX1DlM0", "Bridge Pose": "oGEvMX1DlM0"};
+var YT_MAP = {"Jumping Jacks": "c4DAnQ6DtF8", "Squat Jump": "Qgpxx1Bxmgs", "Mountain Climbers": "wrn1Cm_yfEU", "Burpee": "xRdGC6cFY0s", "High Knees": "nGaXj3kkmrU", "Push Up": "IODxDxX7oi4", "Lateral Shuffle": "c4DAnQ6DtF8", "Plank Hold": "wrn1Cm_yfEU", "Cool Down": "oGEvMX1DlM0", "Squat": "P-yaD24bUE8", "Reverse Lunge (right)": "7AWLfjXYjTE", "Reverse Lunge (left)": "7AWLfjXYjTE", "Glute Bridge": "B7kTkXDIMuE", "Dead Bug": "wrn1Cm_yfEU", "Bird Dog": "wrn1Cm_yfEU", "Forearm Plank": "wrn1Cm_yfEU", "Side Plank (right)": "wrn1Cm_yfEU", "Side Plank (left)": "wrn1Cm_yfEU", "Tricep Dip": "IODxDxX7oi4", "Superman Hold": "B7kTkXDIMuE", "Upper Body Activation": "IODxDxX7oi4", "Dumbbell Foundational": "P-yaD24bUE8", "Stability Ball Basics": "wrn1Cm_yfEU", "Neck Side Stretch": "U20I89tTv2U", "Shoulder Roll": "U20I89tTv2U", "Chest Opener": "U20I89tTv2U", "Standing Side Stretch": "U20I89tTv2U", "Standing Forward Fold": "7AWLfjXYjTE", "Hip Circle": "U20I89tTv2U", "Calf Raise": "DlS-GAF8Edg", "Full Body Shake": "c4DAnQ6DtF8", "Low Lunge (right)": "7AWLfjXYjTE", "Low Lunge (left)": "7AWLfjXYjTE", "Pigeon Pose (right)": "zuYbjkuKLKY", "Pigeon Pose (left)": "zuYbjkuKLKY", "Supine Hip Stretch": "V7hr4w3pd6w", "Bridge Pose": "B7kTkXDIMuE", "Child's Pose": "oGEvMX1DlM0", "Cobra Pose": "oGEvMX1DlM0", "Downward Dog": "9X3OKE6xZqw", "Three-Legged Dog": "9X3OKE6xZqw", "Warrior I (right)": "U20I89tTv2U", "Warrior I (left)": "U20I89tTv2U", "Warrior II (right)": "U20I89tTv2U", "Warrior II (left)": "U20I89tTv2U", "Mountain Pose": "U20I89tTv2U", "Sun Salutation A": "U20I89tTv2U", "Plank to Chaturanga": "IODxDxX7oi4", "Supine Twist (right)": "aihbOIot3p0", "Supine Twist (left)": "aihbOIot3p0", "Legs Up the Wall": "V7hr4w3pd6w", "Reclined Butterfly": "N4figcWjDGI", "Savasana": "oGEvMX1DlM0", "Brisk Walk Warm-Up": "nGaXj3kkmrU", "Easy Jog": "nGaXj3kkmrU", "Walk Recovery": "nGaXj3kkmrU", "Cool Down Walk": "nGaXj3kkmrU", "Standing Calf Stretch": "7AWLfjXYjTE", "Settling Breath": "oGEvMX1DlM0", "Feet & Legs Scan": "oGEvMX1DlM0", "Hips & Belly Scan": "oGEvMX1DlM0", "Chest & Back Scan": "oGEvMX1DlM0", "Arms & Hands Scan": "oGEvMX1DlM0", "Face & Head Scan": "oGEvMX1DlM0", "Whole Body Awareness": "oGEvMX1DlM0"};
+var ytPlayer = null;
+var ytReady = false;
+
+// Callback YouTube IFrame API
+window.onYouTubeIframeAPIReady = function() {
+  ytReady = true;
+};
 
 function getYouTubeId(exName) {
-  // Correspondance exacte
   if (YT_MAP[exName]) return YT_MAP[exName];
-  // Correspondance partielle
   var lower = exName.toLowerCase();
   for (var key in YT_MAP) {
     if (lower.indexOf(key.toLowerCase()) !== -1) return YT_MAP[key];
   }
-  // Fallback générique selon catégorie
   var cat = session ? session.category : '';
   if (cat.indexOf('HIIT') !== -1 || cat.indexOf('Cardio') !== -1) return 'c4DAnQ6DtF8';
   if (cat.indexOf('Yoga') !== -1 || cat.indexOf('Breath') !== -1) return 'oGEvMX1DlM0';
@@ -295,31 +302,80 @@ function loadGif(exId, exIdx) {
   var exName = session.exercises[exIdx].name;
   document.getElementById('gifLoading').style.display = 'none';
   document.getElementById('exGif').style.display = 'none';
-
   var ytId = getYouTubeId(exName);
-  showYouTube(ytId);
+  loadYouTubePlayer(ytId);
 }
 
-function showYouTube(videoId) {
+function loadYouTubePlayer(videoId) {
   var container = document.querySelector('.gif-container');
 
-  // Supprimer l'iframe précédente si elle existe
-  var oldFrame = document.getElementById('yt-frame');
-  if (oldFrame) oldFrame.remove();
-  var oldFb = document.getElementById('gifFallback');
-  if (oldFb) oldFb.style.display = 'none';
+  // Supprimer l'ancien player
+  if (ytPlayer) {
+    try { ytPlayer.destroy(); } catch(e) {}
+    ytPlayer = null;
+  }
+  var oldDiv = document.getElementById('yt-player-div');
+  if (oldDiv) oldDiv.remove();
 
   document.getElementById('gifLoading').style.display = 'none';
   document.getElementById('exGif').style.display = 'none';
 
-  var iframe = document.createElement('iframe');
-  iframe.id = 'yt-frame';
-  iframe.style.cssText = 'position:absolute;inset:0;width:100%;height:100%;border:none;border-radius:20px;';
-  iframe.src = 'https://www.youtube.com/embed/' + videoId
-    + '?autoplay=1&mute=1&controls=1&rel=0&modestbranding=1&loop=1&playlist=' + videoId;
-  iframe.allow = 'autoplay; fullscreen';
-  iframe.setAttribute('allowfullscreen', '');
-  container.appendChild(iframe);
+  // Créer un div pour le player
+  var playerDiv = document.createElement('div');
+  playerDiv.id = 'yt-player-div';
+  playerDiv.style.cssText = 'position:absolute;inset:0;width:100%;height:100%;border-radius:20px;overflow:hidden;';
+  container.appendChild(playerDiv);
+
+  if (ytReady && window.YT && window.YT.Player) {
+    ytPlayer = new YT.Player('yt-player-div', {
+      videoId: videoId,
+      playerVars: {
+        autoplay: 1,
+        mute: 1,
+        controls: 1,
+        rel: 0,
+        modestbranding: 1,
+        loop: 1,
+        playlist: videoId
+      },
+      events: {
+        onReady: function(e) { e.target.playVideo(); }
+      }
+    });
+  } else {
+    // Fallback iframe si API pas encore prête
+    var iframe = document.createElement('iframe');
+    iframe.id = 'yt-iframe-fallback';
+    iframe.style.cssText = 'width:100%;height:100%;border:none;border-radius:20px;';
+    iframe.src = 'https://www.youtube.com/embed/' + videoId
+      + '?autoplay=1&mute=1&controls=1&rel=0&modestbranding=1&loop=1&playlist=' + videoId;
+    iframe.allow = 'autoplay; fullscreen';
+    playerDiv.appendChild(iframe);
+    // Retry avec l'API après 1s
+    setTimeout(function() {
+      if (ytReady && window.YT && window.YT.Player) {
+        var fb = document.getElementById('yt-iframe-fallback');
+        if (fb) fb.remove();
+        ytPlayer = new YT.Player('yt-player-div', {
+          videoId: videoId,
+          playerVars: { autoplay:1, mute:1, controls:1, rel:0, loop:1, playlist:videoId },
+          events: { onReady: function(e){ e.target.playVideo(); } }
+        });
+      }
+    }, 1500);
+  }
+}
+
+function pauseYouTube() {
+  if (ytPlayer && ytPlayer.pauseVideo) {
+    try { ytPlayer.pauseVideo(); } catch(e) {}
+  }
+}
+
+function resumeYouTube() {
+  if (ytPlayer && ytPlayer.playVideo) {
+    try { ytPlayer.playVideo(); } catch(e) {}
+  }
 }
 
 function showFallback(name) {
@@ -337,8 +393,14 @@ function showFallback(name) {
 }
 
 function togglePlay() {
-  if (isPlaying) { pauseTimer(); }
-  else { if (!startTime) startTime=Date.now(); startTimer(); }
+  if (isPlaying) {
+    pauseTimer();
+    pauseYouTube();
+  } else {
+    if (!startTime) startTime = Date.now();
+    startTimer();
+    resumeYouTube();
+  }
 }
 
 function startTimer() {
