@@ -1,44 +1,97 @@
 <!DOCTYPE html>
-<html><head><meta charset="UTF-8"><title>RapidAPI ExerciseDB Test</title></head>
-<body style="font-family:sans-serif;padding:20px;">
-<h2>Test ExerciseDB RapidAPI</h2>
-<p id="status">Testing API...</p>
-<div id="results" style="display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:16px;"></div>
-<script>
-var API_KEY = 'decea1e981mshaa417cf0edc7912p1f53c3jsn09df27ecfa84';
+<html><head><meta charset="UTF-8"><title>ExerciseDB Multi-Test</title>
+<style>body{font-family:sans-serif;padding:20px;} .test{margin:16px 0;padding:12px;border-radius:8px;border:1px solid #ddd;} .ok{background:#f0fdf4;border-color:#86efac} .fail{background:#fef2f2;border-color:#fca5a5} .wait{background:#fafafa}</style>
+</head>
+<body>
+<h2>ExerciseDB - Test des méthodes d'accès</h2>
 
-// Test 1 : status
-fetch('https://exercisedb.p.rapidapi.com/status', {
-  headers: {
-    'x-rapidapi-key': API_KEY,
-    'x-rapidapi-host': 'exercisedb.p.rapidapi.com'
+<div class="test wait" id="t1">
+  <b>Test 1: RapidAPI fetch() avec clé</b>
+  <p id="r1">En cours...</p>
+</div>
+
+<div class="test wait" id="t2">
+  <b>Test 2: img src direct (v2.exercisedb.io)</b>
+  <p id="r2">En cours...</p>
+  <img id="img2" style="height:120px;display:none">
+</div>
+
+<div class="test wait" id="t3">
+  <b>Test 3: RapidAPI avec mode no-cors</b>
+  <p id="r3">En cours...</p>
+</div>
+
+<div class="test wait" id="t4">
+  <b>Test 4: exercisedb.dev (open, no key)</b>
+  <p id="r4">En cours...</p>
+  <img id="img4" style="height:120px;display:none">
+</div>
+
+<script>
+var KEY = 'decea1e981mshaa417cf0edc7912p1f53c3jsn09df27ecfa84';
+
+function pass(id, msg) {
+  document.getElementById('t'+id).className='test ok';
+  document.getElementById('r'+id).textContent='✓ ' + msg;
+}
+function fail(id, msg) {
+  document.getElementById('t'+id).className='test fail';
+  document.getElementById('r'+id).textContent='✗ ' + msg;
+}
+
+// Test 1: RapidAPI fetch
+fetch('https://exercisedb.p.rapidapi.com/exercises/name/jumping%20jack?limit=1', {
+  headers: {'x-rapidapi-key': KEY, 'x-rapidapi-host': 'exercisedb.p.rapidapi.com'}
+})
+.then(r => { 
+  if(!r.ok) throw new Error('HTTP '+r.status);
+  return r.json(); 
+})
+.then(data => {
+  var ex = Array.isArray(data) ? data[0] : null;
+  if(ex && ex.gifUrl) {
+    pass(1, 'GIF URL: ' + ex.gifUrl.substring(0,60));
+    // Utiliser cette URL pour le test 2
+    document.getElementById('img2').src = ex.gifUrl;
+    document.getElementById('img2').style.display = 'block';
+  } else {
+    fail(1, 'Pas de gifUrl dans la réponse: ' + JSON.stringify(data).substring(0,100));
   }
 })
-.then(r => r.json())
-.then(d => {
-  document.getElementById('status').textContent = '✓ API OK: ' + JSON.stringify(d);
-  // Charger quelques exercices
-  return fetch('https://exercisedb.p.rapidapi.com/exercises?limit=6&offset=0', {
-    headers: {
-      'x-rapidapi-key': API_KEY,
-      'x-rapidapi-host': 'exercisedb.p.rapidapi.com'
-    }
-  });
+.catch(e => fail(1, e.message));
+
+// Test 2: img src direct avec URL connue
+var knownUrl = 'https://v2.exercisedb.io/image/ZQblhNMiLmzBSB';
+var img2 = document.getElementById('img2');
+img2.onload = function() { if(this.src === knownUrl) pass(2, 'URL directe fonctionne!'); };
+img2.onerror = function() { if(this.src === knownUrl) fail(2, 'URL directe bloquée'); };
+img2.src = knownUrl;
+img2.style.display = 'block';
+
+// Test 3: no-cors
+fetch('https://exercisedb.p.rapidapi.com/status', {
+  mode: 'no-cors',
+  headers: {'x-rapidapi-key': KEY, 'x-rapidapi-host': 'exercisedb.p.rapidapi.com'}
 })
+.then(r => pass(3, 'no-cors status: ' + r.type + ' (opaque = bloqué côté browser)'))
+.catch(e => fail(3, e.message));
+
+// Test 4: exercisedb.dev sans clé
+fetch('https://exercisedb.dev/api/exercises?limit=1')
 .then(r => r.json())
 .then(data => {
-  var results = document.getElementById('results');
-  (Array.isArray(data) ? data : data.exercises || []).slice(0,6).forEach(ex => {
-    var d = document.createElement('div');
-    d.style.cssText = 'background:#f9f8f6;border-radius:12px;padding:10px;text-align:center;border:1px solid #e4e0dc';
-    d.innerHTML = '<img src="'+ex.gifUrl+'" style="width:100%;height:160px;object-fit:cover;border-radius:8px;" onerror="this.parentElement.style.background='#fee'">'
-      + '<p style="font-size:12px;margin:6px 0 2px;font-weight:500">'+ex.name+'</p>'
-      + '<p style="font-size:11px;color:#888">'+ex.target+' · '+ex.equipment+'</p>';
-    results.appendChild(d);
-  });
+  var ex = Array.isArray(data) ? data[0] : null;
+  if(ex) {
+    pass(4, 'API OK: ' + ex.name + ' gifUrl: ' + (ex.gifUrl||'none').substring(0,50));
+    if(ex.gifUrl) {
+      var i = document.getElementById('img4');
+      i.src = ex.gifUrl;
+      i.style.display = 'block';
+      i.onload = function() { pass(4, 'GIF chargé ! URL: ' + ex.gifUrl.substring(0,60)); };
+      i.onerror = function() { fail(4, 'API OK mais GIF bloqué'); };
+    }
+  }
 })
-.catch(e => {
-  document.getElementById('status').textContent = '✗ FAILED: ' + e.message;
-});
+.catch(e => fail(4, e.message));
 </script>
 </body></html>
