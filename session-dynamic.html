@@ -269,61 +269,47 @@ function loadEx(idx) {
   isPlaying = false;
 }
 
-var API_KEY = "decea1e981mshaa417cf0edc7912p1f53c3jsn09df27ecfa84";
-var API_CACHE = {};
+var EX_CACHE = {};
+var EX_SEARCH = {"jumping jacks": "jumping jack", "squat jump": "jump squat", "mountain climbers": "mountain climber", "burpee": "burpee", "high knees": "high knees", "push up": "push-up", "lateral shuffle": "shuffle", "plank hold": "plank", "plank": "plank", "squat": "squat", "reverse lunge": "reverse lunge", "lunge": "lunge", "glute bridge": "glute bridge", "dead bug": "dead bug", "bird dog": "bird dog", "calf raise": "calf raise", "tricep dip": "triceps dip", "shoulder roll": "shoulder", "chest opener": "chest stretch", "side stretch": "side bend", "forward fold": "forward bend", "hip circle": "hip rotation", "hip flexor": "hip flexor", "low lunge": "lunge", "bridge pose": "bridge", "child's pose": "child", "cobra pose": "cobra", "downward dog": "downward", "warrior": "warrior", "vinyasa flow": "yoga", "sun salutation": "yoga", "mountain pose": "standing", "recovery jog": "jogging", "easy jog": "jogging", "steady-state run": "run", "tempo run": "running", "hill sprint": "sprint", "walking": "walk", "body scan": "breathing", "breath": "breathing", "morning clarity": "yoga", "mindful": "yoga"};
 
-// Map exercise ID → nom de recherche
-var EX_SEARCH_MAP = {"Jumping Jacks": "jumping jack", "Squat Jump": "jump squat", "Mountain Climbers": "mountain climber", "Burpee": "burpee", "High Knees": "high knees", "Push Up": "push-up", "Lateral Shuffle": "shuffle", "Plank Hold": "plank", "Squat": "squat", "Reverse Lunge": "reverse lunge", "Glute Bridge": "glute bridge", "Dead Bug": "dead bug", "Bird Dog": "bird dog", "Calf Raise": "calf raise", "Tricep Dip": "triceps dip", "Superman Hold": "superman", "Neck Rolls": "neck", "Shoulder Roll": "shoulder", "Chest Opener": "chest stretch", "Side Stretch": "side stretch", "Standing Forward Fold": "forward bend", "Hip Circle": "hip", "Hip Flexor": "hip flexor", "Low Lunge": "lunge", "Bridge Pose": "bridge", "Child's Pose": "child", "Cobra Pose": "cobra", "Downward Dog": "downward", "Warrior": "warrior", "Tree Pose": "standing", "Recovery Jog": "run", "Easy Jog": "run", "Body Scan": "breathing", "Breath Awareness": "breathing", "Morning Clarity": "meditation"};
+function getSearchTerm(exName) {
+  var lower = exName.toLowerCase();
+  for (var key in EX_SEARCH) {
+    if (lower.indexOf(key) !== -1) return EX_SEARCH[key];
+  }
+  return lower;
+}
 
 function loadGif(exId, exIdx) {
   var exName = session.exercises[exIdx].name;
   
-  // Cache
-  if (API_CACHE[exId]) {
-    showGifUrl(API_CACHE[exId], exIdx);
+  if (EX_CACHE[exId]) {
+    showGifUrl(EX_CACHE[exId], exIdx);
     return;
   }
   
   document.getElementById('gifLoading').style.display = 'flex';
   document.getElementById('exGif').style.display = 'none';
   
-  // Chercher le terme de recherche pour cet exercice
-  var searchName = exName;
-  for (var key in EX_SEARCH_MAP) {
-    if (exName.toLowerCase().indexOf(key.toLowerCase()) !== -1) {
-      searchName = EX_SEARCH_MAP[key];
-      break;
-    }
-  }
+  var searchTerm = getSearchTerm(exName);
   
-  // Appel RapidAPI ExerciseDB
-  var url = 'https://exercisedb.p.rapidapi.com/exercises/name/' + encodeURIComponent(searchName) + '?limit=1&offset=0';
-  
-  fetch(url, {
-    method: 'GET',
-    headers: {
-      'x-rapidapi-key': API_KEY,
-      'x-rapidapi-host': 'exercisedb.p.rapidapi.com'
-    }
-  })
-  .then(function(r) {
-    if (!r.ok) throw new Error('HTTP ' + r.status);
-    return r.json();
-  })
-  .then(function(data) {
-    var exercises = Array.isArray(data) ? data : (data.exercises || []);
-    if (exercises.length > 0 && exercises[0].gifUrl) {
-      var gifUrl = exercises[0].gifUrl;
-      API_CACHE[exId] = gifUrl;
-      if (curIdx === exIdx) showGifUrl(gifUrl, exIdx);
-    } else {
+  // Appel via le proxy Vercel (contourne le CORS)
+  fetch('/api/exercise?name=' + encodeURIComponent(searchTerm))
+    .then(function(r) {
+      if (!r.ok) throw new Error('HTTP ' + r.status);
+      return r.json();
+    })
+    .then(function(data) {
+      if (data.gifUrl) {
+        EX_CACHE[exId] = data.gifUrl;
+        if (curIdx === exIdx) showGifUrl(data.gifUrl, exIdx);
+      } else {
+        if (curIdx === exIdx) showFallback(exName);
+      }
+    })
+    .catch(function() {
       if (curIdx === exIdx) showFallback(exName);
-    }
-  })
-  .catch(function(err) {
-    console.warn('API error:', err.message);
-    if (curIdx === exIdx) showFallback(exName);
-  });
+    });
 }
 
 function showGifUrl(url, exIdx) {
@@ -331,9 +317,6 @@ function showGifUrl(url, exIdx) {
   var img = document.getElementById('exGif');
   img.src = url;
   img.style.display = 'block';
-  img.onload = function() {
-    document.getElementById('gifLoading').style.display = 'none';
-  };
   img.onerror = function() {
     this.style.display = 'none';
     showFallback(session.exercises[exIdx] ? session.exercises[exIdx].name : 'Exercise');
