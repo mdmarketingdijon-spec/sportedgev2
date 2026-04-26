@@ -1,25 +1,70 @@
 <!DOCTYPE html>
-<html><head><meta charset="UTF-8"><title>Proxy Test</title></head>
-<body style="font-family:sans-serif;padding:20px;">
-<h2>Test proxy /api/exercise</h2>
-<p id="status">Testing...</p>
-<div id="result" style="margin-top:16px;"></div>
+<html><head><meta charset="UTF-8"><title>Proxy Test - Trouver les bons noms</title></head>
+<body style="font-family:sans-serif;padding:20px;max-width:900px">
+<h2>Test proxy — recherche des bons termes ExerciseDB</h2>
+<p id="global-status" style="color:#888">Lancement des tests...</p>
+<div id="results"></div>
+
 <script>
-fetch('/api/exercise?name=jumping%20jack')
-  .then(r => r.json())
-  .then(data => {
-    document.getElementById('status').textContent = '✓ Proxy OK';
-    if (data.gifUrl) {
-      document.getElementById('result').innerHTML = 
-        '<p><b>' + data.name + '</b></p>' +
-        '<img src="' + data.gifUrl + '" style="height:200px;border-radius:8px;">' +
-        '<p style="font-size:12px;color:#888">gifUrl: ' + data.gifUrl + '</p>';
-    } else {
-      document.getElementById('result').textContent = JSON.stringify(data);
-    }
-  })
-  .catch(e => {
-    document.getElementById('status').textContent = '✗ FAILED: ' + e.message;
-  });
+// Liste des termes à tester
+var TERMS = [
+  'jumping jack',
+  'jumping jacks', 
+  'jack',
+  'squat',
+  'push up',
+  'push-up',
+  'pushup',
+  'mountain climber',
+  'burpee',
+  'high knee',
+  'high knees',
+  'plank',
+  'lunge',
+  'glute bridge',
+  'bridge',
+  'run',
+  'jog',
+  'stretch',
+  'yoga',
+  'cobra',
+  'child',
+  'downward'
+];
+
+var results = document.getElementById('results');
+var done = 0;
+
+TERMS.forEach(function(term) {
+  var row = document.createElement('div');
+  row.style.cssText = 'display:flex;align-items:center;gap:12px;padding:8px;border-bottom:1px solid #eee;';
+  row.innerHTML = '<span style="width:200px;font-size:13px;color:#666">' + term + '</span>'
+    + '<span id="r-'+term.replace(/ /g,'-')+'" style="font-size:13px">...</span>'
+    + '<img id="img-'+term.replace(/ /g,'-')+'" style="height:60px;display:none;border-radius:6px;">';
+  results.appendChild(row);
+
+  fetch('/api/exercise?name=' + encodeURIComponent(term))
+    .then(function(r){ return r.json(); })
+    .then(function(data){
+      done++;
+      document.getElementById('global-status').textContent = done + '/' + TERMS.length + ' tests terminés';
+      var id = term.replace(/ /g,'-');
+      var el = document.getElementById('r-'+id);
+      var img = document.getElementById('img-'+id);
+      if(data.gifUrl) {
+        el.innerHTML = '<span style="color:green">✓ ' + data.name + '</span>';
+        el.style.width = '300px';
+        img.src = data.gifUrl;
+        img.style.display = 'block';
+        img.onerror = function(){ this.style.display='none'; el.innerHTML += ' <span style="color:red">(gif bloqué)</span>'; };
+      } else {
+        el.innerHTML = '<span style="color:red">✗ ' + (data.error||'no result') + '</span>';
+      }
+    })
+    .catch(function(e){
+      done++;
+      document.getElementById('r-'+term.replace(/ /g,'-')).innerHTML = '<span style="color:red">✗ ' + e.message + '</span>';
+    });
+});
 </script>
 </body></html>
