@@ -1,0 +1,654 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SportEdge — Session</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Outfit', sans-serif; background: #FBFAF9; color: #1D1A16; min-height: 100vh; }
+
+  /* ── Timer ring ── */
+  .timer-ring { transform: rotate(-90deg); }
+  .timer-ring-bg { fill: none; stroke: #E4E0DC; stroke-width: 6; }
+  .timer-ring-progress { fill: none; stroke: #EC9679; stroke-width: 6; stroke-linecap: round;
+    transition: stroke-dashoffset 1s linear; }
+
+  /* ── Intensity badges ── */
+  .badge-low    { background:#DBEAFE; color:#1D4ED8; }
+  .badge-medium { background:#EDE9FE; color:#5B21B6; }
+  .badge-high   { background:#FEE2E2; color:#B91C1C; }
+
+  /* ── Exercise GIF container ── */
+  .gif-container { background: #F6F5F3; border-radius: 20px; overflow: hidden;
+    display: flex; align-items: center; justify-content: center; position: relative; }
+  .gif-container img { width: 100%; height: 100%; object-fit: contain; }
+
+  /* ── Rest overlay ── */
+  .rest-overlay { position: absolute; inset: 0; background: rgba(251,250,249,0.95);
+    display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px; }
+
+  /* ── Progress bar ── */
+  .prog-bar { height: 4px; background: #E4E0DC; border-radius: 2px; overflow: hidden; }
+  .prog-fill { height: 100%; background: #EC9679; border-radius: 2px; transition: width 0.5s ease; }
+
+  /* ── Buttons ── */
+  .btn-primary { background: #EC9679; color: #1D1A16; font-weight: 600; font-size: 16px;
+    padding: 14px 32px; border-radius: 50px; border: none; cursor: pointer; transition: all 0.2s; }
+  .btn-primary:hover { background: #d88568; transform: scale(1.02); }
+  .btn-primary:active { transform: scale(0.98); }
+  .btn-secondary { background: transparent; color: #6A5E53; font-size: 14px; font-weight: 500;
+    padding: 10px 20px; border-radius: 50px; border: 1.5px solid #E4E0DC; cursor: pointer; transition: all 0.2s; }
+  .btn-secondary:hover { background: #F6F5F3; }
+
+  /* ── Completed overlay ── */
+  .completed-screen { display: none; position: fixed; inset: 0; background: #FBFAF9;
+    flex-direction: column; align-items: center; justify-content: center; gap: 20px; z-index: 100;
+    animation: fadeIn 0.4s ease; }
+  @keyframes fadeIn { from{opacity:0;transform:translateY(20px)} to{opacity:1;transform:translateY(0)} }
+
+  /* ── Sidebar ── */
+  aside { position: sticky; top: 0; height: 100vh; overflow-y: auto; }
+
+  /* ── Exercise list item ── */
+  .ex-item { display: flex; align-items: center; gap: 10px; padding: 8px 12px;
+    border-radius: 10px; cursor: pointer; transition: background 0.15s; }
+  .ex-item.active { background: #FDF4F2; border: 1px solid #EC9679; }
+  .ex-item.done { opacity: 0.5; }
+  .ex-num { width: 24px; height: 24px; border-radius: 50%; display: flex; align-items: center;
+    justify-content: center; font-size: 11px; font-weight: 600; flex-shrink: 0; }
+  .ex-num.active { background: #EC9679; color: white; }
+  .ex-num.done { background: #5DCAA5; color: white; }
+  .ex-num.pending { background: #E4E0DC; color: #888; }
+
+  /* ── Pulsing dot ── */
+  @keyframes pulse-dot { 0%,100%{transform:scale(1);opacity:1} 50%{transform:scale(1.3);opacity:0.7} }
+  .pulse-dot { width: 8px; height: 8px; border-radius: 50%; background: #EC9679;
+    animation: pulse-dot 1.2s ease-in-out infinite; display: inline-block; }
+
+  /* Mobile nav */
+  .mobile-nav { display: none; }
+  @media(max-width:768px) {
+    .desktop-layout { flex-direction: column; }
+    .sidebar { display: none !important; }
+    .mobile-nav { display: block; }
+    .main-content { padding: 16px !important; }
+    .gif-container { height: 260px !important; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ══════════════════════════════════════════════════════════════
+     COMPLETED SCREEN
+═══════════════════════════════════════════════════════════════ -->
+<div class="completed-screen" id="completedScreen">
+  <div style="font-size:64px;">🎉</div>
+  <h2 style="font-size:28px;font-weight:700;color:#1D1A16">Session complete!</h2>
+  <p style="font-size:16px;color:#6A5E53;text-align:center;max-width:280px" id="completedMsg">You did it. Every move counts.</p>
+  <div style="display:flex;gap:12px;margin-top:8px;flex-wrap:wrap;justify-content:center">
+    <div style="background:#F6F5F3;border-radius:12px;padding:14px 20px;text-align:center">
+      <div style="font-size:22px;font-weight:700" id="completedDuration">—</div>
+      <div style="font-size:12px;color:#888;margin-top:2px">duration</div>
+    </div>
+    <div style="background:#F6F5F3;border-radius:12px;padding:14px 20px;text-align:center">
+      <div style="font-size:22px;font-weight:700" id="completedExCount">—</div>
+      <div style="font-size:12px;color:#888;margin-top:2px">exercises</div>
+    </div>
+    <div style="background:#F6F5F3;border-radius:12px;padding:14px 20px;text-align:center">
+      <div style="font-size:22px;font-weight:700" id="completedIntensity">—</div>
+      <div style="font-size:12px;color:#888;margin-top:2px">intensity</div>
+    </div>
+  </div>
+  <div style="display:flex;gap:12px;margin-top:8px">
+    <button class="btn-primary" onclick="window.location.href='home-medium.html'">Back to home</button>
+    <button class="btn-secondary" onclick="restartSession()">Repeat session</button>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════════
+     MAIN LAYOUT
+═══════════════════════════════════════════════════════════════ -->
+<div style="display:flex;min-height:100vh;" class="desktop-layout">
+
+  <!-- Sidebar -->
+  <aside class="sidebar" style="width:280px;border-right:1px solid #E4E0DC;background:white;padding:24px 16px;flex-shrink:0;">
+    <!-- Logo -->
+    <a href="bolt.html" style="text-decoration:none;display:flex;align-items:center;gap:8px;margin-bottom:24px;">
+      <div id="sideLogoImg" style="width:36px;height:36px;border-radius:10px;background:#EC9679;flex-shrink:0"></div>
+      <span style="font-family:'Outfit';font-weight:700;font-size:18px;color:#1D1A16">SportEdge</span>
+    </a>
+
+    <!-- Session info -->
+    <div style="background:#F6F5F3;border-radius:14px;padding:14px;margin-bottom:20px;">
+      <div style="font-size:12px;color:#888;margin-bottom:4px" id="sideCategory">—</div>
+      <div style="font-size:15px;font-weight:600;color:#1D1A16;margin-bottom:8px" id="sideTitle">Loading...</div>
+      <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;">
+        <span style="font-size:11px;font-weight:600;padding:2px 10px;border-radius:20px" id="sideBadge">—</span>
+        <span style="font-size:12px;color:#888" id="sideDuration">—</span>
+      </div>
+    </div>
+
+    <!-- Overall progress -->
+    <div style="margin-bottom:16px;">
+      <div style="display:flex;justify-content:space-between;font-size:12px;color:#888;margin-bottom:6px;">
+        <span>Progress</span>
+        <span id="sideProgress">0 / 0</span>
+      </div>
+      <div class="prog-bar"><div class="prog-fill" id="sideProgressBar" style="width:0%"></div></div>
+    </div>
+
+    <!-- Exercise list -->
+    <div style="font-size:11px;font-weight:600;color:#888;text-transform:uppercase;letter-spacing:.06em;margin-bottom:10px;">Exercises</div>
+    <div id="exerciseList" style="display:flex;flex-direction:column;gap:4px;"></div>
+
+    <!-- Back button -->
+    <div style="margin-top:auto;padding-top:20px;">
+      <button class="btn-secondary" style="width:100%" onclick="confirmExit()">← Exit session</button>
+    </div>
+  </aside>
+
+  <!-- Main content -->
+  <main class="main-content" style="flex:1;padding:32px;max-width:760px;margin:0 auto;display:flex;flex-direction:column;gap:24px;">
+
+    <!-- Mobile header -->
+    <div class="mobile-nav" style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
+      <button class="btn-secondary" style="padding:8px 14px;font-size:13px" onclick="confirmExit()">← Back</button>
+      <div style="font-size:13px;color:#888" id="mobileProgress">0 / 0</div>
+    </div>
+
+    <!-- Exercise header -->
+    <div>
+      <div style="font-size:12px;color:#888;margin-bottom:4px" id="exCategory">—</div>
+      <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;">
+        <h1 style="font-size:26px;font-weight:700;color:#1D1A16" id="exName">Loading...</h1>
+        <span style="font-size:12px;font-weight:600;padding:4px 12px;border-radius:20px" id="exBadge">—</span>
+      </div>
+    </div>
+
+    <!-- GIF + Timer -->
+    <div style="display:flex;gap:20px;align-items:flex-start;flex-wrap:wrap;">
+
+      <!-- GIF -->
+      <div class="gif-container" style="flex:1;min-width:260px;height:320px;">
+        <img id="exGif" src="" alt="Exercise animation" style="display:none">
+
+        <!-- Rest overlay -->
+        <div class="rest-overlay" id="restOverlay" style="display:none;">
+          <div style="font-size:40px;">😮‍💨</div>
+          <div style="font-size:20px;font-weight:700;color:#1D1A16">Rest</div>
+          <div style="font-size:13px;color:#888">Next: <span id="nextExName">—</span></div>
+        </div>
+
+        <!-- Meditation overlay -->
+        <div class="rest-overlay" id="meditationOverlay" style="display:none;">
+          <div style="font-size:48px">🧘</div>
+          <div style="font-size:15px;font-weight:600;color:#1D1A16;margin-top:4px" id="meditationText">—</div>
+        </div>
+
+        <!-- Loading state -->
+        <div id="gifLoading" style="display:flex;flex-direction:column;align-items:center;gap:12px;color:#888;">
+          <div style="width:48px;height:48px;border:3px solid #E4E0DC;border-top-color:#EC9679;border-radius:50%;animation:spin 1s linear infinite"></div>
+          <span style="font-size:13px">Loading exercise...</span>
+        </div>
+      </div>
+
+      <!-- Timer -->
+      <div style="display:flex;flex-direction:column;align-items:center;gap:16px;min-width:140px;">
+        <div style="position:relative;width:130px;height:130px;">
+          <svg width="130" height="130" viewBox="0 0 130 130" class="timer-ring">
+            <circle cx="65" cy="65" r="56" class="timer-ring-bg"/>
+            <circle cx="65" cy="65" r="56" class="timer-ring-progress" id="timerRing"
+              style="stroke-dasharray:351.86;stroke-dashoffset:0"/>
+          </svg>
+          <div style="position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;">
+            <div style="font-size:32px;font-weight:700;color:#1D1A16;line-height:1" id="timerDisplay">0:00</div>
+            <div style="font-size:11px;color:#888;margin-top:2px">
+              <span class="pulse-dot" id="pulsingDot" style="display:none"></span>
+              <span id="timerStatus">paused</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Reps if applicable -->
+        <div id="repsDisplay" style="display:none;background:#F6F5F3;border-radius:12px;padding:10px 16px;text-align:center;">
+          <div style="font-size:22px;font-weight:700;color:#EC9679" id="repsCount">—</div>
+          <div style="font-size:11px;color:#888">reps</div>
+        </div>
+
+        <!-- Instruction -->
+        <div style="background:#F6F5F3;border-radius:12px;padding:12px;font-size:13px;color:#6A5E53;line-height:1.5;text-align:center;max-width:180px" id="exInstruction">—</div>
+      </div>
+    </div>
+
+    <!-- Controls -->
+    <div style="display:flex;gap:12px;align-items:center;justify-content:center;flex-wrap:wrap;">
+      <button class="btn-secondary" id="btnPrev" onclick="prevExercise()" style="min-width:100px">← Prev</button>
+      <button class="btn-primary" id="btnPlayPause" onclick="togglePlayPause()" style="min-width:140px">▶ Start</button>
+      <button class="btn-secondary" id="btnNext" onclick="nextExercise()" style="min-width:100px">Next →</button>
+    </div>
+
+    <!-- Exercise progress dots -->
+    <div style="display:flex;gap:6px;justify-content:center;flex-wrap:wrap" id="progressDots"></div>
+
+  </main>
+</div>
+
+<style>
+@keyframes spin { to { transform: rotate(360deg); } }
+</style>
+
+<script>
+// ══════════════════════════════════════════════════════════════════
+// SESSION DATA
+// ══════════════════════════════════════════════════════════════════
+var SESSIONS = {"morning-wake-up-stretch": {"title": "Morning Wake-Up Stretch", "category": "Stretching & Mobility", "duration": 10, "intensity": "Low", "color": "#FBEAE4", "exercises": [{"name": "Neck Side Stretch", "id": "0310", "duration": 45, "reps": null, "tip": "Lean head slowly to each side. Hold 10s."}, {"name": "Shoulder Roll", "id": "0311", "duration": 45, "reps": null, "tip": "Roll shoulders back in slow circles. 8 reps."}, {"name": "Chest Opener", "id": "0317", "duration": 45, "reps": null, "tip": "Clasp hands behind back, open chest wide."}, {"name": "Standing Side Stretch", "id": "0318", "duration": 50, "reps": null, "tip": "Reach one arm overhead, lean to side. 20s each."}, {"name": "Standing Forward Fold", "id": "0651", "duration": 50, "reps": null, "tip": "Hinge at hips, arms hang heavy. Breathe deeply."}, {"name": "Hip Circle", "id": "0285", "duration": 45, "reps": null, "tip": "Hands on hips, draw big circles. 5 each way."}, {"name": "Calf Raise", "id": "0157", "duration": 40, "reps": "12", "tip": "Rise slowly onto toes, lower back down."}, {"name": "Full Body Shake", "id": "0311", "duration": 30, "reps": null, "tip": "Shake out arms and legs — release all tension!"}]}, "hip-flexor-release": {"title": "Hip Flexor Release", "category": "Stretching & Mobility", "duration": 12, "intensity": "Low", "color": "#FBEAE4", "exercises": [{"name": "Low Lunge (right)", "id": "1411", "duration": 60, "reps": null, "tip": "Back knee on floor. Sink hips forward gently."}, {"name": "Low Lunge (left)", "id": "1411", "duration": 60, "reps": null, "tip": "Switch sides. Hold 45 seconds."}, {"name": "Pigeon Pose (right)", "id": "0651", "duration": 60, "reps": null, "tip": "Front shin parallel to mat. Breathe into hips."}, {"name": "Pigeon Pose (left)", "id": "0651", "duration": 60, "reps": null, "tip": "Switch sides. Relax completely into the stretch."}, {"name": "Supine Hip Stretch", "id": "0310", "duration": 50, "reps": null, "tip": "Lie back, cross ankle over knee, pull thigh in."}, {"name": "Bridge Pose", "id": "0029", "duration": 50, "reps": "10", "tip": "Feet flat, lift hips high. Squeeze glutes at top."}]}, "classic-hiit": {"title": "Classic HIIT", "category": "HIIT & Cardio", "duration": 20, "intensity": "High", "color": "#E1FAF1", "exercises": [{"name": "Jumping Jacks", "id": "0089", "duration": 40, "reps": null, "tip": "Full range of motion. Keep rhythm steady."}, {"name": "Squat Jump", "id": "0630", "duration": 40, "reps": null, "tip": "Squat deep, explode up, land soft."}, {"name": "Mountain Climbers", "id": "0218", "duration": 40, "reps": null, "tip": "Fast feet, hips stay low. Core tight."}, {"name": "Burpee", "id": "0041", "duration": 40, "reps": null, "tip": "Chest to floor, jump and clap overhead."}, {"name": "High Knees", "id": "0082", "duration": 40, "reps": null, "tip": "Drive knees up to waist height. Pump arms."}, {"name": "Push Up", "id": "0023", "duration": 40, "reps": null, "tip": "Body straight, lower chest to floor."}, {"name": "Lateral Shuffle", "id": "0082", "duration": 40, "reps": null, "tip": "Stay low, quick side steps. 5 each way."}, {"name": "Plank Hold", "id": "0030", "duration": 30, "reps": null, "tip": "Forearms down. Breathe, don't hold breath."}]}, "tabata-full-body": {"title": "Tabata Full Body", "category": "HIIT & Cardio", "duration": 16, "intensity": "High", "color": "#E1FAF1", "exercises": [{"name": "Squat Jump", "id": "0630", "duration": 20, "reps": null, "tip": "20s MAX effort. Land soft on toes."}, {"name": "Rest", "id": null, "duration": 10, "reps": null, "tip": "Breathe. Next round starts in 10s."}, {"name": "Push Up", "id": "0023", "duration": 20, "reps": null, "tip": "20s MAX effort. Full range."}, {"name": "Rest", "id": null, "duration": 10, "reps": null, "tip": "Breathe. Next round starts in 10s."}, {"name": "Mountain Climbers", "id": "0218", "duration": 20, "reps": null, "tip": "20s MAX effort. Hips level."}, {"name": "Rest", "id": null, "duration": 10, "reps": null, "tip": "Breathe. Next round starts in 10s."}, {"name": "Burpee", "id": "0041", "duration": 20, "reps": null, "tip": "20s MAX effort. Full burpee."}, {"name": "Rest", "id": null, "duration": 10, "reps": null, "tip": "Breathe. Final round coming up!"}, {"name": "High Knees", "id": "0082", "duration": 20, "reps": null, "tip": "20s MAX effort. Drive those knees!"}, {"name": "Rest", "id": null, "duration": 10, "reps": null, "tip": "Last rest. You've got this!"}, {"name": "Jumping Jacks", "id": "0089", "duration": 20, "reps": null, "tip": "Final round. Give everything!"}, {"name": "Cool Down", "id": null, "duration": 30, "reps": null, "tip": "Well done! Walk it out and breathe deep."}]}, "restorative-yoga": {"title": "Restorative Yoga", "category": "Yoga & Breathwork", "duration": 20, "intensity": "Low", "color": "#ECE5FA", "exercises": [{"name": "Child's Pose", "id": "1316", "duration": 90, "reps": null, "tip": "Arms forward, forehead on mat. Breathe into your back."}, {"name": "Supine Twist (right)", "id": "0310", "duration": 60, "reps": null, "tip": "Shoulders flat, let gravity do the work."}, {"name": "Supine Twist (left)", "id": "0310", "duration": 60, "reps": null, "tip": "Switch sides. Exhale into the twist."}, {"name": "Legs Up the Wall", "id": "0651", "duration": 90, "reps": null, "tip": "Hips close to wall, legs relaxed. Pure rest."}, {"name": "Reclined Butterfly", "id": "0651", "duration": 75, "reps": null, "tip": "Soles of feet together, knees drop out. Surrender."}, {"name": "Savasana", "id": "0651", "duration": 90, "reps": null, "tip": "Complete stillness. Let every muscle release."}]}, "vinyasa-flow": {"title": "Vinyasa Flow", "category": "Yoga & Breathwork", "duration": 30, "intensity": "Medium", "color": "#ECE5FA", "exercises": [{"name": "Mountain Pose", "id": "0651", "duration": 45, "reps": null, "tip": "Stand tall, feet together, arms at sides. Breathe."}, {"name": "Sun Salutation A", "id": "1316", "duration": 90, "reps": null, "tip": "Flow with breath: inhale up, exhale fold."}, {"name": "Warrior I (right)", "id": "1411", "duration": 60, "reps": null, "tip": "Front knee over ankle, back heel grounded."}, {"name": "Warrior I (left)", "id": "1411", "duration": 60, "reps": null, "tip": "Switch sides. Arms reach skyward."}, {"name": "Warrior II (right)", "id": "1411", "duration": 60, "reps": null, "tip": "Hips open, gaze over front hand."}, {"name": "Warrior II (left)", "id": "1411", "duration": 60, "reps": null, "tip": "Switch sides. Strong and grounded."}, {"name": "Downward Dog", "id": "1316", "duration": 60, "reps": null, "tip": "Hips high, heels pressing toward floor."}, {"name": "Three-Legged Dog", "id": "1316", "duration": 45, "reps": null, "tip": "Lift one leg high, square the hip."}, {"name": "Plank to Chaturanga", "id": "0030", "duration": 45, "reps": null, "tip": "Elbows track back alongside ribs."}, {"name": "Cobra Pose", "id": "1316", "duration": 45, "reps": null, "tip": "Chest lifts, shoulders back and down."}]}, "minimalist-core-strength": {"title": "Minimalist Core Strength", "category": "Strength & Body", "duration": 10, "intensity": "Low", "color": "#E2F4FD", "exercises": [{"name": "Dead Bug", "id": "0030", "duration": 50, "reps": "8", "tip": "Lower back pressed into floor the whole time."}, {"name": "Bird Dog", "id": "0030", "duration": 50, "reps": "8", "tip": "Opposite arm + leg, hips level. Slow and controlled."}, {"name": "Glute Bridge", "id": "0029", "duration": 45, "reps": "12", "tip": "Drive through heels, squeeze at the top."}, {"name": "Forearm Plank", "id": "0030", "duration": 40, "reps": null, "tip": "Body straight from head to heels. Breathe."}, {"name": "Side Plank (right)", "id": "0030", "duration": 30, "reps": null, "tip": "Hips lifted, body straight. Don't sink."}, {"name": "Side Plank (left)", "id": "0030", "duration": 30, "reps": null, "tip": "Switch sides. Equal time both sides."}]}, "full-body-bodyweight": {"title": "Full Body Bodyweight", "category": "Strength & Body", "duration": 25, "intensity": "Medium", "color": "#E2F4FD", "exercises": [{"name": "Squat", "id": "0630", "duration": 45, "reps": "12", "tip": "Feet shoulder-width, thighs parallel at bottom."}, {"name": "Push Up", "id": "0023", "duration": 40, "reps": "10", "tip": "Lower chest to floor, push through palms."}, {"name": "Reverse Lunge (right)", "id": "0635", "duration": 40, "reps": "10", "tip": "Step back, both knees at 90°."}, {"name": "Reverse Lunge (left)", "id": "0635", "duration": 40, "reps": "10", "tip": "Switch legs. Controlled movement."}, {"name": "Glute Bridge", "id": "0029", "duration": 40, "reps": "15", "tip": "Squeeze glutes at the top, hold 1s."}, {"name": "Tricep Dip", "id": "0048", "duration": 40, "reps": "10", "tip": "Use a chair. Elbows track straight back."}, {"name": "Superman Hold", "id": "0030", "duration": 35, "reps": "10", "tip": "Lift arms and legs off floor. Hold 2s each."}, {"name": "Mountain Climbers", "id": "0218", "duration": 35, "reps": null, "tip": "Finish strong. Core tight to the end."}]}, "recovery-jog": {"title": "Recovery Jog", "category": "Outdoor Runs", "duration": 25, "intensity": "Low", "color": "#FEF5E1", "exercises": [{"name": "Brisk Walk Warm-Up", "id": "0082", "duration": 180, "reps": null, "tip": "3 min easy walk to warm joints."}, {"name": "Easy Jog", "id": "0082", "duration": 600, "reps": null, "tip": "Conversational pace — you should be able to talk."}, {"name": "Walk Recovery", "id": "0082", "duration": 120, "reps": null, "tip": "Bring heart rate down. Deep breaths."}, {"name": "Easy Jog", "id": "0082", "duration": 480, "reps": null, "tip": "Last running block. Maintain easy rhythm."}, {"name": "Cool Down Walk", "id": "0082", "duration": 120, "reps": null, "tip": "Gentle walk. Let body recover."}, {"name": "Standing Calf Stretch", "id": "0157", "duration": 60, "reps": null, "tip": "Hands on wall, heel pressed down. 30s each."}]}, "body-scan-for-rest": {"title": "Body Scan for Rest", "category": "Mindful Meditation", "duration": 15, "intensity": "Low", "color": "#F0F9F0", "exercises": [{"name": "Settling Breath", "id": null, "duration": 60, "reps": null, "tip": "Lie down. Close eyes. Let body get heavy."}, {"name": "Feet & Legs Scan", "id": null, "duration": 90, "reps": null, "tip": "Bring awareness to toes, feet, calves, knees."}, {"name": "Hips & Belly Scan", "id": null, "duration": 90, "reps": null, "tip": "Notice any tension. Breathe into it, release."}, {"name": "Chest & Back Scan", "id": null, "duration": 90, "reps": null, "tip": "Feel ribcage rise and fall. Shoulders heavy."}, {"name": "Arms & Hands Scan", "id": null, "duration": 75, "reps": null, "tip": "Fingers relaxed. Palms open and soft."}, {"name": "Face & Head Scan", "id": null, "duration": 75, "reps": null, "tip": "Jaw unclenched, forehead smooth, eyes soft."}, {"name": "Whole Body Awareness", "id": null, "duration": 120, "reps": null, "tip": "Feel the whole body at once. Complete peace."}]}};
+
+var INTENSITY_COLORS = {
+  'Low':    {bg:'#DBEAFE', color:'#1D4ED8'},
+  'Medium': {bg:'#EDE9FE', color:'#5B21B6'},
+  'High':   {bg:'#FEE2E2', color:'#B91C1C'}
+};
+
+var EX_DB_BASE = 'https://exercisedb.dev/api/exercises';
+
+// ── State ──────────────────────────────────────────────────────
+var session = null;
+var currentIdx = 0;
+var timerInterval = null;
+var timeLeft = 0;
+var totalTime = 0;
+var isPlaying = false;
+var sessionStartTime = null;
+var gifCache = {};
+
+// ══════════════════════════════════════════════════════════════════
+// INIT
+// ══════════════════════════════════════════════════════════════════
+document.addEventListener('DOMContentLoaded', function() {
+  var params = new URLSearchParams(window.location.search);
+  var sessionKey = params.get('session') || 'morning-wake-up-stretch';
+
+  session = SESSIONS[sessionKey];
+  if (!session) {
+    session = SESSIONS['morning-wake-up-stretch'];
+  }
+
+  initSession();
+});
+
+function initSession() {
+  // Sidebar info
+  document.getElementById('sideCategory').textContent = session.category;
+  document.getElementById('sideTitle').textContent = session.title;
+  document.getElementById('sideDuration').textContent = session.duration + ' min';
+  document.getElementById('exCategory').textContent = session.category;
+
+  var badge = INTENSITY_COLORS[session.intensity] || INTENSITY_COLORS['Medium'];
+  var badgeEl = document.getElementById('sideBadge');
+  badgeEl.textContent = session.intensity;
+  badgeEl.style.background = badge.bg;
+  badgeEl.style.color = badge.color;
+
+  // Build exercise list in sidebar
+  buildExerciseList();
+
+  // Build progress dots
+  buildProgressDots();
+
+  // Load first exercise
+  loadExercise(0);
+
+  // Preload GIFs for next 2 exercises
+  preloadGifs();
+}
+
+function buildExerciseList() {
+  var list = document.getElementById('exerciseList');
+  list.innerHTML = '';
+  session.exercises.forEach(function(ex, i) {
+    var item = document.createElement('div');
+    item.className = 'ex-item' + (i === 0 ? ' active' : '');
+    item.id = 'ex-item-' + i;
+    item.innerHTML =
+      '<div class="ex-num ' + (i === 0 ? 'active' : 'pending') + '" id="ex-num-' + i + '">' + (i+1) + '</div>' +
+      '<div style="flex:1;min-width:0;">' +
+        '<div style="font-size:13px;font-weight:500;color:#1D1A16;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">' + ex.name + '</div>' +
+        '<div style="font-size:11px;color:#888">' + formatDuration(ex.duration) + '</div>' +
+      '</div>';
+    item.onclick = (function(idx){ return function(){ jumpToExercise(idx); }; })(i);
+    list.appendChild(item);
+  });
+}
+
+function buildProgressDots() {
+  var dots = document.getElementById('progressDots');
+  dots.innerHTML = '';
+  session.exercises.forEach(function(ex, i) {
+    var d = document.createElement('div');
+    d.id = 'dot-' + i;
+    d.style.cssText = 'width:8px;height:8px;border-radius:50%;background:' + (i===0?'#EC9679':'#E4E0DC') + ';transition:all 0.3s;';
+    dots.appendChild(d);
+  });
+}
+
+// ══════════════════════════════════════════════════════════════════
+// LOAD EXERCISE
+// ══════════════════════════════════════════════════════════════════
+function loadExercise(idx) {
+  stopTimer();
+  currentIdx = idx;
+  var ex = session.exercises[idx];
+
+  // Update name & badge
+  document.getElementById('exName').textContent = ex.name;
+  var badge = INTENSITY_COLORS[session.intensity] || INTENSITY_COLORS['Medium'];
+  var exBadge = document.getElementById('exBadge');
+  exBadge.textContent = session.intensity;
+  exBadge.style.background = badge.bg;
+  exBadge.style.color = badge.color;
+
+  // Timer
+  timeLeft = ex.duration;
+  totalTime = ex.duration;
+  updateTimerDisplay();
+  updateTimerRing(1);
+
+  // Instruction
+  document.getElementById('exInstruction').textContent = ex.tip || '';
+
+  // Reps
+  if (ex.reps) {
+    document.getElementById('repsDisplay').style.display = 'block';
+    document.getElementById('repsCount').textContent = ex.reps;
+  } else {
+    document.getElementById('repsDisplay').style.display = 'none';
+  }
+
+  // GIF / overlays
+  document.getElementById('restOverlay').style.display = 'none';
+  document.getElementById('meditationOverlay').style.display = 'none';
+  document.getElementById('gifLoading').style.display = 'none';
+  document.getElementById('exGif').style.display = 'none';
+
+  if (!ex.id) {
+    // Rest or meditation exercise
+    var cat = session.category;
+    if (cat === 'Mindful Meditation') {
+      document.getElementById('meditationText').textContent = ex.tip;
+      document.getElementById('meditationOverlay').style.display = 'flex';
+    } else {
+      // Rest period
+      var nextEx = session.exercises[idx+1];
+      document.getElementById('nextExName').textContent = nextEx ? nextEx.name : 'Finish';
+      document.getElementById('restOverlay').style.display = 'flex';
+    }
+  } else {
+    // Load GIF from ExerciseDB
+    loadGif(ex.id, idx);
+  }
+
+  // Update sidebar list
+  updateSidebarList(idx);
+
+  // Update progress
+  updateProgress(idx);
+
+  // Button states
+  document.getElementById('btnPrev').disabled = idx === 0;
+  document.getElementById('btnPrev').style.opacity = idx === 0 ? '0.4' : '1';
+  document.getElementById('btnNext').textContent = idx === session.exercises.length - 1 ? 'Finish ✓' : 'Next →';
+
+  // Play button
+  document.getElementById('btnPlayPause').textContent = '▶ Start';
+  document.getElementById('timerStatus').textContent = 'ready';
+  document.getElementById('pulsingDot').style.display = 'none';
+  isPlaying = false;
+}
+
+function loadGif(exerciseId, exIdx) {
+  if (gifCache[exerciseId]) {
+    showGif(gifCache[exerciseId]);
+    return;
+  }
+
+  document.getElementById('gifLoading').style.display = 'flex';
+
+  // Fetch from ExerciseDB
+  fetch(EX_DB_BASE + '/' + exerciseId)
+    .then(function(r) { return r.json(); })
+    .then(function(data) {
+      var gifUrl = data.gifUrl || data.gif_url || '';
+      if (gifUrl) {
+        gifCache[exerciseId] = gifUrl;
+        if (currentIdx === exIdx) showGif(gifUrl);
+      } else {
+        showGifFallback(data.name || session.exercises[exIdx].name);
+      }
+    })
+    .catch(function() {
+      if (currentIdx === exIdx) showGifFallback(session.exercises[exIdx].name);
+    });
+}
+
+function showGif(url) {
+  var img = document.getElementById('exGif');
+  document.getElementById('gifLoading').style.display = 'none';
+  img.src = url;
+  img.style.display = 'block';
+  img.onerror = function() {
+    this.style.display = 'none';
+    showGifFallback(session.exercises[currentIdx].name);
+  };
+}
+
+function showGifFallback(name) {
+  document.getElementById('gifLoading').style.display = 'none';
+  // Afficher le nom de l'exercice en grand dans le conteneur
+  var container = document.querySelector('.gif-container');
+  var fb = document.getElementById('gifFallback');
+  if (!fb) {
+    fb = document.createElement('div');
+    fb.id = 'gifFallback';
+    fb.style.cssText = 'display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;padding:20px;text-align:center;';
+    container.appendChild(fb);
+  }
+  fb.innerHTML = '<div style="font-size:56px">💪</div>' +
+    '<div style="font-size:18px;font-weight:600;color:#1D1A16">' + name + '</div>' +
+    '<div style="font-size:12px;color:#888">Follow the instructions below</div>';
+  fb.style.display = 'flex';
+}
+
+function preloadGifs() {
+  for (var i = 1; i <= 2 && i < session.exercises.length; i++) {
+    var ex = session.exercises[i];
+    if (ex.id && !gifCache[ex.id]) {
+      fetch(EX_DB_BASE + '/' + ex.id)
+        .then(function(r){ return r.json(); })
+        .then(function(data){ if(data.gifUrl) gifCache[data.id] = data.gifUrl; })
+        .catch(function(){});
+    }
+  }
+}
+
+// ══════════════════════════════════════════════════════════════════
+// TIMER
+// ══════════════════════════════════════════════════════════════════
+function togglePlayPause() {
+  if (isPlaying) {
+    pauseTimer();
+  } else {
+    startTimer();
+    if (!sessionStartTime) sessionStartTime = Date.now();
+  }
+}
+
+function startTimer() {
+  isPlaying = true;
+  document.getElementById('btnPlayPause').textContent = '⏸ Pause';
+  document.getElementById('timerStatus').textContent = 'active';
+  document.getElementById('pulsingDot').style.display = 'inline-block';
+
+  timerInterval = setInterval(function() {
+    timeLeft--;
+    updateTimerDisplay();
+    updateTimerRing(timeLeft / totalTime);
+
+    if (timeLeft <= 0) {
+      clearInterval(timerInterval);
+      onExerciseComplete();
+    }
+  }, 1000);
+}
+
+function pauseTimer() {
+  clearInterval(timerInterval);
+  isPlaying = false;
+  document.getElementById('btnPlayPause').textContent = '▶ Resume';
+  document.getElementById('timerStatus').textContent = 'paused';
+  document.getElementById('pulsingDot').style.display = 'none';
+}
+
+function stopTimer() {
+  clearInterval(timerInterval);
+  isPlaying = false;
+}
+
+function onExerciseComplete() {
+  // Mark as done in sidebar
+  var numEl = document.getElementById('ex-num-' + currentIdx);
+  if (numEl) { numEl.className = 'ex-num done'; numEl.innerHTML = '✓'; }
+
+  var dotEl = document.getElementById('dot-' + currentIdx);
+  if (dotEl) dotEl.style.background = '#5DCAA5';
+
+  if (currentIdx < session.exercises.length - 1) {
+    setTimeout(function() { loadExercise(currentIdx + 1); startTimer(); }, 800);
+  } else {
+    showCompleted();
+  }
+}
+
+function updateTimerDisplay() {
+  var m = Math.floor(timeLeft / 60);
+  var s = timeLeft % 60;
+  document.getElementById('timerDisplay').textContent = m + ':' + (s < 10 ? '0' : '') + s;
+}
+
+function updateTimerRing(fraction) {
+  var circumference = 351.86;
+  var offset = circumference * (1 - Math.max(0, Math.min(1, fraction)));
+  document.getElementById('timerRing').style.strokeDashoffset = offset;
+
+  // Color changes
+  var color = fraction > 0.5 ? '#EC9679' : fraction > 0.25 ? '#EF9F27' : '#E24B4A';
+  document.getElementById('timerRing').style.stroke = color;
+}
+
+// ══════════════════════════════════════════════════════════════════
+// NAVIGATION
+// ══════════════════════════════════════════════════════════════════
+function nextExercise() {
+  if (currentIdx < session.exercises.length - 1) {
+    loadExercise(currentIdx + 1);
+  } else {
+    showCompleted();
+  }
+}
+
+function prevExercise() {
+  if (currentIdx > 0) loadExercise(currentIdx - 1);
+}
+
+function jumpToExercise(idx) {
+  loadExercise(idx);
+}
+
+// ══════════════════════════════════════════════════════════════════
+// UI UPDATES
+// ══════════════════════════════════════════════════════════════════
+function updateSidebarList(idx) {
+  session.exercises.forEach(function(ex, i) {
+    var item = document.getElementById('ex-item-' + i);
+    var num  = document.getElementById('ex-num-' + i);
+    if (!item || !num) return;
+
+    item.className = 'ex-item' + (i === idx ? ' active' : '') + (i < idx ? ' done' : '');
+    if (i < idx) {
+      num.className = 'ex-num done';
+      num.innerHTML = '✓';
+    } else if (i === idx) {
+      num.className = 'ex-num active';
+      num.textContent = i + 1;
+    } else {
+      num.className = 'ex-num pending';
+      num.textContent = i + 1;
+    }
+  });
+}
+
+function updateProgress(idx) {
+  var total = session.exercises.length;
+  var pct = Math.round((idx / total) * 100);
+
+  document.getElementById('sideProgress').textContent = idx + ' / ' + total;
+  document.getElementById('sideProgressBar').style.width = pct + '%';
+  document.getElementById('mobileProgress').textContent = (idx+1) + ' / ' + total;
+
+  // Dots
+  session.exercises.forEach(function(ex, i) {
+    var d = document.getElementById('dot-' + i);
+    if (!d) return;
+    if (i < idx) d.style.background = '#5DCAA5';
+    else if (i === idx) d.style.background = '#EC9679';
+    else d.style.background = '#E4E0DC';
+    d.style.width  = i === idx ? '20px' : '8px';
+    d.style.borderRadius = i === idx ? '4px' : '50%';
+  });
+}
+
+// ══════════════════════════════════════════════════════════════════
+// COMPLETED
+// ══════════════════════════════════════════════════════════════════
+function showCompleted() {
+  stopTimer();
+  var elapsed = sessionStartTime ? Math.round((Date.now() - sessionStartTime) / 60000) : session.duration;
+  document.getElementById('completedMsg').textContent =
+    'You completed ' + session.title + '. Every move counts.';
+  document.getElementById('completedDuration').textContent = elapsed + ' min';
+  document.getElementById('completedExCount').textContent = session.exercises.length;
+  document.getElementById('completedIntensity').textContent = session.intensity;
+
+  var screen = document.getElementById('completedScreen');
+  screen.style.display = 'flex';
+}
+
+function restartSession() {
+  document.getElementById('completedScreen').style.display = 'none';
+  sessionStartTime = null;
+  gifCache = {};
+  initSession();
+}
+
+// ══════════════════════════════════════════════════════════════════
+// HELPERS
+// ══════════════════════════════════════════════════════════════════
+function formatDuration(s) {
+  if (s >= 60) return Math.floor(s/60) + ' min ' + (s%60>0 ? s%60+'s' : '');
+  return s + 's';
+}
+
+function confirmExit() {
+  if (isPlaying || currentIdx > 0) {
+    if (confirm('Exit this session? Your progress will be lost.')) {
+      window.history.back();
+    }
+  } else {
+    window.history.back();
+  }
+}
+</script>
+</body>
+</html>
