@@ -476,13 +476,12 @@ function updateRing(frac) {
 
 function showCompleted() {
   stopTimer();
-  var elapsed=startTime?Math.round((Date.now()-startTime)/60000):session.duration;
-  document.getElementById('completedMsg').textContent='You completed '+session.title+'. Every move counts.';
-  document.getElementById('cDur').textContent=elapsed+' min';
-  document.getElementById('cEx').textContent=session.exercises.length;
-  document.getElementById('cInt').textContent=session.intensity;
-  var el=document.getElementById('completedScreen');
-  el.style.display='flex';
+  pauseYouTube();
+  var elapsed = startTime ? Math.round((Date.now() - startTime) / 60000) : session.duration;
+  if (elapsed < 1) elapsed = 1;
+  // Rediriger vers la page celebration avec les infos de session
+  var params = '?duration=' + elapsed + '&name=' + encodeURIComponent(session.title);
+  window.location.href = 'celebration.html' + params;
 }
 
 function restartSession() {
