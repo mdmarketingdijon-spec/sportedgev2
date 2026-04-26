@@ -14,6 +14,7 @@ body { font-family: 'Outfit', sans-serif; background: #FBFAF9; color: #1D1A16; m
 .timer-ring-progress { fill: none; stroke: #EC9679; stroke-width: 6; stroke-linecap: round; transition: stroke-dashoffset 1s linear; }
 .gif-container { background: #F6F5F3; border-radius: 20px; overflow: hidden; display: flex; align-items: center; justify-content: center; position: relative; }
 .gif-container img { width: 100%; height: 100%; object-fit: contain; }
+.gif-container { overflow-y: auto; }
 .prog-bar { height: 4px; background: #E4E0DC; border-radius: 2px; overflow: hidden; }
 .prog-fill { height: 100%; background: #EC9679; border-radius: 2px; transition: width 0.5s ease; }
 .btn-primary { background: #EC9679; color: #1D1A16; font-weight: 600; font-size: 16px; padding: 14px 32px; border-radius: 50px; border: none; cursor: pointer; transition: all 0.2s; }
@@ -270,39 +271,35 @@ function loadEx(idx) {
 }
 
 var EX_CACHE = {};
-var EX_SEARCH = {"jumping jacks": "jumping jack", "squat jump": "jump squat", "mountain climbers": "mountain climber", "burpee": "burpee", "high knees": "high knees", "push up": "push-up", "lateral shuffle": "shuffle", "plank hold": "plank", "plank": "plank", "squat": "squat", "reverse lunge": "reverse lunge", "lunge": "lunge", "glute bridge": "glute bridge", "dead bug": "dead bug", "bird dog": "bird dog", "calf raise": "calf raise", "tricep dip": "triceps dip", "shoulder roll": "shoulder", "chest opener": "chest stretch", "side stretch": "side bend", "forward fold": "forward bend", "hip circle": "hip rotation", "hip flexor": "hip flexor", "low lunge": "lunge", "bridge pose": "bridge", "child's pose": "child", "cobra pose": "cobra", "downward dog": "downward", "warrior": "warrior", "vinyasa flow": "yoga", "sun salutation": "yoga", "mountain pose": "standing", "recovery jog": "jogging", "easy jog": "jogging", "steady-state run": "run", "tempo run": "running", "hill sprint": "sprint", "walking": "walk", "body scan": "breathing", "breath": "breathing", "morning clarity": "yoga", "mindful": "yoga"};
+var EX_SEARCH = {"Jumping Jacks": "jumping", "Squat Jump": "squat", "Mountain Climbers": "mountain", "Burpee": "burpee", "High Knees": "knee", "Push Up": "push", "Lateral Shuffle": "lateral", "Plank Hold": "plank", "Plank": "plank", "Squat": "squat", "Reverse Lunge": "lunge", "Lunge": "lunge", "Glute Bridge": "glute", "Dead Bug": "dead bug", "Bird Dog": "bird", "Calf Raise": "calf", "Tricep Dip": "tricep", "Shoulder Roll": "shoulder", "Chest Opener": "chest", "Side Stretch": "side", "Forward Fold": "forward", "Hip Circle": "hip", "Hip Flexor": "hip flexor", "Low Lunge": "lunge", "Bridge Pose": "bridge", "Child's Pose": "child", "Cobra Pose": "cobra", "Downward Dog": "downward", "Warrior": "warrior", "Sun Salutation": "sun", "Vinyasa Flow": "flow", "Recovery Jog": "run", "Easy Jog": "run", "Steady-State Run": "run", "Tempo Run": "run", "Hill Sprint Session": "sprint", "Body Scan": "sit", "Breath Awareness": "sit", "Morning Clarity": "sit", "Mindful Space": "sit"};
 
 function getSearchTerm(exName) {
-  var lower = exName.toLowerCase();
   for (var key in EX_SEARCH) {
-    if (lower.indexOf(key) !== -1) return EX_SEARCH[key];
+    if (exName.toLowerCase().indexOf(key.toLowerCase()) !== -1) return EX_SEARCH[key];
   }
-  return lower;
+  // Prendre le premier mot du nom
+  return exName.split(' ')[0].toLowerCase();
 }
 
 function loadGif(exId, exIdx) {
   var exName = session.exercises[exIdx].name;
-  
+
   if (EX_CACHE[exId]) {
-    showGifUrl(EX_CACHE[exId], exIdx);
+    showExerciseData(EX_CACHE[exId], exIdx);
     return;
   }
-  
+
   document.getElementById('gifLoading').style.display = 'flex';
   document.getElementById('exGif').style.display = 'none';
-  
+
   var searchTerm = getSearchTerm(exName);
-  
-  // Appel via le proxy Vercel (contourne le CORS)
+
   fetch('/api/exercise?name=' + encodeURIComponent(searchTerm))
-    .then(function(r) {
-      if (!r.ok) throw new Error('HTTP ' + r.status);
-      return r.json();
-    })
+    .then(function(r) { return r.json(); })
     .then(function(data) {
-      if (data.gifUrl) {
-        EX_CACHE[exId] = data.gifUrl;
-        if (curIdx === exIdx) showGifUrl(data.gifUrl, exIdx);
+      if (data.name) {
+        EX_CACHE[exId] = data;
+        if (curIdx === exIdx) showExerciseData(data, exIdx);
       } else {
         if (curIdx === exIdx) showFallback(exName);
       }
@@ -312,15 +309,72 @@ function loadGif(exId, exIdx) {
     });
 }
 
-function showGifUrl(url, exIdx) {
+function showExerciseData(data, exIdx) {
   document.getElementById('gifLoading').style.display = 'none';
-  var img = document.getElementById('exGif');
-  img.src = url;
-  img.style.display = 'block';
-  img.onerror = function() {
-    this.style.display = 'none';
-    showFallback(session.exercises[exIdx] ? session.exercises[exIdx].name : 'Exercise');
-  };
+  document.getElementById('exGif').style.display = 'none';
+
+  // Si gifUrl disponible, afficher le GIF
+  if (data.gifUrl) {
+    var img = document.getElementById('exGif');
+    img.src = data.gifUrl;
+    img.style.display = 'block';
+    img.onerror = function() {
+      this.style.display = 'none';
+      showInstructions(data, exIdx);
+    };
+    return;
+  }
+
+  // Sinon afficher les instructions détaillées
+  showInstructions(data, exIdx);
+}
+
+function showInstructions(data, exIdx) {
+  document.getElementById('gifLoading').style.display = 'none';
+  document.getElementById('exGif').style.display = 'none';
+
+  var container = document.querySelector('.gif-container');
+  var fb = document.getElementById('gifFallback');
+  if (!fb) {
+    fb = document.createElement('div');
+    fb.id = 'gifFallback';
+    fb.style.cssText = 'position:absolute;inset:0;overflow-y:auto;padding:16px;';
+    container.appendChild(fb);
+  }
+
+  // Icône selon catégorie
+  var cat = session ? session.category : '';
+  var icon = cat.indexOf('Yoga')!==-1||cat.indexOf('Breath')!==-1?'🧘':
+             cat.indexOf('Medit')!==-1?'🌿':
+             cat.indexOf('Stretch')!==-1||cat.indexOf('Mobil')!==-1?'🤸':
+             cat.indexOf('Outdoor')!==-1||cat.indexOf('Run')!==-1?'🏃':
+             cat.indexOf('HIIT')!==-1||cat.indexOf('Cardio')!==-1?'⚡':'💪';
+
+  var instructions = data.instructions || [];
+  var stepsHTML = '';
+
+  if (instructions.length > 0) {
+    stepsHTML = '<div style="display:flex;flex-direction:column;gap:6px;margin-top:8px;">';
+    instructions.slice(0, 4).forEach(function(step, i) {
+      stepsHTML += '<div style="display:flex;gap:8px;align-items:flex-start;">'
+        + '<div style="min-width:20px;height:20px;border-radius:50%;background:#EC9679;color:white;'
+        + 'font-size:10px;font-weight:700;display:flex;align-items:center;justify-content:center;margin-top:1px;">'
+        + (i+1) + '</div>'
+        + '<div style="font-size:12px;color:#6A5E53;line-height:1.4;">' + step + '</div></div>';
+    });
+    stepsHTML += '</div>';
+  }
+
+  fb.innerHTML =
+    '<div style="display:flex;align-items:center;gap:8px;margin-bottom:8px;">'
+    + '<span style="font-size:28px">' + icon + '</span>'
+    + '<div>'
+    + '<div style="font-size:13px;font-weight:600;color:#1D1A16">' + (data.name || '') + '</div>'
+    + (data.target ? '<div style="font-size:11px;color:#EC9679;text-transform:capitalize">' + data.target + '</div>' : '')
+    + '</div></div>'
+    + (data.description ? '<div style="font-size:11px;color:#888;margin-bottom:8px;line-height:1.4">' + data.description.substring(0,120) + '...</div>' : '')
+    + stepsHTML;
+  fb.style.display = 'block';
 }
 
 function showFallback(name) {
