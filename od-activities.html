@@ -455,31 +455,28 @@
 
 
 
+
 <script>
-// SE-SEARCH v3
+// SE-SEARCH v4
 document.addEventListener('DOMContentLoaded', function() {
   'use strict';
 
   var DB = [{"type": "category", "title": "Stretching & Mobility", "dest": "library-stretching.html", "keywords": ["stretching", "stretch", "mobility", "flexible", "flexibility", "souplesse", "étirement", "corps", "relax", "morning", "warm up", "cool down", "joint", "muscles"]}, {"type": "category", "title": "HIIT & Cardio", "dest": "library-hiit.html", "keywords": ["hiit", "cardio", "interval", "intense", "fat burn", "burn", "sweat", "heart", "endurance", "sprint", "tabata", "jumping", "high intensity", "workout", "fitness"]}, {"type": "category", "title": "Yoga & Breathwork", "dest": "library-yoga.html", "keywords": ["yoga", "breath", "breathwork", "breathing", "flow", "vinyasa", "pranayama", "meditation", "mindful", "calm", "zen", "balance", "posture", "respiration"]}, {"type": "category", "title": "Outdoor Runs", "dest": "library-outdoor-runs.html", "keywords": ["outdoor", "run", "running", "jog", "jogging", "walk", "outside", "nature", "trail", "park", "fresh air", "extérieur", "course", "sprint", "hill"]}, {"type": "category", "title": "Strength & Body", "dest": "library-strength.html", "keywords": ["strength", "strong", "muscle", "bodyweight", "core", "abs", "push", "squat", "lunge", "plank", "resistance", "tone", "body", "force", "build"]}, {"type": "category", "title": "Mindful Meditation", "dest": "library-meditation.html", "keywords": ["meditation", "meditate", "mindful", "mindfulness", "relax", "stress", "anxiety", "sleep", "calm", "peace", "focus", "clarity", "body scan", "awareness", "mind"]}, {"type": "session", "title": "Morning wake-up stretch", "category": "Stretching & Mobility", "dest": "library-stretching.html", "intensity": "Low", "duration": "10 min", "keywords": ["morning", "wake up", "stretch", "gentle", "start", "day", "easy", "soft", "réveil", "matin"]}, {"type": "session", "title": "Hip flexor release", "category": "Stretching & Mobility", "dest": "library-stretching.html", "intensity": "Low", "duration": "12 min", "keywords": ["hip", "flexor", "hips", "lower back", "back pain", "release", "tension", "pelvis", "hanches"]}, {"type": "session", "title": "Neck and shoulder relief", "category": "Stretching & Mobility", "dest": "library-stretching.html", "intensity": "Low", "duration": "8 min", "keywords": ["neck", "shoulder", "relief", "tension", "desk", "office", "back", "upper body", "cou", "épaules"]}, {"type": "session", "title": "Full body mobility flow", "category": "Stretching & Mobility", "dest": "library-stretching.html", "intensity": "Medium", "duration": "20 min", "keywords": ["full body", "mobility", "flow", "dynamic", "range", "motion", "complete", "corps entier"]}, {"type": "session", "title": "Active flexibility circuit", "category": "Stretching & Mobility", "dest": "library-stretching.html", "intensity": "Medium", "duration": "18 min", "keywords": ["flexibility", "circuit", "active", "controlled", "movement", "dynamic stretch"]}, {"type": "session", "title": "Spinal mobility reset", "category": "Stretching & Mobility", "dest": "library-stretching.html", "intensity": "Medium", "duration": "15 min", "keywords": ["spine", "spinal", "back", "lumbar", "thoracic", "reset", "posture", "dos", "colonne"]}, {"type": "session", "title": "Deep flexibility challenge", "category": "Stretching & Mobility", "dest": "library-stretching.html", "intensity": "High", "duration": "25 min", "keywords": ["deep", "advanced", "challenge", "flexibility", "intense", "hold", "splits", "avancé"]}, {"type": "session", "title": "Athlete mobility prep", "category": "Stretching & Mobility", "dest": "library-stretching.html", "intensity": "High", "duration": "22 min", "keywords": ["athlete", "sport", "prep", "dynamic", "performance", "warmup", "preparation"]}, {"type": "session", "title": "Low impact cardio warm-up", "category": "HIIT & Cardio", "dest": "library-hiit.html", "intensity": "Low", "duration": "10 min", "keywords": ["low impact", "cardio", "warm up", "gentle", "beginner", "easy", "start", "no jump"]}, {"type": "session", "title": "Walking cardio flow", "category": "HIIT & Cardio", "dest": "library-hiit.html", "intensity": "Low", "duration": "15 min", "keywords": ["walking", "walk", "cardio", "steady", "low", "easy", "flow", "marche"]}, {"type": "session", "title": "Easy step cardio", "category": "HIIT & Cardio", "dest": "library-hiit.html", "intensity": "Low", "duration": "12 min", "keywords": ["easy", "step", "beginner", "cardio", "basic", "débutant"]}, {"type": "session", "title": "Soft cardio cool-down", "category": "HIIT & Cardio", "dest": "library-hiit.html", "intensity": "Low", "duration": "10 min", "keywords": ["cool down", "soft", "recovery", "end", "finish", "relax", "heart rate", "récupération"]}, {"type": "session", "title": "Bodyweight cardio blast", "category": "HIIT & Cardio", "dest": "library-hiit.html", "intensity": "Medium", "duration": "20 min", "keywords": ["bodyweight", "cardio", "blast", "moderate", "no equipment", "sans matériel"]}, {"type": "session", "title": "Jump-free HIIT", "category": "HIIT & Cardio", "dest": "library-hiit.html", "intensity": "Medium", "duration": "18 min", "keywords": ["jump free", "no jump", "hiit", "low impact", "intense", "knee", "articulations"]}, {"type": "session", "title": "Core cardio circuit", "category": "HIIT & Cardio", "dest": "library-hiit.html", "intensity": "Medium", "duration": "22 min", "keywords": ["core", "cardio", "circuit", "abs", "abdominal", "combine", "gainage"]}, {"type": "session", "title": "Interval endurance run", "category": "HIIT & Cardio", "dest": "library-hiit.html", "intensity": "Medium", "duration": "25 min", "keywords": ["interval", "endurance", "run", "running", "threshold", "pace", "course"]}, {"type": "session", "title": "Classic HIIT", "category": "HIIT & Cardio", "dest": "library-hiit.html", "intensity": "High", "duration": "20 min", "keywords": ["classic", "hiit", "high intensity", "max effort", "intense", "40/20", "protocol"]}, {"type": "session", "title": "Tabata full body", "category": "HIIT & Cardio", "dest": "library-hiit.html", "intensity": "High", "duration": "16 min", "keywords": ["tabata", "full body", "4 minutes", "rounds", "intense", "short", "quick"]}, {"type": "session", "title": "Sprint interval training", "category": "HIIT & Cardio", "dest": "library-hiit.html", "intensity": "High", "duration": "25 min", "keywords": ["sprint", "interval", "speed", "burst", "fast", "explosive", "rapide"]}, {"type": "session", "title": "Cardio burnout finisher", "category": "HIIT & Cardio", "dest": "library-hiit.html", "intensity": "High", "duration": "18 min", "keywords": ["burnout", "finisher", "all out", "finish", "end", "max", "finale"]}, {"type": "session", "title": "Restorative Yoga", "category": "Yoga & Breathwork", "dest": "library-yoga.html", "intensity": "Low", "duration": "20 min", "keywords": ["restorative", "yoga", "relax", "supported", "rest", "gentle", "soft", "restauratif"]}, {"type": "session", "title": "Breathwork for Calm", "category": "Yoga & Breathwork", "dest": "library-yoga.html", "intensity": "Low", "duration": "10 min", "keywords": ["breathwork", "calm", "anxiety", "stress", "box breathing", "nervous", "calme", "respiration"]}, {"type": "session", "title": "Vinyasa Flow", "category": "Yoga & Breathwork", "dest": "library-yoga.html", "intensity": "Medium", "duration": "30 min", "keywords": ["vinyasa", "flow", "yoga", "breath", "dynamic", "sequence", "intermediate"]}, {"type": "session", "title": "Pranayama Practice", "category": "Yoga & Breathwork", "dest": "library-yoga.html", "intensity": "Medium", "duration": "15 min", "keywords": ["pranayama", "breathing", "breath control", "guided", "technique", "respiration"]}, {"type": "session", "title": "Power Yoga", "category": "Yoga & Breathwork", "dest": "library-yoga.html", "intensity": "High", "duration": "35 min", "keywords": ["power yoga", "strong", "strength", "advanced", "dynamic", "intense", "challenging"]}, {"type": "session", "title": "Breath of Fire Circuit", "category": "Yoga & Breathwork", "dest": "library-yoga.html", "intensity": "High", "duration": "20 min", "keywords": ["breath of fire", "energizing", "advanced", "fire", "kundalini", "intense", "feu"]}, {"type": "session", "title": "Easy Morning Walk-Run", "category": "Outdoor Runs", "dest": "library-outdoor-runs.html", "intensity": "Low", "duration": "20 min", "keywords": ["easy", "morning", "walk run", "beginner", "outdoor", "gentle", "start running"]}, {"type": "session", "title": "Recovery Jog", "category": "Outdoor Runs", "dest": "library-outdoor-runs.html", "intensity": "Low", "duration": "25 min", "keywords": ["recovery", "jog", "slow", "easy", "rest day", "conversational", "récupération"]}, {"type": "session", "title": "Steady-State Run", "category": "Outdoor Runs", "dest": "library-outdoor-runs.html", "intensity": "Medium", "duration": "30 min", "keywords": ["steady state", "aerobic", "comfortable", "pace", "moderate", "run"]}, {"type": "session", "title": "Tempo Run", "category": "Outdoor Runs", "dest": "library-outdoor-runs.html", "intensity": "Medium", "duration": "35 min", "keywords": ["tempo", "threshold", "sustained", "effort", "pace", "race", "performance"]}, {"type": "session", "title": "Hill Sprint Session", "category": "Outdoor Runs", "dest": "library-outdoor-runs.html", "intensity": "High", "duration": "30 min", "keywords": ["hill", "sprint", "uphill", "incline", "power", "explosive", "côte", "colline"]}, {"type": "session", "title": "Minimalist Core Strength", "category": "Strength & Body", "dest": "library-strength.html", "intensity": "Low", "duration": "10 min", "keywords": ["core", "minimalist", "basic", "beginner", "abs", "plank", "simple", "gainage"]}, {"type": "session", "title": "Bodyweight Power Hour", "category": "Strength & Body", "dest": "library-strength.html", "intensity": "Low", "duration": "20 min", "keywords": ["bodyweight", "power", "no equipment", "squat", "push up", "lunge", "sans matériel"]}, {"type": "session", "title": "Primal Movement Flow", "category": "Strength & Body", "dest": "library-strength.html", "intensity": "Low", "duration": "15 min", "keywords": ["primal", "movement", "natural", "flow", "crawl", "functional", "mobilité"]}, {"type": "session", "title": "Wall-Assisted Strength", "category": "Strength & Body", "dest": "library-strength.html", "intensity": "Medium", "duration": "12 min", "keywords": ["wall", "assisted", "accessible", "support", "beginner", "strength", "mur"]}, {"type": "session", "title": "The Slow & Steady Burn", "category": "Strength & Body", "dest": "library-strength.html", "intensity": "Medium", "duration": "18 min", "keywords": ["slow", "steady", "burn", "tempo", "controlled", "muscle", "lent"]}, {"type": "session", "title": "Lower Body Grounding", "category": "Strength & Body", "dest": "library-strength.html", "intensity": "Medium", "duration": "22 min", "keywords": ["lower body", "legs", "glutes", "squat", "lunge", "grounding", "jambes", "fessiers"]}, {"type": "session", "title": "Upper Body Activation", "category": "Strength & Body", "dest": "library-strength.html", "intensity": "High", "duration": "10 min", "keywords": ["upper body", "arms", "shoulders", "push up", "chest", "triceps", "haut du corps"]}, {"type": "session", "title": "Dumbbell Foundational", "category": "Strength & Body", "dest": "library-strength.html", "intensity": "High", "duration": "20 min", "keywords": ["dumbbell", "weights", "haltères", "compound", "foundational", "lift", "poids"]}, {"type": "session", "title": "Stability Ball Basics", "category": "Strength & Body", "dest": "library-strength.html", "intensity": "Low", "duration": "15 min", "keywords": ["stability ball", "ball", "balance", "core", "swiss ball", "stabilité"]}, {"type": "session", "title": "The Weekend Warrior", "category": "Strength & Body", "dest": "library-strength.html", "intensity": "Medium", "duration": "25 min", "keywords": ["weekend", "warrior", "full body", "complete", "strong", "challenge"]}, {"type": "session", "title": "Breath Awareness", "category": "Mindful Meditation", "dest": "library-meditation.html", "intensity": "Low", "duration": "10 min", "keywords": ["breath", "awareness", "focus", "mindful", "breathing", "simple", "beginner"]}, {"type": "session", "title": "Body Scan for Rest", "category": "Mindful Meditation", "dest": "library-meditation.html", "intensity": "Low", "duration": "15 min", "keywords": ["body scan", "rest", "sleep", "relax", "progressive", "relaxation", "tension"]}, {"type": "session", "title": "Morning Clarity", "category": "Mindful Meditation", "dest": "library-meditation.html", "intensity": "Medium", "duration": "12 min", "keywords": ["morning", "clarity", "focus", "start day", "intention", "mindset", "matin"]}, {"type": "session", "title": "Mindful Space", "category": "Mindful Meditation", "dest": "library-meditation.html", "intensity": "High", "duration": "20 min", "keywords": ["mindful space", "deep", "immersive", "visualisation", "advanced", "journey"]}];
 
-  // Cibler l'input par son id
+  // Trouver l'input
   var input = document.getElementById('se-search-input');
-  if (!input) {
-    input = document.querySelector('input[type="text"]');
-  }
+  if (!input) { input = document.querySelector('input[type="text"]'); }
   if (!input) { return; }
 
-  // Conteneur parent relatif
-  var container = input.parentElement;
-  while (container && container.style.position !== 'relative' && !container.classList.contains('relative')) {
+  // IMPORTANT : remonter jusqu'au div.relative.group - PAS le div.absolute parent immédiat
+  // Structure : div.relative.group > div.absolute.pointer-events-none > input
+  var container = input.parentElement; // div.absolute (pointer-events-none)
+  while (container && !container.className.match(/\brelative\b/)) {
     container = container.parentElement;
   }
   if (!container) container = input.parentElement;
 
-  // Forcer position relative sur le conteneur
-  container.style.position = 'relative';
-
-  // Créer le panneau de résultats
+  // Panneau de résultats attaché au bon container, avec pointer-events:auto forcé
   var panel = document.createElement('div');
   panel.id = 'se-results';
   panel.style.cssText = [
@@ -495,7 +492,9 @@ document.addEventListener('DOMContentLoaded', function() {
     'z-index:9999',
     'max-height:460px',
     'overflow-y:auto',
-    'padding:8px'
+    'padding:8px',
+    'pointer-events:auto',  // CRITIQUE : forcer même si parent a pointer-events-none
+    'cursor:default'
   ].join(';');
   container.appendChild(panel);
 
@@ -511,7 +510,7 @@ document.addEventListener('DOMContentLoaded', function() {
   var INT_TX = {'Low':'#1D4ED8','Medium':'#5B21B6','High':'#B91C1C'};
 
   function search(q) {
-    q = (q || '').trim().toLowerCase();
+    q = (q||'').trim().toLowerCase();
     if (q.length < 2) { panel.style.display = 'none'; return; }
     var hits = [];
     for (var i = 0; i < DB.length; i++) {
@@ -533,7 +532,7 @@ document.addEventListener('DOMContentLoaded', function() {
   }
 
   function esc(s) {
-    return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+    return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
   }
 
   function render(hits, q) {
@@ -548,12 +547,10 @@ document.addEventListener('DOMContentLoaded', function() {
 
     if (cats.length) {
       html += '<div style="padding:6px 12px 2px;font-size:11px;font-weight:700;color:#6A5E53;text-transform:uppercase;letter-spacing:.06em">Categories</div>';
-      for (var i=0;i<cats.length;i++) {
+      for (var i = 0; i < cats.length; i++) {
         var item = cats[i].item;
         var bg = CAT_BG[item.title] || '#F6F5F3';
-        html += '<div onclick="window.location.href='' + esc(item.dest) + ''" '
-          + 'style="display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:14px;cursor:pointer" '
-          + 'onmouseover="this.style.background='' + bg + ''" onmouseout="this.style.background='transparent'">'
+        html += '<div data-href="' + esc(item.dest) + '" class="se-result-item" style="display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:14px;cursor:pointer;pointer-events:auto">'
           + '<div style="width:36px;height:36px;border-radius:10px;background:' + bg + ';display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0">📂</div>'
           + '<div><div style="font-size:14px;font-weight:600;color:#1D1A16">' + esc(item.title) + '</div>'
           + '<div style="font-size:12px;color:#6A5E53">View all sessions →</div></div></div>';
@@ -562,13 +559,11 @@ document.addEventListener('DOMContentLoaded', function() {
 
     if (sess.length) {
       html += '<div style="padding:6px 12px 2px;font-size:11px;font-weight:700;color:#6A5E53;text-transform:uppercase;letter-spacing:.06em;margin-top:4px">Sessions</div>';
-      for (var j=0;j<sess.length;j++) {
+      for (var j = 0; j < sess.length; j++) {
         var it = sess[j].item;
         var ibg = INT_BG[it.intensity] || '#F6F5F3';
         var itx = INT_TX[it.intensity] || '#1D1A16';
-        html += '<div onclick="window.location.href='' + esc(it.dest) + ''" '
-          + 'style="display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:14px;cursor:pointer" '
-          + 'onmouseover="this.style.background='#F6F5F3'" onmouseout="this.style.background='transparent'">'
+        html += '<div data-href="' + esc(it.dest) + '" class="se-result-item" style="display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:14px;cursor:pointer;pointer-events:auto">'
           + '<div style="width:36px;height:36px;border-radius:10px;background:#F6F5F3;display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0">▶</div>'
           + '<div style="flex:1;min-width:0">'
           + '<div style="font-size:14px;font-weight:600;color:#1D1A16;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">' + esc(it.title) + '</div>'
@@ -582,20 +577,34 @@ document.addEventListener('DOMContentLoaded', function() {
 
     panel.innerHTML = html;
     panel.style.display = 'block';
+
+    // Attacher les clics APRES injection HTML
+    panel.querySelectorAll('.se-result-item').forEach(function(el) {
+      el.addEventListener('click', function(e) {
+        e.stopPropagation();
+        var dest = this.getAttribute('data-href');
+        if (dest) window.location.href = dest;
+      });
+      el.addEventListener('mouseover', function() {
+        this.style.background = '#F6F5F3';
+      });
+      el.addEventListener('mouseout', function() {
+        this.style.background = 'transparent';
+      });
+    });
   }
 
   input.addEventListener('input', function() { search(this.value); });
   input.addEventListener('keydown', function(e) {
     if (e.key === 'Escape') { panel.style.display = 'none'; this.blur(); }
     if (e.key === 'Enter') {
-      var first = panel.querySelector('[onclick]');
+      var first = panel.querySelector('.se-result-item');
       if (first) first.click();
     }
   });
   document.addEventListener('mousedown', function(e) {
     if (!container.contains(e.target)) panel.style.display = 'none';
   });
-
 });
 </script>
 </body>
