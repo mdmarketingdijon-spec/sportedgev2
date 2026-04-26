@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html><head><meta charset="UTF-8"><title>Proxy Test</title></head>
+<body style="font-family:sans-serif;padding:20px;">
+<h2>Test proxy /api/exercise</h2>
+<p id="status">Testing...</p>
+<div id="result" style="margin-top:16px;"></div>
+<script>
+fetch('/api/exercise?name=jumping%20jack')
+  .then(r => r.json())
+  .then(data => {
+    document.getElementById('status').textContent = '✓ Proxy OK';
+    if (data.gifUrl) {
+      document.getElementById('result').innerHTML = 
+        '<p><b>' + data.name + '</b></p>' +
+        '<img src="' + data.gifUrl + '" style="height:200px;border-radius:8px;">' +
+        '<p style="font-size:12px;color:#888">gifUrl: ' + data.gifUrl + '</p>';
+    } else {
+      document.getElementById('result').textContent = JSON.stringify(data);
+    }
+  })
+  .catch(e => {
+    document.getElementById('status').textContent = '✗ FAILED: ' + e.message;
+  });
+</script>
+</body></html>

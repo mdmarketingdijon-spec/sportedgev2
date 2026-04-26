@@ -1,7 +1,5 @@
 {
-  "functions": {
-    "api/exercise.js": {
-      "runtime": "edge"
-    }
-  }
+  "rewrites": [
+    { "source": "/api/exercise", "destination": "/api/exercise.js" }
+  ]
 }
