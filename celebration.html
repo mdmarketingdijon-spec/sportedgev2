@@ -91,7 +91,7 @@
       <div class="absolute -top-10 left-1/2 -translate-x-1/2 w-48 h-48 bg-[#EC9679]/20 rounded-full blur-3xl"></div>
       
       <!-- Profile/App Icon Circle -->
-      <div class="relative w-32 h-32 rounded-full bg-[#FBEAE4] border-[4px] border-[#FBFAF9] shadow-lg flex items-center justify-center animate-float">
+      <div class="relative w-32 h-32 rounded-full bg-[#FBEAE4] border-[4px] border-[#FBFAF9] shadow-lg flex items-center justify-center animate-float cursor-pointer hover:scale-105 transition-transform" onclick="openBoltChat()" title="Talk to Bolt">
         <!-- Sparkle Badge -->
         <div class="absolute -top-1 -right-1 w-8 h-8 bg-white rounded-full border-2 border-[#FBFAF9] shadow-sm flex items-center justify-center">
           <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxNiIgaGVpZ2h0PSIxNiIgIHZpZXdCb3g9IjAgMCAxNiAxNiI+PGcgdHJhbnNmb3JtPSJtYXRyaXgoMSAwIDAgMSAwIDApIiAgPjxnIHN0eWxlPSIiICAgPjxnIHRyYW5zZm9ybT0ibWF0cml4KDAuNjcgMCAwIDAuNjcgOCA4KSIgID48cGF0aCBzdHlsZT0ic3Ryb2tlOiBub25lOyBzdHJva2Utd2lkdGg6IDE7IHN0cm9rZS1kYXNoYXJyYXk6IG5vbmU7IHN0cm9rZS1saW5lY2FwOiBidXR0OyBzdHJva2UtZGFzaG9mZnNldDogMDsgc3Ryb2tlLWxpbmVqb2luOiBtaXRlcjsgc3Ryb2tlLW1pdGVybGltaXQ6IDQ7IGZpbGw6IHJnYigyOSwyNiwyMik7IGZpbGwtcnVsZTogbm9uemVybzsgb3BhY2l0eTogMTsiICB0cmFuc2Zvcm09IiB0cmFuc2xhdGUoLTEyLCAtMTIpIiBkPSJNIDEyLjEyMjYgMS4wMDQ2MyBDIDEyLjM2NTkgMS4wMjQ1IDEyLjYwMDQgMS4xMDM5NiAxMi44MDYyIDEuMjM1MSBMIDEyLjkwNjggMS4zMDQ0NCBMIDEzLjAwMTUgMS4zODI1NiBDIDEzLjE4MzMgMS41NDU0IDEzLjMyMjEgMS43NTAzOCAxMy40MDY4IDEuOTc5MjQgTCAxMy40NDQ5IDIuMDk1NDUgTCAxMy40NTA3IDIuMTE0OTggTCAxNS4wMzE4IDguMjUwNzIgTCAxNS4wMzA4IDguMjUwNzIgQyAxNS4wNzU1IDguNDIzNjEgMTUuMTY2MyA4LjU4MTQ5IDE1LjI5MjUgOC43MDc3NiBDIDE1LjQxODggOC44MzM5OCAxNS41NzY3IDguOTIzODUgMTUuNzQ5NiA4Ljk2ODUgTCAyMS44ODQzIDEwLjU0OTYgTCAyMS45MDA5IDEwLjU1NDQgQyAyMi4xNzc4IDEwLjYzMDggMjIuNDI1OCAxMC43ODQ2IDIyLjYxNjggMTAuOTk2OCBMIDIyLjY5NTkgMTEuMDkxNSBMIDIyLjc2NjIgMTEuMTkyMSBDIDIyLjkxOTggMTEuNDMyNSAyMy4wMDI1IDExLjcxMjcgMjMuMDAyNSAxMS45OTk3IEMgMjMuMDAyNSAxMi4zMjggMjIuODk0NyAxMi42NDc3IDIyLjY5NTkgMTIuOTA4OSBDIDIyLjUyMTkgMTMuMTM3NCAyMi4yODYyIDEzLjMxMDcgMjIuMDE4MSAxMy40MDg5IEwgMjEuOTAwOSAxMy40NDYgQyAyMS44OTU1IDEzLjQ0NzUgMjEuODg5OCAxMy40NDg1IDIxLjg4NDMgMTMuNDQ5OSBMIDE1Ljc0OTYgMTUuMDMxIEMgMTUuNTc2NiAxNS4wNzU2IDE1LjQxODkgMTUuMTY2NCAxNS4yOTI1IDE1LjI5MjcgQyAxNS4xNjY0IDE1LjQxODkgMTUuMDc1NSAxNS41NzYxIDE1LjAzMDggMTUuNzQ4OCBMIDE1LjAzMTggMTUuNzQ5NyBMIDEzLjQ0OTggMjEuODg0NSBMIDEzLjQ0MzkgMjEuOTA0IEMgMTMuMzU1NyAyMi4yMTkzIDEzLjE2NjYgMjIuNDk3MiAxMi45MDU4IDIyLjY5NTEgQyAxMi42NDUgMjIuODkyOSAxMi4zMjY5IDIzLjAwMDcgMTEuOTk5NiAyMy4wMDA3IEMgMTEuNjcyMyAyMy4wMDA3IDExLjM1NDEgMjIuODkyOCAxMS4wOTMzIDIyLjY5NTEgQyAxMC44NjUyIDIyLjUyMiAxMC42OTEyIDIyLjI4ODIgMTAuNTkyMyAyMi4wMjEyIEwgMTAuNTU1MiAyMS45MDQgQyAxMC41NTM0IDIxLjg5NzUgMTAuNTUxMSAyMS44OTExIDEwLjU0OTQgMjEuODg0NSBMIDguOTY4MzIgMTUuNzQ5NyBDIDguOTIzNjkgMTUuNTc2OCA4LjgzMzgzIDE1LjQxOSA4LjcwNzU4IDE1LjI5MjcgQyA4LjYxMjcxIDE1LjE5NzkgOC41MDAwMSAxNS4xMjMxIDguMzc2NTMgMTUuMDczIEwgOC4yNTA1NSAxNS4wMzEgTCAyLjExNTc4IDEzLjQ0OSBMIDIuMDkyMzUgMTMuNDQzMSBDIDEuNzc4MzUgMTMuMzU0IDEuNTAyMDMgMTMuMTY0NCAxLjMwNTI0IDEyLjkwNCBDIDEuMTMzMDMgMTIuNjc2MiAxLjAyOTQ3IDEyLjQwNDggMS4wMDY0MSAxMi4xMjE4IEwgMS4wMDE1MyAxMS45OTk3IEwgMS4wMDY0MSAxMS44Nzc3IEMgMS4wMjk1NSAxMS41OTQ4IDEuMTMzMTMgMTEuMzIzMiAxLjMwNTI0IDExLjA5NTUgTCAxLjM4MjM5IDExLjAwMTcgQyAxLjU3MTQyIDEwLjc4OTggMS44MTc1NSAxMC42MzU0IDIuMDkyMzUgMTAuNTU3NCBMIDIuMTE0ODEgMTAuNTUwNSBMIDguMjUwNTUgOC45Njc1MiBMIDguMzc2NTMgOC45MjU1MyBDIDguNDk5OTIgOC44NzU0NiA4LjYxMjc1IDguODAxNTQgOC43MDc1OCA4LjcwNjc4IEMgOC44MzM2NiA4LjU4MDc4IDguOTIzNTEgOC40MjMyMyA4Ljk2ODMyIDguMjUwNzIgTCAxMC41NTA0IDIuMTE0OTggTCAxMC41NTYyIDIuMDk1NDUgQyAxMC42NDQ0IDEuNzgwMjUgMTAuODMzNSAxLjUwMjI2IDExLjA5NDMgMS4zMDQ0NCBMIDExLjE5MzkgMS4yMzUxIEMgMTEuNDM0MiAxLjA4MTg3IDExLjcxMzkgMC45OTk3NDggMTIuMDAwNSAwLjk5OTc0OCBMIDEyLjEyMjYgMS4wMDQ2MyBaIE0gMTAuOTA0OCA4Ljc0OTc1IEwgMTAuOTA0OCA4Ljc1MDcyIEMgMTAuNzcwNyA5LjI2OTM4IDEwLjUwMDYgOS43NDMxMyAxMC4xMjE2IDEwLjEyMTggQyA5Ljc4OTk4IDEwLjQ1MzIgOS4zODU0IDEwLjcwMDkgOC45NDE5NiAxMC44NDc0IEwgOC43NDk1NyAxMC45MDQgTCA0LjUwMzQ4IDExLjk5ODggTCA4Ljc0OTU3IDEzLjA5NDUgTCA4Ljk0MTk2IDEzLjE1MTEgQyA5LjM4NTcgMTMuMjk3OCA5Ljc4OTg3IDEzLjU0NjkgMTAuMTIxNiAxMy44Nzg3IEMgMTAuNTAwNSAxNC4yNTc2IDEwLjc3MDkgMTQuNzMwOSAxMC45MDQ4IDE1LjI0OTcgTCAxMC45MDU4IDE1LjI1MDcgTCAxMS45OTg2IDE5LjQ5NTggTCAxMy4wOTQzIDE1LjI1MDcgTCAxMy4wOTQzIDE1LjI0OTcgTCAxMy4xNTA5IDE1LjA1NzQgQyAxMy4yOTc2IDE0LjYxMzkgMTMuNTQ2OSAxNC4yMTAzIDEzLjg3ODUgMTMuODc4NyBDIDE0LjI1NzYgMTMuNDk5NiAxNC43MzE0IDEzLjIyODQgMTUuMjUwNSAxMy4wOTQ1IEwgMTkuNDk3NiAxMS45OTk3IEwgMTUuMjUwNSAxMC45MDUgQyAxNC43MzE1IDEwLjc3MTEgMTQuMjU3NSAxMC41MDA4IDEzLjg3ODUgMTAuMTIxOCBDIDEzLjU0NjcgOS43OTAwNyAxMy4yOTc2IDkuMzg1ODMgMTMuMTUwOSA4Ljk0MjEzIEwgMTMuMDk0MyA4Ljc0OTc1IEwgMTEuOTk5NiA0LjUwMjY4IEwgMTAuOTA0OCA4Ljc0OTc1IFoiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgLz48L2c+PGcgdHJhbnNmb3JtPSJtYXRyaXgoMC42NyAwIDAgMC42NyAxMy4zMyAzLjMzKSIgID48cGF0aCBzdHlsZT0ic3Ryb2tlOiBub25lOyBzdHJva2Utd2lkdGg6IDE7IHN0cm9rZS1kYXNoYXJyYXk6IG5vbmU7IHN0cm9rZS1saW5lY2FwOiBidXR0OyBzdHJva2UtZGFzaG9mZnNldDogMDsgc3Ryb2tlLWxpbmVqb2luOiBtaXRlcjsgc3Ryb2tlLW1pdGVybGltaXQ6IDQ7IGZpbGw6IHJnYigyOSwyNiwyMik7IGZpbGwtcnVsZTogbm9uemVybzsgb3BhY2l0eTogMTsiICB0cmFuc2Zvcm09IiB0cmFuc2xhdGUoLTIwLCAtNSkiIGQ9Ik0gMTkgNyBMIDE5IDMgQyAxOSAyLjQ0NzcyIDE5LjQ0NzcgMiAyMCAyIEMgMjAuNTUyMyAyIDIxIDIuNDQ3NzIgMjEgMyBMIDIxIDcgQyAyMSA3LjU1MjI4IDIwLjU1MjMgOCAyMCA4IEMgMTkuNDQ3NyA4IDE5IDcuNTUyMjggMTkgNyBaIiBzdHJva2UtbGluZWNhcD0icm91bmQiIC8+PC9nPjxnIHRyYW5zZm9ybT0ibWF0cml4KDAuNjcgMCAwIDAuNjcgMTMuMzMgMy4zMykiICA+PHBhdGggc3R5bGU9InN0cm9rZTogbm9uZTsgc3Ryb2tlLXdpZHRoOiAxOyBzdHJva2UtZGFzaGFycmF5OiBub25lOyBzdHJva2UtbGluZWNhcDogYnV0dDsgc3Ryb2tlLWRhc2hvZmZzZXQ6IDA7IHN0cm9rZS1saW5lam9pbjogbWl0ZXI7IHN0cm9rZS1taXRlcmxpbWl0OiA0OyBmaWxsOiByZ2IoMjksMjYsMjIpOyBmaWxsLXJ1bGU6IG5vbnplcm87IG9wYWNpdHk6IDE7IiAgdHJhbnNmb3JtPSIgdHJhbnNsYXRlKC0yMCwgLTUpIiBkPSJNIDIyIDQgQyAyMi41NTIzIDQgMjMgNC40NDc3MiAyMyA1IEMgMjMgNS41NTIyOCAyMi41NTIzIDYgMjIgNiBMIDE4IDYgQyAxNy40NDc3IDYgMTcgNS41NTIyOCAxNyA1IEMgMTcgNC40NDc3MiAxNy40NDc3IDQgMTggNCBMIDIyIDQgWiIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiAvPjwvZz48ZyB0cmFuc2Zvcm09Im1hdHJpeCgwLjY3IDAgMCAwLjY3IDIuNjcgMTIpIiAgPjxwYXRoIHN0eWxlPSJzdHJva2U6IG5vbmU7IHN0cm9rZS13aWR0aDogMTsgc3Ryb2tlLWRhc2hhcnJheTogbm9uZTsgc3Ryb2tlLWxpbmVjYXA6IGJ1dHQ7IHN0cm9rZS1kYXNob2Zmc2V0OiAwOyBzdHJva2UtbGluZWpvaW46IG1pdGVyOyBzdHJva2UtbWl0ZXJsaW1pdDogNDsgZmlsbDogcmdiKDI5LDI2LDIyKTsgZmlsbC1ydWxlOiBub256ZXJvOyBvcGFjaXR5OiAxOyIgIHRyYW5zZm9ybT0iIHRyYW5zbGF0ZSgtNCwgLTE4KSIgZD0iTSAzIDE5IEwgMyAxNyBDIDMgMTYuNDQ3NyAzLjQ0NzcyIDE2IDQgMTYgQyA0LjU1MjI4IDE2IDUgMTYuNDQ3NyA1IDE3IEwgNSAxOSBDIDUgMTkuNTUyMyA0LjU1MjI4IDIwIDQgMjAgQyAzLjQ0NzcyIDIwIDMgMTkuNTUyMyAzIDE5IFoiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgLz48L2c+PGcgdHJhbnNmb3JtPSJtYXRyaXgoMC42NyAwIDAgMC42NyAyLjY3IDEyKSIgID48cGF0aCBzdHlsZT0ic3Ryb2tlOiBub25lOyBzdHJva2Utd2lkdGg6IDE7IHN0cm9rZS1kYXNoYXJyYXk6IG5vbmU7IHN0cm9rZS1saW5lY2FwOiBidXR0OyBzdHJva2UtZGFzaG9mZnNldDogMDsgc3Ryb2tlLWxpbmVqb2luOiBtaXRlcjsgc3Ryb2tlLW1pdGVybGltaXQ6IDQ7IGZpbGw6IHJnYigyOSwyNiwyMik7IGZpbGwtcnVsZTogbm9uemVybzsgb3BhY2l0eTogMTsiICB0cmFuc2Zvcm09IiB0cmFuc2xhdGUoLTQsIC0xOCkiIGQ9Ik0gNSAxNyBDIDUuNTUyMjggMTcgNiAxNy40NDc3IDYgMTggQyA2IDE4LjU1MjMgNS41NTIyOCAxOSA1IDE5IEwgMyAxOSBDIDIuNDQ3NzIgMTkgMiAxOC41NTIzIDIgMTggQyAyIDE3LjQ0NzcgMi40NDc3MiAxNyAzIDE3IEwgNSAxNyBaIiBzdHJva2UtbGluZWNhcD0icm91bmQiIC8+PC9nPjwvZz48L2c+PC9zdmc+" alt="Sparkle" class="w-4 h-4">
@@ -104,6 +104,10 @@
       </div>
     </div>
 
+    <!-- Bolt hint -->
+    <div class="text-xs text-[#6A5E53]/60 -mt-4 mb-4 flex items-center gap-1">
+      <span>💬</span><span>Tap to talk to Bolt</span>
+    </div>
     <!-- Streak Badge -->
     <div class="streak-badge px-5 py-1.5 rounded-full flex items-center gap-2 mb-8">
       <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxNiIgaGVpZ2h0PSIxNiIgIHZpZXdCb3g9IjAgMCAxNiAxNiI+PGcgdHJhbnNmb3JtPSJtYXRyaXgoMSAwIDAgMSAwIDApIiAgPjxnIHN0eWxlPSIiICAgPjxnIHRyYW5zZm9ybT0ibWF0cml4KDAuNjcgMCAwIDAuNjcgOCA4LjMzKSIgID48cGF0aCBzdHlsZT0ic3Ryb2tlOiBub25lOyBzdHJva2Utd2lkdGg6IDE7IHN0cm9rZS1kYXNoYXJyYXk6IG5vbmU7IHN0cm9rZS1saW5lY2FwOiBidXR0OyBzdHJva2UtZGFzaG9mZnNldDogMDsgc3Ryb2tlLWxpbmVqb2luOiBtaXRlcjsgc3Ryb2tlLW1pdGVybGltaXQ6IDQ7IGZpbGw6IHJnYigyNTUsMjU1LDI1NSk7IGZpbGwtcnVsZTogbm9uemVybzsgb3BhY2l0eTogMTsiICB0cmFuc2Zvcm09IiB0cmFuc2xhdGUoLTEyLCAtMTIuNSkiIGQ9Ik0gNCAxNSBDIDQgMTMuNjI2NiA0LjUwNjU3IDEyLjI2MzIgNS4yMjA3IDExLjM3NCBMIDUuMzI4MTIgMTEuMjU5OCBDIDUuNTk2ODkgMTEuMDE1NyA1Ljk4MTc1IDEwLjkzMzQgNi4zMzIwMyAxMS4wNTY2IEMgNi43MzIyNiAxMS4xOTc1IDcgMTEuNTc1NyA3IDEyIEMgNyAxMi4zOTc4IDcuMTU4MTUgMTIuNzc5MiA3LjQzOTQ1IDEzLjA2MDUgQyA3LjcyMDc2IDEzLjM0MTkgOC4xMDIxOCAxMy41IDguNSAxMy41IEwgOC42NDg0NCAxMy40OTIyIEMgOC45OTE3NCAxMy40NTgxIDkuMzE0NDYgMTMuMzA2NiA5LjU2MDU1IDEzLjA2MDUgQyA5Ljg0MTg1IDEyLjc3OTIgMTAgMTIuMzk3OCAxMCAxMiBDIDEwIDExLjE4OTkgOS44MTMwMSAxMC43OTE4IDkuNDgyNDIgMTAuMTY4OSBMIDkuMTA1NDcgOS40NDcyNyBDIDguNDU1MTggOC4xNDcyMSA4LjM2ODcxIDYuODQ5NSA4LjgyMzI0IDUuNTg2OTIgQyA5LjI2MTA4IDQuMzcxMDggMTAuMTcgMy4yNzIzNyAxMS4zNDE4IDIuMjQ3MDcgTCAxMS40NDczIDIuMTY2OTkgQyAxMS43MDMyIDEuOTk3MTMgMTIuMDI1OCAxLjk1MjUgMTIuMzIxMyAyLjA1Mjc0IEMgMTIuNjU5MiAyLjE2NzQ0IDEyLjkxMDQgMi40NTM4NSAxMi45ODA1IDIuODAzNzEgQyAxMy40MzI0IDUuMDYzNjEgMTQuODAxMSA3LjI1OTY0IDE2LjYyNSA4LjcxODc1IEMgMTguODA0NiAxMC40NjI1IDIwIDEyLjYyOTQgMjAgMTUgTCAxOS45OTAyIDE1LjM5MzYgQyAxOS45NDUxIDE2LjMwOTcgMTkuNzQyNCAxNy4yMTIzIDE5LjM5MDYgMTguMDYxNSBDIDE4Ljk4ODYgMTkuMDMyMSAxOC40IDE5LjkxNDQgMTcuNjU3MiAyMC42NTcyIEMgMTYuOTE0NCAyMS40IDE2LjAzMjEgMjEuOTg4NiAxNS4wNjE1IDIyLjM5MDYgQyAxNC4wOTA5IDIyLjc5MjcgMTMuMDUwNiAyMyAxMiAyMyBDIDEwLjk0OTQgMjMgOS45MDkwOCAyMi43OTI3IDguOTM4NDggMjIuMzkwNiBDIDcuOTY3OTUgMjEuOTg4NiA3LjA4NTU5IDIxLjQgNi4zNDI3NyAyMC42NTcyIEMgNS41OTk5NSAxOS45MTQ0IDUuMDExNDEgMTkuMDMyMSA0LjYwOTM4IDE4LjA2MTUgQyA0LjI1NzYyIDE3LjIxMjMgNC4wNTQ4OSAxNi4zMDk3IDQuMDA5NzcgMTUuMzkzNiBMIDQgMTUgWiBNIDEyIDEyIEMgMTIgMTIuOTI4MyAxMS42MzEgMTMuODE4MiAxMC45NzQ2IDE0LjQ3NDYgQyAxMC4zNTkzIDE1LjA4OTkgOS41Mzg4IDE1LjQ1MzEgOC42NzM4MyAxNS40OTYxIEwgOC41IDE1LjUgQyA3LjU3NzUgMTUuNSA2LjY5MzI3IDE1LjEzNTEgNi4wMzgwOSAxNC40ODYzIEMgNi4wMTUzMyAxNC42NTU2IDYgMTQuODI3MyA2IDE1IEwgNi4wMDY4NCAxNS4yOTQ5IEMgNi4wNDA2NSAxNS45ODIxIDYuMTkzMTkgMTYuNjU4OSA2LjQ1NzAzIDE3LjI5NTkgQyA2Ljc1ODU2IDE4LjAyMzkgNy4yMDA2NiAxOC42ODUgNy43NTc4MSAxOS4yNDIyIEMgOC4zMTQ5NiAxOS43OTkzIDguOTc2MTUgMjAuMjQxNCA5LjcwNDEgMjAuNTQzIEMgMTAuNDMyIDIwLjg0NDUgMTEuMjEyMSAyMSAxMiAyMSBDIDEyLjc4NzkgMjEgMTMuNTY4IDIwLjg0NDUgMTQuMjk1OSAyMC41NDMgQyAxNS4wMjM5IDIwLjI0MTQgMTUuNjg1IDE5Ljc5OTMgMTYuMjQyMiAxOS4yNDIyIEMgMTYuNzk5MyAxOC42ODUgMTcuMjQxNCAxOC4wMjM5IDE3LjU0MyAxNy4yOTU5IEMgMTcuODA2OCAxNi42NTg5IDE3Ljk1OTMgMTUuOTgyMSAxNy45OTMyIDE1LjI5NDkgTCAxOCAxNSBDIDE4IDEzLjM3MDYgMTcuMTk1NCAxMS43Mzc2IDE1LjM3NSAxMC4yODEzIEMgMTMuNjYxNCA4LjkxMDM3IDEyLjI4NzggNy4wMDMyNCAxMS41MTI3IDQuOTE2OTkgQyAxMS4xMjQ2IDUuMzkwNjMgMTAuODU4OCA1LjgzNzgxIDEwLjcwNTEgNi4yNjQ2NSBDIDEwLjQ0NzYgNi45Nzk3NyAxMC40NzI5IDcuNzA5ODUgMTAuODk0NSA4LjU1Mjc0IEwgMTEuMjUyIDkuMjI0NjEgQyAxMS42MjQ0IDkuOTIzNDggMTIgMTAuNzQwMyAxMiAxMiBaIiBzdHJva2UtbGluZWNhcD0icm91bmQiIC8+PC9nPjwvZz48L2c+PC9zdmc+" alt="Flame" class="w-4 h-4">
@@ -390,5 +394,255 @@
   }
 })();
 </script>
+
+<!-- ═══════════════════════════════════════════════════════
+     BOLT CHAT PANEL
+═══════════════════════════════════════════════════════════ -->
+<div id="bolt-panel" style="display:none;position:fixed;inset:0;z-index:1000;background:rgba(0,0,0,0.4);backdrop-filter:blur(4px);" onclick="closeBoltIfOutside(event)">
+  <div id="bolt-drawer" style="position:absolute;bottom:0;left:0;right:0;max-height:88vh;background:#FBFAF9;border-radius:28px 28px 0 0;display:flex;flex-direction:column;overflow:hidden;transition:transform 0.3s ease;">
+
+    <!-- Header -->
+    <div style="display:flex;align-items:center;justify-content:space-between;padding:16px 20px 12px;border-bottom:1px solid #E4E0DC;flex-shrink:0;">
+      <div style="display:flex;align-items:center;gap:10px;">
+        <div id="bolt-avatar" style="width:40px;height:40px;border-radius:50%;background:#EC9679;display:flex;align-items:center;justify-content:center;font-size:18px;">⚡</div>
+        <div>
+          <div style="font-size:15px;font-weight:600;color:#1D1A16">Bolt</div>
+          <div style="font-size:11px;color:#5DCAA5" id="bolt-status">● Your AI fitness companion</div>
+        </div>
+      </div>
+      <button onclick="closeBoltChat()" style="width:32px;height:32px;border-radius:50%;background:#F0EDE8;border:none;cursor:pointer;font-size:16px;display:flex;align-items:center;justify-content:center;">✕</button>
+    </div>
+
+    <!-- Messages -->
+    <div id="bolt-messages" style="flex:1;overflow-y:auto;padding:16px 20px;display:flex;flex-direction:column;gap:12px;"></div>
+
+    <!-- Suggestions rapides -->
+    <div id="bolt-suggestions" style="padding:0 20px 8px;display:flex;gap:8px;overflow-x:auto;flex-shrink:0;"></div>
+
+    <!-- Input -->
+    <div style="padding:12px 20px 20px;border-top:1px solid #E4E0DC;flex-shrink:0;">
+      <div style="display:flex;gap:8px;align-items:center;">
+        <button id="bolt-mic" onclick="toggleVoice()" style="width:40px;height:40px;border-radius:50%;background:#F0EDE8;border:none;cursor:pointer;font-size:18px;flex-shrink:0;display:flex;align-items:center;justify-content:center;transition:background .2s;">🎤</button>
+        <input id="bolt-input" type="text" placeholder="Ask Bolt anything..."
+          style="flex:1;height:44px;border:1.5px solid #E4E0DC;border-radius:22px;padding:0 16px;font-size:14px;outline:none;background:white;font-family:'Outfit',sans-serif;"
+          onkeydown="if(event.key==='Enter')sendBoltMessage()">
+        <button onclick="sendBoltMessage()" style="width:44px;height:44px;border-radius:50%;background:#EC9679;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+          <span style="color:white;font-size:18px;margin-top:-2px">➤</span>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+// ── Bolt Chat ─────────────────────────────────────────────────────
+var boltHistory = [];
+var sessionInfo = {};
+var boltOpened = false;
+var mediaRecorder = null;
+var isRecording = false;
+var recognition = null;
+
+// Récupérer les infos session depuis l'URL
+(function() {
+  var params = new URLSearchParams(window.location.search);
+  sessionInfo.duration = params.get('duration') || '10';
+  sessionInfo.name = decodeURIComponent(params.get('name') || 'your session');
+})();
+
+function openBoltChat() {
+  document.getElementById('bolt-panel').style.display = 'block';
+  if (!boltOpened) {
+    boltOpened = true;
+    // Message d'ouverture automatique de Bolt
+    setTimeout(function() { sendInitialBoltMessage(); }, 400);
+  }
+}
+
+function closeBoltChat() {
+  document.getElementById('bolt-panel').style.display = 'none';
+}
+
+function closeBoltIfOutside(e) {
+  if (e.target === document.getElementById('bolt-panel')) closeBoltChat();
+}
+
+function sendInitialBoltMessage() {
+  setStatus('Bolt is thinking...');
+  callClaude(null, true);
+}
+
+function addMessage(text, isUser) {
+  var messages = document.getElementById('bolt-messages');
+  var div = document.createElement('div');
+  div.style.cssText = isUser
+    ? 'align-self:flex-end;background:#EC9679;color:white;padding:10px 14px;border-radius:18px 18px 4px 18px;max-width:80%;font-size:14px;line-height:1.5;'
+    : 'align-self:flex-start;background:white;color:#1D1A16;padding:10px 14px;border-radius:18px 18px 18px 4px;max-width:85%;font-size:14px;line-height:1.5;border:1px solid #E4E0DC;';
+  div.textContent = text;
+  messages.appendChild(div);
+  messages.scrollTop = messages.scrollHeight;
+  return div;
+}
+
+function addTypingIndicator() {
+  var messages = document.getElementById('bolt-messages');
+  var div = document.createElement('div');
+  div.id = 'typing-indicator';
+  div.style.cssText = 'align-self:flex-start;background:white;padding:12px 16px;border-radius:18px;border:1px solid #E4E0DC;display:flex;gap:4px;';
+  div.innerHTML = '<span style="width:6px;height:6px;border-radius:50%;background:#6A5E53;animation:bolt-dot 1s ease-in-out infinite;"></span>'
+    + '<span style="width:6px;height:6px;border-radius:50%;background:#6A5E53;animation:bolt-dot 1s ease-in-out 0.2s infinite;"></span>'
+    + '<span style="width:6px;height:6px;border-radius:50%;background:#6A5E53;animation:bolt-dot 1s ease-in-out 0.4s infinite;"></span>';
+  messages.appendChild(div);
+  messages.scrollTop = messages.scrollHeight;
+}
+
+function removeTypingIndicator() {
+  var el = document.getElementById('typing-indicator');
+  if (el) el.remove();
+}
+
+function setStatus(text) {
+  document.getElementById('bolt-status').textContent = text;
+}
+
+function showSuggestions(suggestions) {
+  var box = document.getElementById('bolt-suggestions');
+  box.innerHTML = '';
+  suggestions.forEach(function(s) {
+    var btn = document.createElement('button');
+    btn.textContent = s;
+    btn.style.cssText = 'white-space:nowrap;padding:6px 14px;border-radius:20px;background:white;border:1.5px solid #E4E0DC;font-size:12px;cursor:pointer;color:#1D1A16;font-family:Outfit,sans-serif;flex-shrink:0;';
+    btn.onmouseover = function(){ this.style.background='#F0EDE8'; };
+    btn.onmouseout  = function(){ this.style.background='white'; };
+    btn.onclick = function() { sendBoltMessageText(s); };
+    box.appendChild(btn);
+  });
+}
+
+function sendBoltMessage() {
+  var input = document.getElementById('bolt-input');
+  var text = input.value.trim();
+  if (!text) return;
+  input.value = '';
+  sendBoltMessageText(text);
+}
+
+function sendBoltMessageText(text) {
+  addMessage(text, true);
+  boltHistory.push({ role: 'user', content: text });
+  document.getElementById('bolt-suggestions').innerHTML = '';
+  callClaude(text, false);
+}
+
+function callClaude(userMsg, isInitial) {
+  addTypingIndicator();
+  setStatus('● Bolt is thinking...');
+
+  // Construire le system prompt
+  var systemPrompt = 'You are Bolt, an empathetic AI fitness companion inside SportEdge app. ' +
+    'The user just completed a ' + sessionInfo.duration + '-minute session called "' + sessionInfo.name + '". ' +
+    'Your role: be warm, motivating and specific. ' +
+    'When opening: congratulate them, mention the specific muscles worked in this session, and give 2-3 empathetic insights. ' +
+    'Always end your messages with 2-3 short clickable suggestions (as a JSON array at the end like: SUGGESTIONS:["text1","text2","text3"]). ' +
+    'Suggestions should be relevant: either follow-up exercises, recovery tips, or other session recommendations. ' +
+    'Keep responses concise (3-5 sentences max). Respond in the same language as the user.';
+
+  var messages = [];
+
+  if (isInitial) {
+    messages = [{ role: 'user', content: 'I just finished my ' + sessionInfo.name + ' session (' + sessionInfo.duration + ' minutes). Give me your feedback.' }];
+  } else {
+    messages = boltHistory.slice(-6); // Garder les 6 derniers messages
+  }
+
+  fetch('/api/bolt', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      system: systemPrompt,
+      messages: messages
+    })
+  })
+  .then(function(r) { return r.json(); })
+  .then(function(data) {
+    removeTypingIndicator();
+    setStatus('● Your AI fitness companion');
+
+    if (data.content && data.content[0]) {
+      var fullText = data.content[0].text || '';
+
+      // Extraire les suggestions du texte
+      var suggestions = [];
+      var sugMatch = fullText.match(/SUGGESTIONS:\[([^\]]+)\]/);
+      if (sugMatch) {
+        try {
+          suggestions = JSON.parse('[' + sugMatch[1] + ']');
+        } catch(e) {}
+        fullText = fullText.replace(/SUGGESTIONS:\[[^\]]+\]/, '').trim();
+      }
+
+      // Fallback suggestions si pas trouvées
+      if (!suggestions.length) {
+        suggestions = ['What muscles did I work?', 'Suggest a follow-up session', 'How to recover?'];
+      }
+
+      boltHistory.push({ role: 'assistant', content: fullText });
+      addMessage(fullText, false);
+      showSuggestions(suggestions);
+    } else {
+      addMessage('Sorry, I had a small hiccup. Try again!', false);
+    }
+  })
+  .catch(function() {
+    removeTypingIndicator();
+    setStatus('● Your AI fitness companion');
+    addMessage('I\'m having trouble connecting. Check your connection and try again.', false);
+  });
+}
+
+// ── Reconnaissance vocale ──────────────────────────────────────
+function toggleVoice() {
+  var btn = document.getElementById('bolt-mic');
+  if (!('webkitSpeechRecognition' in window) && !('SpeechRecognition' in window)) {
+    alert('Voice input not supported in this browser. Try Chrome!');
+    return;
+  }
+  if (isRecording) {
+    stopVoice();
+    return;
+  }
+  var SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+  recognition = new SpeechRecognition();
+  recognition.lang = 'fr-FR';
+  recognition.interimResults = false;
+  recognition.maxAlternatives = 1;
+
+  btn.style.background = '#FEE2E2';
+  btn.textContent = '🔴';
+  isRecording = true;
+
+  recognition.onresult = function(event) {
+    var text = event.results[0][0].transcript;
+    document.getElementById('bolt-input').value = text;
+    stopVoice();
+    sendBoltMessage();
+  };
+  recognition.onerror = function() { stopVoice(); };
+  recognition.onend = function() { stopVoice(); };
+  recognition.start();
+}
+
+function stopVoice() {
+  isRecording = false;
+  var btn = document.getElementById('bolt-mic');
+  btn.style.background = '#F0EDE8';
+  btn.textContent = '🎤';
+  if (recognition) { try { recognition.stop(); } catch(e) {} }
+}
+</script>
+
+<style>
+@keyframes bolt-dot { 0%,60%,100%{transform:translateY(0)} 30%{transform:translateY(-5px)} }
+</style>
 </body>
 </html>

@@ -249,6 +249,8 @@ function loadEx(idx) {
   if (ytPlayer) { try { ytPlayer.destroy(); } catch(e) {} ytPlayer = null; }
   var oldDiv = document.getElementById('yt-player-div');
   if (oldDiv) oldDiv.remove();
+  var oldPh = document.getElementById('yt-placeholder');
+  if (oldPh) oldPh.remove();
   document.getElementById('exGif').style.display = 'none';
   document.getElementById('gifLoading').style.display = 'flex';
 
@@ -263,7 +265,9 @@ function loadEx(idx) {
       show('restOverlay');
     }
   } else {
-    loadGif(ex.id, idx);
+    // Afficher un placeholder "click start" au lieu de charger la vidéo
+    document.getElementById('gifLoading').style.display = 'none';
+    showVideoPlaceholder(exName, idx);
   }
 
   updateList(idx); updateProgress(idx);
@@ -296,6 +300,42 @@ function getYouTubeId(exName) {
   if (cat.indexOf('Strength') !== -1) return 'P-yaD24bUE8';
   if (cat.indexOf('Outdoor') !== -1 || cat.indexOf('Run') !== -1) return 'nGaXj3kkmrU';
   return 'c4DAnQ6DtF8';
+}
+
+function showVideoPlaceholder(exName, exIdx) {
+  var container = document.querySelector('.gif-container');
+  var ph = document.getElementById('yt-placeholder');
+  if (!ph) {
+    ph = document.createElement('div');
+    ph.id = 'yt-placeholder';
+    ph.style.cssText = 'position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;cursor:pointer;background:#F6F5F3;border-radius:20px;';
+    container.appendChild(ph);
+  }
+
+  // Icône selon catégorie
+  var cat = session ? session.category : '';
+  var icon = cat.indexOf('Yoga')!==-1||cat.indexOf('Breath')!==-1?'🧘':
+             cat.indexOf('Medit')!==-1?'🌿':
+             cat.indexOf('Stretch')!==-1||cat.indexOf('Mobil')!==-1?'🤸':
+             cat.indexOf('Outdoor')!==-1||cat.indexOf('Run')!==-1?'🏃':
+             cat.indexOf('HIIT')!==-1||cat.indexOf('Cardio')!==-1?'⚡':'💪';
+
+  ph.innerHTML =
+    '<div style="font-size:52px">' + icon + '</div>' +
+    '<div style="text-align:center;padding:0 20px;">' +
+      '<div style="font-size:16px;font-weight:600;color:#1D1A16;margin-bottom:6px">' + exName + '</div>' +
+      '<div style="font-size:13px;color:#6A5E53">Press <b style=color:#EC9679>Start</b> to begin</div>' +
+    '</div>' +
+    '<div style="width:52px;height:52px;border-radius:50%;background:#EC9679;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 14px rgba(236,150,121,.4);">' +
+      '<span style="color:white;font-size:20px;margin-left:4px">▶</span>' +
+    '</div>';
+  ph.style.display = 'flex';
+  ph.onclick = function() { togglePlay(); };
+}
+
+function hideVideoPlaceholder() {
+  var ph = document.getElementById('yt-placeholder');
+  if (ph) ph.style.display = 'none';
 }
 
 function loadGif(exId, exIdx) {
@@ -407,6 +447,20 @@ function startTimer() {
   isPlaying = true;
   document.getElementById('btnPlay').textContent = '⏸ Pause';
   document.getElementById('timerStatus').textContent = 'active';
+
+  // Charger la vidéo YouTube au premier démarrage de l'exercice
+  var ex = session.exercises[curIdx];
+  if (ex && ex.id) {
+    hideVideoPlaceholder();
+    var ytId = getYouTubeId(ex.name);
+    // Charger seulement si pas déjà un player actif
+    if (!ytPlayer && !document.getElementById('yt-player-div')) {
+      loadYouTubePlayer(ytId);
+    } else if (ytPlayer) {
+      resumeYouTube();
+    }
+  }
+
   timerInt = setInterval(function() {
     timeLeft--;
     updateTimerDisplay(); updateRing(timeLeft/totalTime);
