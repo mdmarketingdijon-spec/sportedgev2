@@ -259,6 +259,24 @@
 <script>
 var _bHistory = [], _bInfo = {}, _bOpened = false, _bRec = null, _bRecording = false;
 
+// Clé API Anthropic — stockée dans localStorage pour persistance
+window._ANTHROPIC_KEY = '';
+try { window._ANTHROPIC_KEY = localStorage.getItem('_bolt_api_key') || ''; } catch(e) {}
+
+function _ensureApiKey(cb) {
+  if (window._ANTHROPIC_KEY && window._ANTHROPIC_KEY.length > 10) { cb(); return; }
+  var key = prompt('🔑 Clé API Anthropic pour activer Bolt:\n(sk-ant-...)');
+  if (!key || key.length < 10) {
+    boltRemoveTyping();
+    boltMsg("Clé API invalide. Recharge la page et entre une clé Anthropic valide.", false);
+    document.getElementById('bolt-status').textContent = '● Your AI fitness companion';
+    return;
+  }
+  window._ANTHROPIC_KEY = key.trim();
+  try { localStorage.setItem('_bolt_api_key', window._ANTHROPIC_KEY); } catch(e) {}
+  cb();
+}
+
 (function(){
   var p = new URLSearchParams(window.location.search);
   _bInfo.duration = p.get('duration') || '10';
@@ -363,48 +381,60 @@ function boltCall(userMsg, isInit) {
 
   _bHistory.push({ role: 'user', content: userMsg });
 
-  fetch('/api/bolt', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ system: sys, messages: _bHistory.slice(-8) })
-  })
-  .then(function(r) { return r.json(); })
-  .then(function(data) {
-    boltRemoveTyping();
-    document.getElementById('bolt-status').textContent = '● Your AI fitness companion';
-    if (!data.content || !data.content[0]) {
-      boltMsg((data.error || 'Error') + '', false);
-      return;
-    }
-    var full = data.content[0].text || '';
-    
-    // Session launch
-    var launch = null;
-    var lm = full.match(/SESSION_LAUNCH:\{[^}]+\}/);
-    if (lm) {
-      try { launch = JSON.parse(lm[0].replace('SESSION_LAUNCH:', '')); } catch(e) {}
-      full = full.replace(/SESSION_LAUNCH:\{[^}]+\}/, '').trim();
-    }
-    
-    // Suggestions
-    var sugg = [];
-    var sm = full.match(/SUGGESTIONS:\[([^\]]+)\]/);
-    if (sm) {
-      try { sugg = JSON.parse('[' + sm[1] + ']'); } catch(e) {}
-      full = full.replace(/SUGGESTIONS:\[[^\]]+\]/, '').trim();
-    }
-    if (!sugg.length) sugg = ['What muscles did I work?', 'Launch a recovery session', 'Custom session for me'];
-    
-    _bHistory.push({ role: 'assistant', content: full });
-    boltMsg(full, false);
-    if (launch && launch.key) boltLaunchBtn(launch);
-    boltSugg(sugg);
-  })
-  .catch(function(e) {
-    boltRemoveTyping();
-    document.getElementById('bolt-status').textContent = '● Your AI fitness companion';
-    boltMsg('Connection error. Please try again.', false);
-  });
+  _ensureApiKey(function() {
+    fetch('https://api.anthropic.com/v1/messages', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'x-api-key': window._ANTHROPIC_KEY || '',
+        'anthropic-version': '2023-06-01',
+        'anthropic-dangerous-direct-browser-access': 'true'
+      },
+      body: JSON.stringify({
+        model: 'claude-sonnet-4-20250514',
+        max_tokens: 400,
+        system: sys,
+        messages: _bHistory.slice(-8)
+      })
+    })
+    .then(function(r) { return r.json(); })
+    .then(function(data) {
+      boltRemoveTyping();
+      document.getElementById('bolt-status').textContent = '● Your AI fitness companion';
+      if (!data.content || !data.content[0]) {
+        boltMsg((data.error ? data.error.message : 'Connexion error') + '', false);
+        return;
+      }
+      var full = data.content[0].text || '';
+      
+      // Session launch
+      var launch = null;
+      var lm = full.match(/SESSION_LAUNCH:\{[^}]+\}/);
+      if (lm) {
+        try { launch = JSON.parse(lm[0].replace('SESSION_LAUNCH:', '')); } catch(e) {}
+        full = full.replace(/SESSION_LAUNCH:\{[^}]+\}/, '').trim();
+      }
+      
+      // Suggestions
+      var sugg = [];
+      var sm = full.match(/SUGGESTIONS:\[([^\]]+)\]/);
+      if (sm) {
+        try { sugg = JSON.parse('[' + sm[1] + ']'); } catch(e) {}
+        full = full.replace(/SUGGESTIONS:\[[^\]]+\]/, '').trim();
+      }
+      if (!sugg.length) sugg = ['What muscles did I work?', 'Launch a recovery session', 'Custom session for me'];
+      
+      _bHistory.push({ role: 'assistant', content: full });
+      boltMsg(full, false);
+      if (launch && launch.key) boltLaunchBtn(launch);
+      boltSugg(sugg);
+    })
+    .catch(function(e) {
+      boltRemoveTyping();
+      document.getElementById('bolt-status').textContent = '● Your AI fitness companion';
+      boltMsg('Connection error. Please try again.', false);
+    });
+  }); // end _ensureApiKey
 }
 
 function boltSend() {

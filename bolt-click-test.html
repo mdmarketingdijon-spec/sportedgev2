@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html><head><meta charset="UTF-8"></head>
+<body>
+<button onclick="openBoltChat()" style="padding:20px;font-size:18px;background:#EC9679;border:none;border-radius:12px;cursor:pointer;">
+  Test Bolt Click
+</button>
+<div id="bolt-panel" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:9000;">
+  <div style="position:absolute;bottom:0;left:0;right:0;background:white;padding:40px;border-radius:20px 20px 0 0;">
+    <h2>Bolt Panel Works!</h2>
+    <button onclick="document.getElementById('bolt-panel').style.display='none'">Close</button>
+  </div>
+</div>
+<script>
+function openBoltChat() {
+  console.log('openBoltChat called!');
+  document.getElementById('bolt-panel').style.display = 'block';
+}
+</script>
+</body></html>
