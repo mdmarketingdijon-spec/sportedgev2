@@ -277,65 +277,46 @@
 <script>
 var _bHistory = [], _bInfo = {}, _bOpened = false, _bRec = null, _bRecording = false;
 
-// Clé API Anthropic — stockée dans localStorage pour persistance
+// Clé API
 window._ANTHROPIC_KEY = '';
 try { window._ANTHROPIC_KEY = localStorage.getItem('_bolt_api_key') || ''; } catch(e) {}
 
-function _ensureApiKey(cb) {
-  if (window._ANTHROPIC_KEY && window._ANTHROPIC_KEY.length > 10) { cb(); return; }
-  // Afficher l'écran de saisie de clé inline
-  document.getElementById('bolt-key-screen').style.display = 'flex';
-  document.getElementById('bolt-chat-area').style.display = 'none';
-  document.getElementById('bolt-input-bar').style.display = 'none';
-  window._bPendingCb = cb;
-  boltRemoveTyping();
-}
-
-function _submitApiKey() {
-  var inp = document.getElementById('bolt-key-input');
-  var key = (inp ? inp.value : '').trim();
-  if (!key || key.length < 20) {
-    document.getElementById('bolt-key-error').style.display = 'block';
-    return;
-  }
-  window._ANTHROPIC_KEY = key;
-  try { localStorage.setItem('_bolt_api_key', key); } catch(e) {}
-  document.getElementById('bolt-key-screen').style.display = 'none';
-  document.getElementById('bolt-chat-area').style.display = 'flex';
-  document.getElementById('bolt-input-bar').style.display = 'block';
-  if (window._bPendingCb) { var f = window._bPendingCb; window._bPendingCb = null; f(); }
-  else if (!_bOpened) {
-    _bOpened = true;
-    setTimeout(function() {
-      boltCall('I just finished my ' + _bInfo.name + ' session (' + _bInfo.duration + ' minutes). Give me your post-workout feedback.', true);
-    }, 300);
-  }
-}
-
-(function(){
+// Infos session depuis URL
+(function() {
   var p = new URLSearchParams(window.location.search);
   _bInfo.duration = p.get('duration') || '10';
   _bInfo.name = decodeURIComponent(p.get('name') || 'your session');
 })();
 
-var _SESSIONS = {"morning-wake-up-stretch": "Morning Wake-Up Stretch", "hip-flexor-release": "Hip Flexor Release", "classic-hiit": "Classic HIIT", "tabata-full-body": "Tabata Full Body", "restorative-yoga": "Restorative Yoga", "vinyasa-flow": "Vinyasa Flow", "minimalist-core-strength": "Minimalist Core Strength", "full-body-bodyweight": "Full Body Bodyweight", "recovery-jog": "Recovery Jog", "body-scan-for-rest": "Body Scan for Rest"};
+var _SESSIONS = {
+  "morning-wake-up-stretch": "Morning Wake-Up Stretch",
+  "hip-flexor-release": "Hip Flexor Release",
+  "classic-hiit": "Classic HIIT",
+  "recovery-stretch": "Recovery Stretch",
+  "full-body-strength": "Full Body Strength",
+  "yoga-flow": "Yoga Flow",
+  "cardio-blast": "Cardio Blast",
+  "core-stability": "Core Stability"
+};
 
+// ── Ouvrir/fermer le panneau ──────────────────────────────────
 function openBoltChat() {
   var panel = document.getElementById('bolt-panel');
   if (!panel) return;
   panel.style.display = 'block';
   document.body.style.overflow = 'hidden';
 
-  // Si pas de clé : montrer key-screen, cacher le chat
-  if (!window._ANTHROPIC_KEY || window._ANTHROPIC_KEY.length < 10) {
+  if (!window._ANTHROPIC_KEY || window._ANTHROPIC_KEY.length < 20) {
     document.getElementById('bolt-key-screen').style.display = 'flex';
     document.getElementById('bolt-chat-area').style.display = 'none';
     document.getElementById('bolt-input-bar').style.display = 'none';
-    setTimeout(function() { var ki = document.getElementById('bolt-key-input'); if(ki) ki.focus(); }, 100);
+    setTimeout(function() {
+      var ki = document.getElementById('bolt-key-input');
+      if (ki) ki.focus();
+    }, 150);
     return;
   }
 
-  // Clé présente : montrer le chat
   document.getElementById('bolt-key-screen').style.display = 'none';
   document.getElementById('bolt-chat-area').style.display = 'flex';
   document.getElementById('bolt-input-bar').style.display = 'block';
@@ -343,13 +324,14 @@ function openBoltChat() {
   if (!_bOpened) {
     _bOpened = true;
     setTimeout(function() {
-      boltCall('I just finished my ' + _bInfo.name + ' session (' + _bInfo.duration + ' minutes). Give me your post-workout feedback.', true);
+      boltCall('I just finished my ' + _bInfo.name + ' session (' + _bInfo.duration + ' minutes). Give me a short post-workout message.', true);
     }, 400);
   }
 }
 
 function closeBolt() {
-  document.getElementById('bolt-panel').style.display = 'none';
+  var panel = document.getElementById('bolt-panel');
+  if (panel) panel.style.display = 'none';
   document.body.style.overflow = '';
 }
 
@@ -357,40 +339,62 @@ function boltOutside(e) {
   if (e.target === document.getElementById('bolt-panel')) closeBolt();
 }
 
+// ── Saisie clé API ────────────────────────────────────────────
+function _submitApiKey() {
+  var inp = document.getElementById('bolt-key-input');
+  var key = inp ? inp.value.trim() : '';
+  if (!key || key.length < 20) {
+    var err = document.getElementById('bolt-key-error');
+    if (err) err.style.display = 'block';
+    return;
+  }
+  window._ANTHROPIC_KEY = key;
+  try { localStorage.setItem('_bolt_api_key', key); } catch(e) {}
+  document.getElementById('bolt-key-screen').style.display = 'none';
+  document.getElementById('bolt-chat-area').style.display = 'flex';
+  document.getElementById('bolt-input-bar').style.display = 'block';
+  if (!_bOpened) {
+    _bOpened = true;
+    setTimeout(function() {
+      boltCall('I just finished my ' + _bInfo.name + ' session (' + _bInfo.duration + ' minutes). Give me a short post-workout message.', true);
+    }, 300);
+  }
+}
+
+// ── Messages ──────────────────────────────────────────────────
 function boltMsg(text, isUser) {
-  var z = document.getElementById('bolt-msgs');
+  var box = document.getElementById('bolt-msgs');
+  if (!box) return;
   var d = document.createElement('div');
-  var clean = text.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
   d.style.cssText = isUser
-    ? 'align-self:flex-end;background:#EC9679;color:white;padding:10px 16px;border-radius:20px 20px 4px 20px;max-width:80%;font-size:14px;line-height:1.6;word-break:break-word;'
-    : 'align-self:flex-start;background:white;color:#1D1A16;padding:12px 16px;border-radius:4px 20px 20px 20px;max-width:88%;font-size:14px;line-height:1.6;border:1px solid #F0EDE8;box-shadow:0 1px 4px rgba(0,0,0,0.06);word-break:break-word;';
-  d.innerHTML = clean;
-  z.appendChild(d);
-  z.scrollTop = z.scrollHeight;
-  return d;
+    ? 'align-self:flex-end;max-width:80%;background:#EC9679;color:white;padding:10px 14px;border-radius:18px 18px 4px 18px;font-size:14px;line-height:1.45;font-family:Outfit,sans-serif;'
+    : 'align-self:flex-start;max-width:80%;background:white;color:#1D1A16;padding:10px 14px;border-radius:18px 18px 18px 4px;font-size:14px;line-height:1.45;font-family:Outfit,sans-serif;box-shadow:0 1px 4px rgba(0,0,0,.08);';
+  d.textContent = text;
+  box.appendChild(d);
+  box.scrollTop = box.scrollHeight;
 }
 
 function boltTyping() {
-  var z = document.getElementById('bolt-msgs');
+  var box = document.getElementById('bolt-msgs');
+  if (!box) return;
   var d = document.createElement('div');
   d.id = 'bolt-typing';
-  d.style.cssText = 'align-self:flex-start;background:white;padding:12px 16px;border-radius:4px 20px 20px 20px;border:1px solid #F0EDE8;display:flex;gap:5px;';
-  for (var i=0; i<3; i++) {
-    var dot = document.createElement('div');
-    dot.style.cssText = 'width:6px;height:6px;border-radius:50%;background:#6A5E53;animation:bDot 1s ease-in-out ' + (i*0.2) + 's infinite;';
-    d.appendChild(dot);
-  }
-  z.appendChild(d);
-  z.scrollTop = z.scrollHeight;
+  d.style.cssText = 'align-self:flex-start;background:white;padding:10px 14px;border-radius:18px 18px 18px 4px;box-shadow:0 1px 4px rgba(0,0,0,.08);display:flex;gap:4px;align-items:center;';
+  d.innerHTML = '<span style="width:6px;height:6px;border-radius:50%;background:#EC9679;animation:bDot 1s infinite 0s"></span>'
+    + '<span style="width:6px;height:6px;border-radius:50%;background:#EC9679;animation:bDot 1s infinite .2s"></span>'
+    + '<span style="width:6px;height:6px;border-radius:50%;background:#EC9679;animation:bDot 1s infinite .4s"></span>';
+  box.appendChild(d);
+  box.scrollTop = box.scrollHeight;
 }
 
 function boltRemoveTyping() {
-  var el = document.getElementById('bolt-typing');
-  if (el) el.remove();
+  var t = document.getElementById('bolt-typing');
+  if (t) t.remove();
 }
 
 function boltSugg(suggestions) {
   var box = document.getElementById('bolt-sugg');
+  if (!box) return;
   box.innerHTML = '';
   (suggestions || []).forEach(function(s) {
     var btn = document.createElement('button');
@@ -401,93 +405,70 @@ function boltSugg(suggestions) {
   });
 }
 
-function boltLaunchBtn(sessionData) {
-  var z = document.getElementById('bolt-msgs');
-  var d = document.createElement('div');
-  d.style.cssText = 'align-self:flex-start;max-width:88%;';
-  d.innerHTML = '<div onclick="window.location.href='session-dynamic.html?session=' + sessionData.key + ''" style="background:linear-gradient(135deg,#EC9679,#d87a60);border-radius:16px;padding:14px 18px;color:white;cursor:pointer;display:flex;align-items:center;gap:12px;box-shadow:0 4px 14px rgba(236,150,121,.35);">'
-    + '<div style="width:36px;height:36px;border-radius:50%;background:rgba(255,255,255,.25);display:flex;align-items:center;justify-content:center;font-size:18px;">▶</div>'
-    + '<div><div style="font-weight:700;font-size:14px;">' + sessionData.name + '</div>'
-    + '<div style="font-size:12px;opacity:.85;">Tap to start →</div></div></div>';
-  z.appendChild(d);
-  z.scrollTop = z.scrollHeight;
-}
-
+// ── Appel API Claude ──────────────────────────────────────────
 function boltCall(userMsg, isInit) {
   if (!isInit) boltMsg(userMsg, true);
   boltTyping();
-  document.getElementById('bolt-status').textContent = '● Thinking...';
-
-  var sessKeys = Object.keys(_SESSIONS).map(function(k) { return _SESSIONS[k] + ' (key: ' + k + ')'; }).join(', ');
+  var statusEl = document.getElementById('bolt-status');
+  if (statusEl) statusEl.textContent = '● Thinking...';
 
   var sys = 'You are Bolt, SportEdge AI fitness companion. '
-    + 'User completed a ' + _bInfo.duration + '-min session called "' + _bInfo.name + '". '
-    + 'You can launch sessions by including SESSION_LAUNCH:{"name":"...","key":"..."} at the end. '
-    + 'Available: ' + sessKeys + '. '
-    + 'End every reply with SUGGESTIONS:["s1","s2","s3"]. '
-    + 'Be warm, concise (3-5 sentences). Same language as user.';
+    + 'User just completed a ' + _bInfo.duration + '-min session: "' + _bInfo.name + '". '
+    + 'Be warm and concise (2-4 sentences). Respond in the same language as the user. '
+    + 'End every reply with SUGGESTIONS:["suggestion 1","suggestion 2","suggestion 3"].';
 
   _bHistory.push({ role: 'user', content: userMsg });
 
-  _ensureApiKey(function() {
-    fetch('https://api.anthropic.com/v1/messages', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'x-api-key': window._ANTHROPIC_KEY || '',
-        'anthropic-version': '2023-06-01',
-        'anthropic-dangerous-direct-browser-access': 'true'
-      },
-      body: JSON.stringify({
-        model: 'claude-sonnet-4-20250514',
-        max_tokens: 400,
-        system: sys,
-        messages: _bHistory.slice(-8)
-      })
+  fetch('https://api.anthropic.com/v1/messages', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'x-api-key': window._ANTHROPIC_KEY,
+      'anthropic-version': '2023-06-01',
+      'anthropic-dangerous-direct-browser-access': 'true'
+    },
+    body: JSON.stringify({
+      model: 'claude-sonnet-4-20250514',
+      max_tokens: 400,
+      system: sys,
+      messages: _bHistory.slice(-8)
     })
-    .then(function(r) { return r.json(); })
-    .then(function(data) {
-      boltRemoveTyping();
-      document.getElementById('bolt-status').textContent = '● Your AI fitness companion';
-      if (!data.content || !data.content[0]) {
-        boltMsg((data.error ? data.error.message : 'Connexion error') + '', false);
-        return;
-      }
-      var full = data.content[0].text || '';
-      
-      // Session launch
-      var launch = null;
-      var lm = full.match(/SESSION_LAUNCH:\{[^}]+\}/);
-      if (lm) {
-        try { launch = JSON.parse(lm[0].replace('SESSION_LAUNCH:', '')); } catch(e) {}
-        full = full.replace(/SESSION_LAUNCH:\{[^}]+\}/, '').trim();
-      }
-      
-      // Suggestions
-      var sugg = [];
-      var sm = full.match(/SUGGESTIONS:\[([^\]]+)\]/);
-      if (sm) {
-        try { sugg = JSON.parse('[' + sm[1] + ']'); } catch(e) {}
-        full = full.replace(/SUGGESTIONS:\[[^\]]+\]/, '').trim();
-      }
-      if (!sugg.length) sugg = ['What muscles did I work?', 'Launch a recovery session', 'Custom session for me'];
-      
-      _bHistory.push({ role: 'assistant', content: full });
-      boltMsg(full, false);
-      if (launch && launch.key) boltLaunchBtn(launch);
-      boltSugg(sugg);
-    })
-    .catch(function(e) {
-      boltRemoveTyping();
-      document.getElementById('bolt-status').textContent = '● Your AI fitness companion';
-      boltMsg('Connection error. Please try again.', false);
-    });
-  }); // end _ensureApiKey
+  })
+  .then(function(r) { return r.json(); })
+  .then(function(data) {
+    boltRemoveTyping();
+    if (statusEl) statusEl.textContent = '● Your AI fitness companion';
+
+    if (!data.content || !data.content[0]) {
+      boltMsg('Erreur de connexion. Réessaie.', false);
+      return;
+    }
+
+    var full = data.content[0].text || '';
+
+    // Extraire suggestions
+    var sugg = ['What did I work today?', 'Suggest a recovery session', 'How to improve?'];
+    var sm = full.match(/SUGGESTIONS:\[([^\]]+)\]/);
+    if (sm) {
+      try { sugg = JSON.parse('[' + sm[1] + ']'); } catch(ex) {}
+      full = full.replace(/SUGGESTIONS:\[[^\]]+\]/, '').trim();
+    }
+
+    _bHistory.push({ role: 'assistant', content: full });
+    boltMsg(full, false);
+    boltSugg(sugg);
+  })
+  .catch(function() {
+    boltRemoveTyping();
+    if (statusEl) statusEl.textContent = '● Your AI fitness companion';
+    boltMsg('Connexion impossible. Vérifie ta clé API et réessaie.', false);
+  });
 }
 
 function boltSend() {
   var inp = document.getElementById('bolt-input');
-  var txt = (inp.value || '').trim();
+  if (!inp) return;
+  var txt = inp.value.trim();
   if (!txt) return;
   inp.value = '';
   boltCall(txt, false);
@@ -503,29 +484,38 @@ function boltVoice() {
   if (_bRecording) {
     if (_bRec) _bRec.stop();
     _bRecording = false;
-    document.getElementById('bolt-mic').style.opacity = '1';
+    var mic = document.getElementById('bolt-mic');
+    if (mic) mic.style.opacity = '1';
     return;
   }
   _bRec = new SR();
   _bRec.lang = navigator.language || 'fr-FR';
   _bRec.onresult = function(e) {
-    document.getElementById('bolt-input').value = e.results[0][0].transcript;
+    var inp = document.getElementById('bolt-input');
+    if (inp) inp.value = e.results[0][0].transcript;
     _bRecording = false;
-    document.getElementById('bolt-mic').style.opacity = '1';
+    var mic = document.getElementById('bolt-mic');
+    if (mic) mic.style.opacity = '1';
     boltSend();
   };
   _bRec.onerror = _bRec.onend = function() {
     _bRecording = false;
-    document.getElementById('bolt-mic').style.opacity = '1';
+    var mic = document.getElementById('bolt-mic');
+    if (mic) mic.style.opacity = '1';
   };
   _bRec.start();
   _bRecording = true;
-  document.getElementById('bolt-mic').style.opacity = '0.5';
+  var mic = document.getElementById('bolt-mic');
+  if (mic) mic.style.opacity = '0.5';
 }
 
 document.addEventListener('DOMContentLoaded', function() {
   var inp = document.getElementById('bolt-input');
-  if (inp) inp.addEventListener('keydown', function(e) { if (e.key === 'Enter') boltSend(); });
+  if (inp) {
+    inp.addEventListener('keydown', function(e) {
+      if (e.key === 'Enter') boltSend();
+    });
+  }
 });
 </script>
 
