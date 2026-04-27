@@ -157,18 +157,21 @@
     <!-- Interaction Panel -->
     <section class="bg-white rounded-t-[40px] shadow-[0px_-10px_40px_rgba(0,0,0,0.04)] px-6 pt-10 pb-24 lg:pb-10 w-full max-w-4xl mx-auto lg:mb-8 lg:rounded-[40px] lg:border lg:border-gray-100">
       
+      <!-- Messages Area -->
+      <div id="bolt-messages" style="display:flex;flex-direction:column;gap:12px;max-height:340px;overflow-y:auto;margin-bottom:20px;padding:4px 0;"></div>
+      
       <!-- Suggestion Tags -->
       <div class="flex gap-3 overflow-x-auto hide-scrollbar mb-10 -mx-6 px-6 lg:mx-0 lg:px-0 lg:justify-center">
-        <button class="whitespace-nowrap px-6 py-3.5 bg-[#FDF4F2] border border-[#EC9679]/20 rounded-2xl text-[15px] font-medium hover:bg-[#fceae6]">
+        <button onclick="sendMessageText('Suggest a session for me')" class="whitespace-nowrap px-6 py-3.5 bg-[#FDF4F2] border border-[#EC9679]/20 rounded-2xl text-[15px] font-medium hover:bg-[#fceae6]">
           Suggest a session for me
         </button>
-        <button class="whitespace-nowrap px-6 py-3.5 bg-[#FDF4F2] border border-[#EC9679]/20 rounded-2xl text-[15px] font-medium hover:bg-[#fceae6]">
+        <button onclick="sendMessageText('I only have 5 minutes')" class="whitespace-nowrap px-6 py-3.5 bg-[#FDF4F2] border border-[#EC9679]/20 rounded-2xl text-[15px] font-medium hover:bg-[#fceae6]">
           I only have 5 minutes
         </button>
-        <button class="whitespace-nowrap px-6 py-3.5 bg-[#FDF4F2] border border-[#EC9679]/20 rounded-2xl text-[15px] font-medium hover:bg-[#fceae6]">
+        <button onclick="sendMessageText('I need something calm')" class="whitespace-nowrap px-6 py-3.5 bg-[#FDF4F2] border border-[#EC9679]/20 rounded-2xl text-[15px] font-medium hover:bg-[#fceae6]">
           I need something calm
         </button>
-        <button class="whitespace-nowrap px-6 py-3.5 bg-[#FDF4F2] border border-[#EC9679]/20 rounded-2xl text-[15px] font-medium hover:bg-[#fceae6]">
+        <button onclick="sendMessageText('Recovery day ideas')" class="whitespace-nowrap px-6 py-3.5 bg-[#FDF4F2] border border-[#EC9679]/20 rounded-2xl text-[15px] font-medium hover:bg-[#fceae6]">
           Recovery day ideas
         </button>
       </div>
@@ -183,8 +186,8 @@
 
       <!-- Text Input -->
       <div class="relative max-w-lg mx-auto w-full">
-        <input type="text" placeholder="Or type something..." class="w-full h-14 pl-6 pr-14 bg-[#FAFAFA] rounded-full input-shadow outline-none focus:ring-2 focus:ring-[#EC9679]/20 text-base">
-        <button class="absolute right-2 top-1/2 -translate-y-1/2 w-10 h-10 flex items-center justify-center text-[#565d6d] hover:text-[#EC9679]">
+        <input type="text" id="bolt-input" placeholder="Or type something..." class="w-full h-14 pl-6 pr-14 bg-[#FAFAFA] rounded-full input-shadow outline-none focus:ring-2 focus:ring-[#EC9679]/20 text-base">
+        <button id="bolt-send" onclick="sendMessage()" class="absolute right-2 top-1/2 -translate-y-1/2 w-10 h-10 flex items-center justify-center text-[#565d6d] hover:text-[#EC9679]">
           <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyMCIgaGVpZ2h0PSIyMCIgIHZpZXdCb3g9IjAgMCAyMCAyMCI+PGcgdHJhbnNmb3JtPSJtYXRyaXgoMSAwIDAgMSAwIDApIiAgPjxnIHN0eWxlPSIiICAgPjxnIHRyYW5zZm9ybT0ibWF0cml4KDAuODMgMCAwIDAuODMgMTAgMTApIiAgPjxwYXRoIHN0eWxlPSJzdHJva2U6IG5vbmU7IHN0cm9rZS13aWR0aDogMTsgc3Ryb2tlLWRhc2hhcnJheTogbm9uZTsgc3Ryb2tlLWxpbmVjYXA6IGJ1dHQ7IHN0cm9rZS1kYXNob2Zmc2V0OiAwOyBzdHJva2UtbGluZWpvaW46IG1pdGVyOyBzdHJva2UtbWl0ZXJsaW1pdDogNDsgZmlsbDogcmdiKDg2LDkzLDEwOSk7IGZpbGwtcnVsZTogbm9uemVybzsgb3BhY2l0eTogMTsiICB0cmFuc2Zvcm09IiB0cmFuc2xhdGUoLTEyLCAtMTIpIiBkPSJNIDIxLjAxMzkgMS4wODE1IEMgMjEuMjQzMyAxLjAwMTQ0IDIxLjQ4ODIgMC45NzgzMDMgMjEuNzI3NyAxLjAxNDEyIEwgMjEuODMyMiAxLjAzMzY1IEwgMjEuOTM0OCAxLjA2MDAyIEMgMjIuMTM4MiAxLjEyMDggMjIuMzI2MSAxLjIyNDYgMjIuNDg2NSAxLjM2MzczIEwgMjIuNTY0NiAxLjQzNTk5IEwgMjIuNjM2OSAxLjUxMzE0IEMgMjIuNzc1OSAxLjY3MzQgMjIuODc4OSAxLjg2MTY2IDIyLjkzOTYgMi4wNjQ5IEwgMjIuOTY3IDIuMTY4NDIgTCAyMi45ODY1IDIuMjcyOTEgQyAyMy4wMjIxIDIuNTExOCAyMi45OTc4IDIuNzU1ODggMjIuOTE4MiAyLjk4NDgyIEwgMjIuOTE5MSAyLjk4NTggTCAxNi40MTkxIDIxLjk4NTggTCAxNi40MTkxIDIxLjk4NjggQyAxNi4zMTk5IDIyLjI3NjEgMTYuMTM0NSAyMi41Mjg0IDE1Ljg4NzkgMjIuNzA5NCBDIDE1LjY0MTEgMjIuODkwNSAxNS4zNDQyIDIyLjk5MTYgMTUuMDM4MyAyMi45OTk1IEMgMTQuNzMyNSAyMy4wMDczIDE0LjQzMTYgMjIuOTIxNCAxNC4xNzYgMjIuNzUzNCBDIDEzLjk1MjEgMjIuNjA2MSAxMy43NzIzIDIyLjQwMTcgMTMuNjU0NSAyMi4xNjI2IEwgMTMuNjA3NiAyMi4wNTgxIEwgMTAuNDI3OSAxNC4xMjc0IEwgMTAuMzg1OSAxNC4wMzU2IEMgMTAuMzM5MSAxMy45NDY0IDEwLjI3ODcgMTMuODY0OSAxMC4yMDcyIDEzLjc5MzQgQyAxMC4xMTE3IDEzLjY5OCA5Ljk5NzU3IDEzLjYyMjkgOS44NzIyNiAxMy41NzI3IEwgOS44NzIyNiAxMy41NzE3IEwgMS45NDE1OSAxMC4zOTIgQyAxLjY1NzcgMTAuMjc4MSAxLjQxNTQzIDEwLjA4MDIgMS4yNDcyNiA5LjgyNDY3IEMgMS4wNzkwNyA5LjU2ODk2IDAuOTkzMzI4IDkuMjY3MzUgMS4wMDExNiA4Ljk2MTM4IEwgMS4wMDggOC44NDcxMyBDIDEuMDM1MTQgOC41ODIxNyAxLjEzMjgyIDguMzI4NiAxLjI5MTIgOC4xMTI3NSBMIDEuMzYxNTIgOC4wMjI5MSBDIDEuNTM1MDcgNy44MjA2NSAxLjc2MDQ2IDcuNjY4NCAyLjAxMzg2IDcuNTgxNSBMIDIuMDEzODYgNy41ODA1MiBMIDIxLjAxMzkgMS4wODA1MiBMIDIxLjAxMzkgMS4wODE1IFogTSAzLjkzNTczIDkuMDM2NTggTCAxMC42MTQ0IDExLjcxNTMgTCAxMC42MTU0IDExLjcxNTMgQyAxMC45OTE1IDExLjg2NTggMTEuMzMzNiAxMi4wOTEyIDExLjYyMDMgMTIuMzc3NCBDIDExLjg3MTIgMTIuNjI3OSAxMi4wNzU0IDEyLjkyMDYgMTIuMjIzOCAxMy4yNDE3IEwgMTIuMjgzNCAxMy4zODAzIEwgMTIuMjg0NCAxMy4zODIzIEwgMTQuOTYyMSAyMC4wNjI5IEwgMjAuNjk2NSAzLjMwMzE4IEwgMy45MzU3MyA5LjAzNjU4IFoiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgLz48L2c+PGcgdHJhbnNmb3JtPSJtYXRyaXgoMC44MyAwIDAgMC44MyAxMy42NSA2LjM1KSIgID48cGF0aCBzdHlsZT0ic3Ryb2tlOiBub25lOyBzdHJva2Utd2lkdGg6IDE7IHN0cm9rZS1kYXNoYXJyYXk6IG5vbmU7IHN0cm9rZS1saW5lY2FwOiBidXR0OyBzdHJva2UtZGFzaG9mZnNldDogMDsgc3Ryb2tlLWxpbmVqb2luOiBtaXRlcjsgc3Ryb2tlLW1pdGVybGltaXQ6IDQ7IGZpbGw6IHJnYig4Niw5MywxMDkpOyBmaWxsLXJ1bGU6IG5vbnplcm87IG9wYWNpdHk6IDE7IiAgdHJhbnNmb3JtPSIgdHJhbnNsYXRlKC0xNi4zOCwgLTcuNjIpIiBkPSJNIDIxLjE0NzQgMS40Mzk5NiBDIDIxLjUzNzkgMS4wNDk2MyAyMi4xNzEgMS4wNDk0OCAyMi41NjE0IDEuNDM5OTYgQyAyMi45NTE3IDEuODMwNDMgMjIuOTUxNyAyLjQ2MzU1IDIyLjU2MTQgMi44NTQwMiBMIDExLjYyMSAxMy43OTM1IEwgMTEuNTQ0OCAxMy44NjE4IEMgMTEuMTUyMiAxNC4xODE5IDEwLjU3MyAxNC4xNTkzIDEwLjIwNyAxMy43OTM1IEMgOS44MTY0NSAxMy40MDI5IDkuODE2NDEgMTIuNzY4OSAxMC4yMDcgMTIuMzc4NCBMIDIxLjE0NzQgMS40Mzk5NiBaIiBzdHJva2UtbGluZWNhcD0icm91bmQiIC8+PC9nPjwvZz48L2c+PC9zdmc+" alt="Send" class="w-5 h-5">
         </button>
       </div>
@@ -416,5 +419,141 @@
 
 })();
 </script>
+
+<script>
+// ── Bolt Chat Engine ────────────────────────────────────────────
+var boltHistory = [];
+var isRecording = false;
+var recognition = null;
+
+function addMessage(text, isUser) {
+  var zone = document.getElementById('bolt-messages');
+  if (!zone) return;
+  var div = document.createElement('div');
+  div.style.cssText = isUser
+    ? 'align-self:flex-end;background:#EC9679;color:white;padding:10px 16px;border-radius:20px 20px 4px 20px;max-width:80%;font-size:14px;line-height:1.5;word-break:break-word;'
+    : 'align-self:flex-start;background:#F6F5F3;color:#1D1A16;padding:10px 16px;border-radius:20px 20px 20px 4px;max-width:85%;font-size:14px;line-height:1.5;border:1px solid #E4E0DC;word-break:break-word;';
+  div.style.display = 'block';
+  div.textContent = text;
+  zone.appendChild(div);
+  zone.scrollTop = zone.scrollHeight;
+}
+
+function addTyping() {
+  var zone = document.getElementById('bolt-messages');
+  if (!zone) return;
+  var div = document.createElement('div');
+  div.id = 'bolt-typing';
+  div.style.cssText = 'align-self:flex-start;background:#F6F5F3;padding:12px 16px;border-radius:20px;border:1px solid #E4E0DC;display:flex;gap:4px;';
+  for (var i=0;i<3;i++) {
+    var d = document.createElement('div');
+    d.style.cssText = 'width:6px;height:6px;border-radius:50%;background:#6A5E53;animation:boltDot 1s ease-in-out '+(.2*i)+'s infinite;';
+    div.appendChild(d);
+  }
+  zone.appendChild(div);
+  zone.scrollTop = zone.scrollHeight;
+}
+
+function removeTyping() {
+  var el = document.getElementById('bolt-typing');
+  if (el) el.remove();
+}
+
+function callBolt(userMsg) {
+  boltHistory.push({ role: 'user', content: userMsg });
+  addTyping();
+
+  var systemPrompt = 'You are Bolt, SportEdge's friendly AI fitness companion. '
+    + 'You help users choose workout sessions, answer fitness questions, and keep them motivated. '
+    + 'You know about these session categories: HIIT & Cardio, Stretching & Mobility, Yoga & Breathwork, Strength & Body, Outdoor Runs, Mindful Meditation. '
+    + 'Be warm, concise (3-4 sentences max), and end with 1 actionable suggestion. '
+    + 'Respond in the same language as the user.';
+
+  fetch('/api/bolt', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      system: systemPrompt,
+      messages: boltHistory.slice(-8)
+    })
+  })
+  .then(function(r) { return r.json(); })
+  .then(function(data) {
+    removeTyping();
+    if (data.content && data.content[0] && data.content[0].text) {
+      var reply = data.content[0].text;
+      boltHistory.push({ role: 'assistant', content: reply });
+      addMessage(reply, false);
+    } else if (data.error) {
+      addMessage('Oops: ' + data.error, false);
+    } else {
+      addMessage('I had a small hiccup, try again!', false);
+    }
+  })
+  .catch(function(e) {
+    removeTyping();
+    addMessage('Connection error: ' + e.message, false);
+  });
+}
+
+function sendMessage() {
+  var input = document.getElementById('bolt-input');
+  if (!input) return;
+  var text = input.value.trim();
+  if (!text) return;
+  input.value = '';
+  addMessage(text, true);
+  callBolt(text);
+}
+
+function sendMessageText(text) {
+  addMessage(text, true);
+  callBolt(text);
+}
+
+function toggleVoice() {
+  var btn = document.getElementById('bolt-mic');
+  if (!('webkitSpeechRecognition' in window) && !('SpeechRecognition' in window)) {
+    alert('Voice input requires Chrome browser.');
+    return;
+  }
+  if (isRecording) {
+    if (recognition) recognition.stop();
+    isRecording = false;
+    if (btn) btn.style.background = '';
+    return;
+  }
+  var SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+  recognition = new SR();
+  recognition.lang = navigator.language || 'en-US';
+  recognition.interimResults = false;
+  recognition.onresult = function(e) {
+    var text = e.results[0][0].transcript;
+    document.getElementById('bolt-input').value = text;
+    isRecording = false;
+    if (btn) btn.style.background = '';
+    sendMessage();
+  };
+  recognition.onerror = function() { isRecording = false; if (btn) btn.style.background = ''; };
+  recognition.onend = function() { isRecording = false; if (btn) btn.style.background = ''; };
+  recognition.start();
+  isRecording = true;
+  if (btn) btn.style.background = '#FEE2E2';
+}
+
+// Touche Entrée
+document.addEventListener('DOMContentLoaded', function() {
+  var input = document.getElementById('bolt-input');
+  if (input) {
+    input.addEventListener('keydown', function(e) {
+      if (e.key === 'Enter') sendMessage();
+    });
+  }
+});
+</script>
+<style>
+@keyframes boltDot { 0%,60%,100%{transform:translateY(0)} 30%{transform:translateY(-5px)} }
+#bolt-messages { display:flex; flex-direction:column; }
+</style>
 </body>
 </html>

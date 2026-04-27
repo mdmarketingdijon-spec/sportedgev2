@@ -590,13 +590,14 @@ function callClaude(userMsg, isInitial) {
       addMessage(fullText, false);
       showSuggestions(suggestions);
     } else {
-      addMessage('Sorry, I had a small hiccup. Try again!', false);
+      var errMsg = data.error || data.type || 'API error - check ANTHROPIC_API_KEY in Vercel';
+      addMessage('Error: ' + errMsg, false);
     }
   })
   .catch(function() {
     removeTypingIndicator();
     setStatus('● Your AI fitness companion');
-    addMessage('I\'m having trouble connecting. Check your connection and try again.', false);
+    addMessage('Network error: ' + err.message, false);
   });
 }
 
