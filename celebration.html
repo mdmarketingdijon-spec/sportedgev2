@@ -234,14 +234,32 @@
       <button onclick="closeBolt()" style="width:32px;height:32px;border-radius:50%;background:#F6F5F3;border:none;cursor:pointer;font-size:16px;color:#6A5E53;">✕</button>
     </div>
 
-    <!-- Messages -->
-    <div id="bolt-msgs" style="flex:1;overflow-y:auto;padding:16px 20px;display:flex;flex-direction:column;gap:10px;background:#FAFAF9;min-height:100px;"></div>
+    <!-- KEY SCREEN (shown when no API key) -->
+    <div id="bolt-key-screen" style="display:none;flex:1;flex-direction:column;align-items:center;justify-content:center;padding:32px 24px;gap:16px;background:#FAFAF9;">
+      <div style="font-size:36px;">🔑</div>
+      <div style="font-size:17px;font-weight:700;color:#1D1A16;font-family:Outfit,sans-serif;text-align:center;">Active Bolt avec ta clé API</div>
+      <div style="font-size:13px;color:#6A5E53;text-align:center;line-height:1.5;">Entre ta clé Anthropic pour activer ton coach IA personnel.<br>Elle sera sauvegardée localement.</div>
+      <input id="bolt-key-input" type="password" placeholder="sk-ant-..." 
+        style="width:100%;padding:12px 16px;border:1.5px solid #E4E0DC;border-radius:14px;font-size:14px;outline:none;font-family:Outfit,sans-serif;box-sizing:border-box;"
+        onkeydown="if(event.key==='Enter')_submitApiKey()">
+      <div id="bolt-key-error" style="display:none;color:#E05A3A;font-size:12px;">Clé invalide — elle doit commencer par sk-ant-</div>
+      <button onclick="_submitApiKey()" 
+        style="width:100%;padding:13px;background:#EC9679;border:none;border-radius:14px;color:white;font-size:15px;font-weight:600;cursor:pointer;font-family:Outfit,sans-serif;">
+        Activer Bolt →
+      </button>
+      <a href="https://console.anthropic.com/settings/keys" target="_blank" style="font-size:12px;color:#5DCAA5;">Obtenir une clé Anthropic</a>
+    </div>
 
-    <!-- Suggestions -->
-    <div id="bolt-sugg" style="padding:8px 20px;display:flex;gap:8px;overflow-x:auto;background:white;border-top:1px solid #F0EDE8;flex-shrink:0;"></div>
+    <!-- CHAT AREA -->
+    <div id="bolt-chat-area" style="display:flex;flex:1;flex-direction:column;overflow:hidden;">
+      <!-- Messages -->
+      <div id="bolt-msgs" style="flex:1;overflow-y:auto;padding:16px 20px;display:flex;flex-direction:column;gap:10px;background:#FAFAF9;min-height:100px;"></div>
+      <!-- Suggestions -->
+      <div id="bolt-sugg" style="padding:8px 20px;display:flex;gap:8px;overflow-x:auto;background:white;border-top:1px solid #F0EDE8;flex-shrink:0;"></div>
+    </div>
 
-    <!-- Input -->
-    <div style="padding:10px 16px 20px;background:white;flex-shrink:0;">
+    <!-- Input bar -->
+    <div id="bolt-input-bar" style="padding:10px 16px 20px;background:white;flex-shrink:0;">
       <div style="display:flex;gap:8px;align-items:center;background:#F6F5F3;border-radius:28px;padding:5px 5px 5px 14px;border:1.5px solid #E4E0DC;" id="bolt-input-wrap">
         <button onclick="boltVoice()" id="bolt-mic" style="background:none;border:none;cursor:pointer;font-size:18px;padding:4px;">🎤</button>
         <input id="bolt-input" type="text" placeholder="Ask Bolt anything..." style="flex:1;border:none;background:transparent;font-size:14px;outline:none;font-family:Outfit,sans-serif;color:#1D1A16;">
@@ -265,16 +283,33 @@ try { window._ANTHROPIC_KEY = localStorage.getItem('_bolt_api_key') || ''; } cat
 
 function _ensureApiKey(cb) {
   if (window._ANTHROPIC_KEY && window._ANTHROPIC_KEY.length > 10) { cb(); return; }
-  var key = prompt('🔑 Clé API Anthropic pour activer Bolt:\n(sk-ant-...)');
-  if (!key || key.length < 10) {
-    boltRemoveTyping();
-    boltMsg("Clé API invalide. Recharge la page et entre une clé Anthropic valide.", false);
-    document.getElementById('bolt-status').textContent = '● Your AI fitness companion';
+  // Afficher l'écran de saisie de clé inline
+  document.getElementById('bolt-key-screen').style.display = 'flex';
+  document.getElementById('bolt-chat-area').style.display = 'none';
+  document.getElementById('bolt-input-bar').style.display = 'none';
+  window._bPendingCb = cb;
+  boltRemoveTyping();
+}
+
+function _submitApiKey() {
+  var inp = document.getElementById('bolt-key-input');
+  var key = (inp ? inp.value : '').trim();
+  if (!key || key.length < 20) {
+    document.getElementById('bolt-key-error').style.display = 'block';
     return;
   }
-  window._ANTHROPIC_KEY = key.trim();
-  try { localStorage.setItem('_bolt_api_key', window._ANTHROPIC_KEY); } catch(e) {}
-  cb();
+  window._ANTHROPIC_KEY = key;
+  try { localStorage.setItem('_bolt_api_key', key); } catch(e) {}
+  document.getElementById('bolt-key-screen').style.display = 'none';
+  document.getElementById('bolt-chat-area').style.display = 'flex';
+  document.getElementById('bolt-input-bar').style.display = 'block';
+  if (window._bPendingCb) { var f = window._bPendingCb; window._bPendingCb = null; f(); }
+  else if (!_bOpened) {
+    _bOpened = true;
+    setTimeout(function() {
+      boltCall('I just finished my ' + _bInfo.name + ' session (' + _bInfo.duration + ' minutes). Give me your post-workout feedback.', true);
+    }, 300);
+  }
 }
 
 (function(){
@@ -286,18 +321,31 @@ function _ensureApiKey(cb) {
 var _SESSIONS = {"morning-wake-up-stretch": "Morning Wake-Up Stretch", "hip-flexor-release": "Hip Flexor Release", "classic-hiit": "Classic HIIT", "tabata-full-body": "Tabata Full Body", "restorative-yoga": "Restorative Yoga", "vinyasa-flow": "Vinyasa Flow", "minimalist-core-strength": "Minimalist Core Strength", "full-body-bodyweight": "Full Body Bodyweight", "recovery-jog": "Recovery Jog", "body-scan-for-rest": "Body Scan for Rest"};
 
 function openBoltChat() {
-  try {
-    var panel = document.getElementById('bolt-panel');
-    if (!panel) { alert('bolt-panel not found!'); return; }
-    panel.style.display = 'block';
-    document.body.style.overflow = 'hidden';
-    if (!_bOpened) {
-      _bOpened = true;
-      setTimeout(function() {
-        boltCall('I just finished my ' + _bInfo.name + ' session (' + _bInfo.duration + ' minutes). Give me your post-workout feedback.', true);
-      }, 500);
-    }
-  } catch(e) { alert('Error: ' + e.message); }
+  var panel = document.getElementById('bolt-panel');
+  if (!panel) return;
+  panel.style.display = 'block';
+  document.body.style.overflow = 'hidden';
+
+  // Si pas de clé : montrer key-screen, cacher le chat
+  if (!window._ANTHROPIC_KEY || window._ANTHROPIC_KEY.length < 10) {
+    document.getElementById('bolt-key-screen').style.display = 'flex';
+    document.getElementById('bolt-chat-area').style.display = 'none';
+    document.getElementById('bolt-input-bar').style.display = 'none';
+    setTimeout(function() { var ki = document.getElementById('bolt-key-input'); if(ki) ki.focus(); }, 100);
+    return;
+  }
+
+  // Clé présente : montrer le chat
+  document.getElementById('bolt-key-screen').style.display = 'none';
+  document.getElementById('bolt-chat-area').style.display = 'flex';
+  document.getElementById('bolt-input-bar').style.display = 'block';
+
+  if (!_bOpened) {
+    _bOpened = true;
+    setTimeout(function() {
+      boltCall('I just finished my ' + _bInfo.name + ' session (' + _bInfo.duration + ' minutes). Give me your post-workout feedback.', true);
+    }, 400);
+  }
 }
 
 function closeBolt() {
