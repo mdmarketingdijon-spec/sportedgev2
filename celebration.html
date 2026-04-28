@@ -284,6 +284,16 @@
 <script>
 var _bHistory = [], _bInfo = {}, _bOpened = false, _bRec = null, _bRecording = false;
 
+// Charger historique partagé depuis localStorage
+try {
+  var saved = localStorage.getItem('_bolt_history');
+  if (saved) _bHistory = JSON.parse(saved) || [];
+} catch(e) { _bHistory = []; }
+
+function _saveHistory() {
+  try { localStorage.setItem('_bolt_history', JSON.stringify(_bHistory.slice(-30))); } catch(e) {}
+}
+
 // Clé API
 window._ANTHROPIC_KEY = '';
 try { window._ANTHROPIC_KEY = localStorage.getItem('_bolt_api_key') || ''; } catch(e) {}
@@ -330,9 +340,22 @@ function openBoltChat() {
 
   if (!_bOpened) {
     _bOpened = true;
-    setTimeout(function() {
-      boltCall('I just finished my ' + _bInfo.name + ' session (' + _bInfo.duration + ' minutes). Give me a short post-workout message.', true);
-    }, 400);
+    // Si historique existant, le réafficher SANS appel API
+    if (_bHistory.length > 0) {
+      _bHistory.forEach(function(m) {
+        if (m.role === 'user') boltMsg(m.content, true);
+        else if (m.role === 'assistant') {
+          var clean = m.content.replace(/SUGGESTIONS:\[[^\]]+\]/, '').trim();
+          boltMsg(clean, false);
+        }
+      });
+      boltSugg(['Comment tu te sens ?', 'Suggère une séance', 'Conseil récup']);
+    } else {
+      // Premier passage : message post-workout
+      setTimeout(function() {
+        boltCall('I just finished my ' + _bInfo.name + ' session (' + _bInfo.duration + ' minutes). Give me a short post-workout message.', true);
+      }, 400);
+    }
   }
 }
 
@@ -362,9 +385,20 @@ function _submitApiKey() {
   document.getElementById('bolt-input-bar').style.display = 'block';
   if (!_bOpened) {
     _bOpened = true;
-    setTimeout(function() {
-      boltCall('I just finished my ' + _bInfo.name + ' session (' + _bInfo.duration + ' minutes). Give me a short post-workout message.', true);
-    }, 300);
+    if (_bHistory.length > 0) {
+      _bHistory.forEach(function(m) {
+        if (m.role === 'user') boltMsg(m.content, true);
+        else if (m.role === 'assistant') {
+          var clean = m.content.replace(/SUGGESTIONS:\[[^\]]+\]/, '').trim();
+          boltMsg(clean, false);
+        }
+      });
+      boltSugg(['Comment tu te sens ?', 'Suggère une séance', 'Conseil récup']);
+    } else {
+      setTimeout(function() {
+        boltCall('I just finished my ' + _bInfo.name + ' session (' + _bInfo.duration + ' minutes). Give me a short post-workout message.', true);
+      }, 300);
+    }
   }
 }
 
@@ -425,6 +459,7 @@ function boltCall(userMsg, isInit) {
     + 'End every reply with SUGGESTIONS:["suggestion 1","suggestion 2","suggestion 3"].';
 
   _bHistory.push({ role: 'user', content: userMsg });
+  _saveHistory();
 
   fetch('https://api.anthropic.com/v1/messages', {
     method: 'POST',
@@ -435,7 +470,7 @@ function boltCall(userMsg, isInit) {
       'anthropic-dangerous-direct-browser-access': 'true'
     },
     body: JSON.stringify({
-      model: 'claude-sonnet-4-20250514',
+      model: 'claude-sonnet-4-6',
       max_tokens: 400,
       system: sys,
       messages: _bHistory.slice(-8)
@@ -447,11 +482,17 @@ function boltCall(userMsg, isInit) {
     if (statusEl) statusEl.textContent = '● Your AI fitness companion';
 
     if (data.error) {
-      boltMsg('API: ' + (data.error.message || JSON.stringify(data.error)), false);
+      var errMsg = 'Erreur API: ';
+      if (data.error.message) errMsg += data.error.message;
+      else if (data.error.type) errMsg += data.error.type;
+      else errMsg += JSON.stringify(data.error);
+      boltMsg(errMsg, false);
+      console.error('Anthropic API error:', data);
       return;
     }
     if (!data.content || !data.content[0]) {
-      boltMsg('Réponse vide. Détail: ' + JSON.stringify(data).slice(0,200), false);
+      boltMsg('Réponse vide. Détail: ' + JSON.stringify(data).slice(0,300), false);
+      console.error('Empty response:', data);
       return;
     }
 
@@ -466,6 +507,7 @@ function boltCall(userMsg, isInit) {
     }
 
     _bHistory.push({ role: 'assistant', content: full });
+    _saveHistory();
     boltMsg(full, false);
     boltSugg(sugg);
   })
