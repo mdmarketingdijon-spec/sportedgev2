@@ -258,6 +258,13 @@
       <div id="bolt-sugg" style="padding:8px 20px;display:flex;gap:8px;overflow-x:auto;background:white;border-top:1px solid #F0EDE8;flex-shrink:0;"></div>
     </div>
 
+    <!-- Reset key button -->
+    <div style="text-align:center;padding:4px;background:white;">
+      <button onclick="localStorage.removeItem('_bolt_api_key');window._ANTHROPIC_KEY='';openBoltChat();" 
+        style="font-size:10px;color:#aaa;background:none;border:none;cursor:pointer;text-decoration:underline;">
+        Changer de clé API
+      </button>
+    </div>
     <!-- Input bar -->
     <div id="bolt-input-bar" style="padding:10px 16px 20px;background:white;flex-shrink:0;">
       <div style="display:flex;gap:8px;align-items:center;background:#F6F5F3;border-radius:28px;padding:5px 5px 5px 14px;border:1.5px solid #E4E0DC;" id="bolt-input-wrap">
@@ -439,8 +446,12 @@ function boltCall(userMsg, isInit) {
     boltRemoveTyping();
     if (statusEl) statusEl.textContent = '● Your AI fitness companion';
 
+    if (data.error) {
+      boltMsg('API: ' + (data.error.message || JSON.stringify(data.error)), false);
+      return;
+    }
     if (!data.content || !data.content[0]) {
-      boltMsg('Erreur de connexion. Réessaie.', false);
+      boltMsg('Réponse vide. Détail: ' + JSON.stringify(data).slice(0,200), false);
       return;
     }
 
@@ -458,10 +469,10 @@ function boltCall(userMsg, isInit) {
     boltMsg(full, false);
     boltSugg(sugg);
   })
-  .catch(function() {
+  .catch(function(err) {
     boltRemoveTyping();
     if (statusEl) statusEl.textContent = '● Your AI fitness companion';
-    boltMsg('Connexion impossible. Vérifie ta clé API et réessaie.', false);
+    boltMsg('Erreur: ' + (err && err.message ? err.message : 'CORS ou clé invalide. Vérifie la console F12.'), false);
   });
 }
 
