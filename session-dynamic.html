@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fr">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>SportEdge — Session</title>
+<title>SportEdge — Séance</title>
 <script src="https://cdn.tailwindcss.com"></script>
 <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
@@ -40,15 +40,15 @@ body { font-family: 'Outfit', sans-serif; background: #FBFAF9; color: #1D1A16; m
 <!-- COMPLETED SCREEN -->
 <div class="completed-screen" id="completedScreen">
   <div style="font-size:64px">🎉</div>
-  <h2 style="font-size:28px;font-weight:700">Session complete!</h2>
+  <h2 style="font-size:28px;font-weight:700">Séance terminée !</h2>
   <p style="font-size:15px;color:#6A5E53;text-align:center;max-width:300px" id="completedMsg"></p>
   <div style="display:flex;gap:12px;flex-wrap:wrap;justify-content:center">
-    <div style="background:#F6F5F3;border-radius:12px;padding:14px 20px;text-align:center"><div style="font-size:22px;font-weight:700" id="cDur">—</div><div style="font-size:12px;color:#888">duration</div></div>
+    <div style="background:#F6F5F3;border-radius:12px;padding:14px 20px;text-align:center"><div style="font-size:22px;font-weight:700" id="cDur">—</div><div style="font-size:12px;color:#888">durée</div></div>
     <div style="background:#F6F5F3;border-radius:12px;padding:14px 20px;text-align:center"><div style="font-size:22px;font-weight:700" id="cEx">—</div><div style="font-size:12px;color:#888">exercises</div></div>
     <div style="background:#F6F5F3;border-radius:12px;padding:14px 20px;text-align:center"><div style="font-size:22px;font-weight:700" id="cInt">—</div><div style="font-size:12px;color:#888">intensity</div></div>
   </div>
   <div style="display:flex;gap:12px">
-    <button class="btn-primary" onclick="window.location.href='home-medium.html'">Back to home</button>
+    <button class="btn-primary" onclick="window.location.href='home-medium.html'">Retour à l'accueil</button>
     <button class="btn-secondary" onclick="restartSession()">Repeat</button>
   </div>
 </div>
@@ -71,12 +71,12 @@ body { font-family: 'Outfit', sans-serif; background: #FBFAF9; color: #1D1A16; m
       </div>
     </div>
     <div style="margin-bottom:14px;">
-      <div style="display:flex;justify-content:space-between;font-size:12px;color:#888;margin-bottom:5px;"><span>Progress</span><span id="sProgress">0 / 0</span></div>
+      <div style="display:flex;justify-content:space-between;font-size:12px;color:#888;margin-bottom:5px;"><span>Progression</span><span id="sProgression">0 / 0</span></div>
       <div class="prog-bar"><div class="prog-fill" id="sProgBar" style="width:0%"></div></div>
     </div>
     <div style="font-size:10px;font-weight:600;color:#888;text-transform:uppercase;letter-spacing:.06em;margin-bottom:8px;">Exercises</div>
     <div id="exList" style="display:flex;flex-direction:column;gap:3px;flex:1;"></div>
-    <button class="btn-secondary" style="width:100%;margin-top:16px" onclick="confirmExit()">← Exit session</button>
+    <button class="btn-secondary" style="width:100%;margin-top:16px" onclick="confirmExit()">← Quitter la séance</button>
   </aside>
 
   <!-- Main -->
@@ -84,7 +84,7 @@ body { font-family: 'Outfit', sans-serif; background: #FBFAF9; color: #1D1A16; m
 
     <!-- Top bar -->
     <div style="display:flex;justify-content:space-between;align-items:center;">
-      <button class="btn-secondary" style="padding:8px 16px;font-size:13px" onclick="confirmExit()">← Back</button>
+      <button class="btn-secondary" style="padding:8px 16px;font-size:13px" onclick="confirmExit()">← Retour</button>
       <div style="font-size:13px;color:#888" id="mProg">0 / 0</div>
     </div>
 
@@ -106,7 +106,7 @@ body { font-family: 'Outfit', sans-serif; background: #FBFAF9; color: #1D1A16; m
         <div id="restOverlay" style="display:none;position:absolute;inset:0;background:rgba(251,250,249,0.95);display:none;flex-direction:column;align-items:center;justify-content:center;gap:8px;">
           <div style="font-size:42px">😮‍💨</div>
           <div style="font-size:18px;font-weight:700">Rest</div>
-          <div style="font-size:13px;color:#888">Next: <span id="nextExName">—</span></div>
+          <div style="font-size:13px;color:#888">Suivant : <span id="nextExName">—</span></div>
         </div>
         <div id="meditationOverlay" style="display:none;position:absolute;inset:0;background:rgba(251,250,249,0.96);flex-direction:column;align-items:center;justify-content:center;gap:10px;">
           <div style="font-size:52px">🧘</div>
@@ -115,7 +115,7 @@ body { font-family: 'Outfit', sans-serif; background: #FBFAF9; color: #1D1A16; m
         <div id="gifFallback" style="display:none;position:absolute;inset:0;flex-direction:column;align-items:center;justify-content:center;gap:10px;text-align:center;padding:20px;">
           <div style="font-size:64px;animation:pulse-icon 1.5s ease-in-out infinite" id="fallbackIcon">💪</div>
           <div style="font-size:16px;font-weight:600;color:#1D1A16" id="fallbackName">—</div>
-          <div style="font-size:12px;color:#888;background:white;border-radius:8px;padding:5px 12px">Follow the tip below</div>
+          <div style="font-size:12px;color:#888;background:white;border-radius:8px;padding:5px 12px">Suis le conseil ci-dessous</div>
         </div>
         <div id="gifLoading" style="display:flex;flex-direction:column;align-items:center;gap:10px;color:#888;">
           <div style="width:44px;height:44px;border:3px solid #E4E0DC;border-top-color:#EC9679;border-radius:50%;animation:spin 1s linear infinite"></div>
@@ -146,8 +146,8 @@ body { font-family: 'Outfit', sans-serif; background: #FBFAF9; color: #1D1A16; m
     <!-- Controls -->
     <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap;">
       <button class="btn-secondary" id="btnPrev" onclick="prevEx()" style="min-width:90px">← Prev</button>
-      <button class="btn-primary" id="btnPlay" onclick="togglePlay()" style="min-width:130px">▶ Start</button>
-      <button class="btn-secondary" id="btnNext" onclick="nextEx()" style="min-width:90px">Next →</button>
+      <button class="btn-primary" id="btnPlay" onclick="togglePlay()" style="min-width:130px">▶ Démarrer</button>
+      <button class="btn-secondary" id="btnNext" onclick="nextEx()" style="min-width:90px">Suivant →</button>
     </div>
 
     <!-- Dots -->
