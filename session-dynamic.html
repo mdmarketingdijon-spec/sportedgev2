@@ -172,11 +172,69 @@ var INT_COLORS = {
 var session=null, curIdx=0, timerInt=null, timeLeft=0, totalTime=0, isPlaying=false, startTime=null;
 
 // ── Init ─────────────────────────────────────────────────────
+// Variable globale pour tracker la clé de session active
+var currentSessionKey = '';
+
 document.addEventListener('DOMContentLoaded', function() {
   document.getElementById('logoImg').src = LOGO_SRC;
   var params = new URLSearchParams(window.location.search);
   var key = params.get('session') || 'morning-wake-up-stretch';
-  session = SESSIONS[key] || SESSIONS['morning-wake-up-stretch'];
+  currentSessionKey = key;
+
+  if (key === 'custom') {
+    // Charger une séance custom depuis sessionStorage (créée par Bolt)
+    var customRaw = null;
+    try { customRaw = sessionStorage.getItem('_custom_session'); } catch(e) {}
+    if (customRaw) {
+      try {
+        var customSession = JSON.parse(customRaw);
+        // Validation : chaque exercice doit avoir un id qui existe dans la base d'exercices
+        var validExercises = [];
+        // Construire un index global des exercices par id
+        var exerciseIndex = {};
+        Object.keys(SESSIONS).forEach(function(sk) {
+          (SESSIONS[sk].exercises || []).forEach(function(ex) {
+            if (ex.id && !exerciseIndex[ex.id]) exerciseIndex[ex.id] = ex;
+          });
+        });
+        (customSession.exercises || []).forEach(function(ex) {
+          if (ex.id && exerciseIndex[ex.id]) {
+            // Compléter avec les données de référence si manquantes
+            var ref = exerciseIndex[ex.id];
+            validExercises.push({
+              name: ex.name || ref.name,
+              id: ex.id,
+              duration: ex.duration || ref.duration || 30,
+              reps: ex.reps !== undefined ? ex.reps : ref.reps,
+              tip: ex.tip || ref.tip || ''
+            });
+          }
+        });
+        if (validExercises.length === 0) {
+          // Fallback si aucun exercice valide
+          alert('La séance personnalisée contient des exercices invalides. Redirection vers une séance par défaut.');
+          session = SESSIONS['morning-wake-up-stretch'];
+        } else {
+          session = {
+            title: customSession.title || 'Custom Session',
+            category: customSession.category || 'Custom',
+            duration: customSession.duration || Math.ceil(validExercises.reduce(function(s,e){return s+(e.duration||30);},0) / 60),
+            intensity: customSession.intensity || 'Medium',
+            color: customSession.color || '#FBEAE4',
+            exercises: validExercises
+          };
+        }
+      } catch(e) {
+        alert('Erreur de chargement de la séance personnalisée.');
+        session = SESSIONS['morning-wake-up-stretch'];
+      }
+    } else {
+      alert('Aucune séance personnalisée trouvée.');
+      session = SESSIONS['morning-wake-up-stretch'];
+    }
+  } else {
+    session = SESSIONS[key] || SESSIONS['morning-wake-up-stretch'];
+  }
   initSession();
 });
 
@@ -533,9 +591,120 @@ function showCompleted() {
   pauseYouTube();
   var elapsed = startTime ? Math.round((Date.now() - startTime) / 60000) : session.duration;
   if (elapsed < 1) elapsed = 1;
-  // Rediriger vers la page celebration avec les infos de session
+
+  // === Tracking de la session terminée ===
+  try {
+    // Calcul calories : ~5 cal/min Low, ~8 Mid, ~11 High
+    var ratePerMin = 5;
+    var intensityKey = (session.intensity || '').toLowerCase();
+    if (intensityKey.indexOf('high') !== -1) ratePerMin = 11;
+    else if (intensityKey.indexOf('med') !== -1) ratePerMin = 8;
+    var calories = Math.round(elapsed * ratePerMin);
+
+    var sessionRecord = {
+      key: (typeof currentSessionKey !== 'undefined' ? currentSessionKey : '') || (new URLSearchParams(window.location.search)).get('session') || 'custom',
+      title: session.title,
+      duration: elapsed,
+      calories: calories,
+      intensity: session.intensity || 'Low',
+      category: session.category || '',
+      timestamp: Date.now()
+    };
+
+    // sessionStorage : sessions de la session d'utilisation actuelle (pour summary)
+    var todayList = [];
+    try { todayList = JSON.parse(sessionStorage.getItem('_sessions_today') || '[]'); } catch(e) {}
+    todayList.push(sessionRecord);
+    try { sessionStorage.setItem('_sessions_today', JSON.stringify(todayList)); } catch(e) {}
+
+    // localStorage : historique long terme (pour achievements + Bolt context)
+    var history = [];
+    try { history = JSON.parse(localStorage.getItem('_sessions_history') || '[]'); } catch(e) {}
+    history.push(sessionRecord);
+    // Garder max 200 sessions
+    if (history.length > 200) history = history.slice(-200);
+    try { localStorage.setItem('_sessions_history', JSON.stringify(history)); } catch(e) {}
+
+    // Mise à jour automatique des achievements
+    try { _updateAchievements(sessionRecord); } catch(e) { console.warn('Achievement update error:', e); }
+  } catch(e) { console.warn('Session tracking error:', e); }
+
   var params = '?duration=' + elapsed + '&name=' + encodeURIComponent(session.title);
   window.location.href = 'celebration.html' + params;
+}
+
+// === Tracking automatique des achievements ===
+function _updateAchievements(sessionRecord) {
+  var achievements = [];
+  try { achievements = JSON.parse(localStorage.getItem('_achievements') || '[]'); } catch(e) { return; }
+  if (!achievements.length) return;
+
+  var now = Date.now();
+  var changed = false;
+
+  achievements.forEach(function(a) {
+    if (a.completed) return;
+    if (a.endDate && now > a.endDate) return; // expiré
+
+    // Type 'sessions' : compter le nombre de sessions
+    if (a.type === 'sessions' || a.type === 'comeback') {
+      a.current = (a.current || 0) + 1;
+      changed = true;
+    }
+    // Type 'minutes' : ajouter durée
+    else if (a.type === 'minutes') {
+      a.current = (a.current || 0) + sessionRecord.duration;
+      changed = true;
+    }
+    // Type 'streak' : incrémenter si nouvelle journée
+    else if (a.type === 'streak') {
+      var lastDay = a.lastDay || 0;
+      var today = new Date(); today.setHours(0,0,0,0);
+      var todayTs = today.getTime();
+      if (todayTs > lastDay) {
+        // Si gap > 1 jour, reset à 1 ; sinon +1
+        var dayMs = 86400000;
+        if (lastDay && (todayTs - lastDay) > dayMs * 1.5) a.current = 1;
+        else a.current = (a.current || 0) + 1;
+        a.lastDay = todayTs;
+        changed = true;
+      }
+    }
+    // Type 'category' : compter sessions de cette catégorie
+    else if (a.type === 'category') {
+      if (sessionRecord.category && a.categoryFilter && 
+          sessionRecord.category.toLowerCase().indexOf(a.categoryFilter.toLowerCase()) !== -1) {
+        a.current = (a.current || 0) + 1;
+        changed = true;
+      }
+    }
+    // Type 'distance' : pour les courses (approx 1km / 6 min de course)
+    else if (a.type === 'distance') {
+      if (sessionRecord.category && sessionRecord.category.toLowerCase().indexOf('cardio') !== -1
+          || sessionRecord.title && sessionRecord.title.toLowerCase().indexOf('run') !== -1
+          || sessionRecord.title && sessionRecord.title.toLowerCase().indexOf('jog') !== -1) {
+        var km = Math.round((sessionRecord.duration / 6) * 10) / 10;
+        a.current = Math.round((a.current || 0) * 10 + km * 10) / 10;
+        changed = true;
+      }
+    }
+
+    // Vérifier complétion
+    if (!a.completed && a.current >= a.target) {
+      a.completed = true;
+      a.completedAt = now;
+      // Marquer pour célébration sur celebration.html
+      try {
+        var celebrate = JSON.parse(sessionStorage.getItem('_pending_celebration') || '[]');
+        celebrate.push({ name: a.name, type: a.type, target: a.target });
+        sessionStorage.setItem('_pending_celebration', JSON.stringify(celebrate));
+      } catch(e) {}
+    }
+  });
+
+  if (changed) {
+    try { localStorage.setItem('_achievements', JSON.stringify(achievements)); } catch(e) {}
+  }
 }
 
 function restartSession() {

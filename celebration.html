@@ -294,6 +294,37 @@ function _saveHistory() {
   try { localStorage.setItem('_bolt_history', JSON.stringify(_bHistory.slice(-30))); } catch(e) {}
 }
 
+// Récupère un résumé de l'usage pour personnaliser Bolt
+function _getUsageSummary() {
+  var history = [];
+  try { history = JSON.parse(localStorage.getItem('_sessions_history') || '[]'); } catch(e) {}
+  if (!history.length) return 'Aucune séance historique. Profil : nouvel utilisateur.';
+  var recent = history.slice(-5);
+  var counts = {}; var totalMin = 0;
+  recent.forEach(function(s) {
+    var c = (s.category || 'other').split(' ')[0];
+    counts[c] = (counts[c] || 0) + 1;
+    totalMin += (s.duration || 0);
+  });
+  var summary = recent.length + ' séances récentes (' + totalMin + ' min total). ';
+  var cats = Object.keys(counts).map(function(k) { return k + ':' + counts[k]; }).join(', ');
+  summary += 'Préférences : ' + cats + '. ';
+  // Détecter intensité moyenne
+  var highCount = recent.filter(function(s) { return (s.intensity||'').toLowerCase().indexOf('high') !== -1; }).length;
+  var lowCount = recent.filter(function(s) { return (s.intensity||'').toLowerCase().indexOf('low') !== -1; }).length;
+  if (highCount > recent.length / 2) summary += 'Profil intensif. ';
+  else if (lowCount > recent.length / 2) summary += 'Profil low intensity. ';
+  // Achievements actifs
+  var achs = [];
+  try { achs = JSON.parse(localStorage.getItem('_achievements') || '[]'); } catch(e) {}
+  var active = achs.filter(function(a) { return !a.completed; });
+  if (active.length) {
+    summary += 'Objectifs actifs : ' + active.map(function(a) { return a.name + ' (' + a.current + '/' + a.target + ')'; }).join(', ') + '. ';
+  }
+  return summary;
+}
+
+
 // Clé API
 window._ANTHROPIC_KEY = '';
 try { window._ANTHROPIC_KEY = localStorage.getItem('_bolt_api_key') || ''; } catch(e) {}
@@ -453,9 +484,13 @@ function boltCall(userMsg, isInit) {
   var statusEl = document.getElementById('bolt-status');
   if (statusEl) statusEl.textContent = '● Thinking...';
 
+  var usageContext = _getUsageSummary();
   var sys = 'You are Bolt, SportEdge AI fitness companion. '
     + 'User just completed a ' + _bInfo.duration + '-min session: "' + _bInfo.name + '". '
+    + 'CONTEXTE UTILISATEUR : ' + usageContext + ' '
     + 'Be warm and concise (2-4 sentences). Respond in the same language as the user. '
+    + 'Tu peux suggérer un achievement (objectif) PERTINENT et PROPORTIONNÉ au profil. '
+    + 'Si tu suggères, ajoute SUGGEST_ACHIEVEMENT:{"template":"comeback|distance|minutes|streak|category","target":N,"days":N,"name":"..."} dans ta réponse. '
     + 'End every reply with SUGGESTIONS:["suggestion 1","suggestion 2","suggestion 3"].';
 
   _bHistory.push({ role: 'user', content: userMsg });
@@ -506,9 +541,18 @@ function boltCall(userMsg, isInit) {
       full = full.replace(/SUGGESTIONS:\[[^\]]+\]/, '').trim();
     }
 
+    // Extraire suggestion d'achievement
+    var achSuggestion = null;
+    var am = full.match(/SUGGEST_ACHIEVEMENT:(\{[^}]+\})/);
+    if (am) {
+      try { achSuggestion = JSON.parse(am[1]); } catch(ex) {}
+      full = full.replace(/SUGGEST_ACHIEVEMENT:\{[^}]+\}/, '').trim();
+    }
+
     _bHistory.push({ role: 'assistant', content: full });
     _saveHistory();
     boltMsg(full, false);
+    if (achSuggestion) _showAchievementSuggestion(achSuggestion);
     boltSugg(sugg);
   })
   .catch(function(err) {
@@ -560,6 +604,62 @@ function boltVoice() {
   _bRecording = true;
   var mic = document.getElementById('bolt-mic');
   if (mic) mic.style.opacity = '0.5';
+}
+
+
+function _showAchievementSuggestion(ach) {
+  var box = document.getElementById('bolt-msgs');
+  if (!box) return;
+  var card = document.createElement('div');
+  card.style.cssText = 'align-self:stretch;background:#FBEAE4;border:1.5px solid #EC9679;border-radius:18px;padding:14px 16px;font-family:Outfit,sans-serif;margin:4px 0;';
+  var name = ach.name || 'Nouvel objectif';
+  var desc = (ach.target || '?') + ' en ' + (ach.days || 7) + ' jours';
+  card.innerHTML = '<div style="display:flex;align-items:center;gap:8px;margin-bottom:8px;">'
+    + '<span style="font-size:20px;">🎯</span>'
+    + '<div style="flex:1;">'
+    + '<div style="font-weight:700;color:#1D1A16;font-size:14px;">Bolt te suggère un objectif</div>'
+    + '<div style="font-size:12px;color:#6A5E53;">' + name + ' — ' + desc + '</div>'
+    + '</div></div>'
+    + '<button onclick="_acceptBoltSuggestion(this, ' + JSON.stringify(JSON.stringify(ach)).replace(/"/g, '&quot;') + ')" style="width:100%;padding:10px;background:#EC9679;color:white;border:none;border-radius:10px;font-weight:600;cursor:pointer;font-family:Outfit,sans-serif;font-size:13px;">Créer cet objectif</button>';
+  box.appendChild(card);
+  box.scrollTop = box.scrollHeight;
+}
+
+function _acceptBoltSuggestion(btn, jsonStr) {
+  try {
+    var ach = JSON.parse(jsonStr);
+    var list = [];
+    try { list = JSON.parse(localStorage.getItem('_achievements') || '[]'); } catch(e) {}
+    var active = list.filter(function(a) { return !a.completed; });
+    if (active.length >= 5) {
+      btn.textContent = '⚠️ Trop d\'objectifs actifs';
+      btn.disabled = true;
+      return;
+    }
+    var now = Date.now();
+    var newAch = {
+      id: 'ach_' + now,
+      name: ach.name || 'Objectif Bolt',
+      template: ach.template || 'comeback',
+      type: ach.template === 'distance' ? 'distance' : 
+            ach.template === 'minutes' ? 'minutes' :
+            ach.template === 'streak' ? 'streak' :
+            ach.template === 'category' ? 'category' : 'sessions',
+      target: parseFloat(ach.target) || 3,
+      current: 0,
+      startDate: now,
+      endDate: now + (parseInt(ach.days) || 7) * 86400000,
+      days: parseInt(ach.days) || 7,
+      completed: false
+    };
+    list.push(newAch);
+    localStorage.setItem('_achievements', JSON.stringify(list));
+    btn.textContent = '✅ Objectif créé !';
+    btn.style.background = '#5DCAA5';
+    btn.disabled = true;
+  } catch(e) {
+    btn.textContent = '❌ Erreur';
+  }
 }
 
 document.addEventListener('DOMContentLoaded', function() {
