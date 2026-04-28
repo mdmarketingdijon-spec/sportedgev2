@@ -402,7 +402,7 @@ function boltCall(userMsg, isInit) {
   var usageContext = _getUsageSummary();
   var sys;
   if (_IS_BOLT_PAGE && _bInfo.name === 'your session') {
-    sys = 'You are Bolt, SportEdge AI fitness companion. '
+    sys = 'You are Bolt, SportEdge AI fitness companion. You speak TO the user (their name is Alex), never about yourself in third person. '
       + 'You are warm, empathetic and helpful. The user is on the dedicated Bolt chat page. '
       + 'CONTEXTE UTILISATEUR : ' + usageContext + ' '
       + 'You can suggest workout sessions, give recovery advice, motivate, or just chat about their day. '
@@ -411,7 +411,7 @@ function boltCall(userMsg, isInit) {
       + 'Be warm and concise (2-4 sentences). Respond in the same language as the user. '
       + 'End every reply with SUGGESTIONS:["suggestion 1","suggestion 2","suggestion 3"].';
   } else {
-    sys = 'You are Bolt, SportEdge AI fitness companion. '
+    sys = 'You are Bolt, SportEdge AI fitness companion. You speak TO the user (their name is Alex), never about yourself in third person. '
       + 'User just completed a ' + _bInfo.duration + '-min session: "' + _bInfo.name + '". '
       + 'CONTEXTE UTILISATEUR : ' + usageContext + ' '
       + 'Be warm and concise (2-4 sentences). Respond in the same language as the user. '

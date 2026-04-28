@@ -130,7 +130,7 @@
           <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyMCIgaGVpZ2h0PSIyMCIgIHZpZXdCb3g9IjAgMCAyMCAyMCI+PGcgdHJhbnNmb3JtPSJtYXRyaXgoMSAwIDAgMSAwIDApIiAgPjxnIHN0eWxlPSIiICAgPjxnIHRyYW5zZm9ybT0ibWF0cml4KDAuODMgMCAwIDAuODMgMTAgMTApIiAgPjxwYXRoIHN0eWxlPSJzdHJva2U6IG5vbmU7IHN0cm9rZS13aWR0aDogMTsgc3Ryb2tlLWRhc2hhcnJheTogbm9uZTsgc3Ryb2tlLWxpbmVjYXA6IGJ1dHQ7IHN0cm9rZS1kYXNob2Zmc2V0OiAwOyBzdHJva2UtbGluZWpvaW46IG1pdGVyOyBzdHJva2UtbWl0ZXJsaW1pdDogNDsgZmlsbDogcmdiKDYzLDU2LDQ5KTsgZmlsbC1ydWxlOiBub256ZXJvOyBvcGFjaXR5OiAxOyIgIHRyYW5zZm9ybT0iIHRyYW5zbGF0ZSgtMTIsIC0xMikiIGQ9Ik0gMjEgMTIgQyAyMSA3LjAyOTQ0IDE2Ljk3MDYgMyAxMiAzIEMgNy4wMjk0NCAzIDMgNy4wMjk0NCAzIDEyIEMgMyAxNi45NzA2IDcuMDI5NDQgMjEgMTIgMjEgQyAxNi45NzA2IDIxIDIxIDE2Ljk3MDYgMjEgMTIgWiBNIDIzIDEyIEMgMjMgMTguMDc1MSAxOC4wNzUxIDIzIDEyIDIzIEMgNS45MjQ4NyAyMyAxIDE4LjA3NTEgMSAxMiBDIDEgNS45MjQ4NyA1LjkyNDg3IDEgMTIgMSBDIDE4LjA3NTEgMSAyMyA1LjkyNDg3IDIzIDEyIFoiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgLz48L2c+PGcgdHJhbnNmb3JtPSJtYXRyaXgoMC44MyAwIDAgMC44MyAxMS42NyA4LjMzKSIgID48cGF0aCBzdHlsZT0ic3Ryb2tlOiBub25lOyBzdHJva2Utd2lkdGg6IDE7IHN0cm9rZS1kYXNoYXJyYXk6IG5vbmU7IHN0cm9rZS1saW5lY2FwOiBidXR0OyBzdHJva2UtZGFzaG9mZnNldDogMDsgc3Ryb2tlLWxpbmVqb2luOiBtaXRlcjsgc3Ryb2tlLW1pdGVybGltaXQ6IDQ7IGZpbGw6IHJnYig2Myw1Niw0OSk7IGZpbGwtcnVsZTogbm9uemVybzsgb3BhY2l0eTogMTsiICB0cmFuc2Zvcm09IiB0cmFuc2xhdGUoLTE0LCAtMTApIiBkPSJNIDExIDYgQyAxMSA1LjQ0NzcyIDExLjQ0NzcgNSAxMiA1IEMgMTIuNTUyMyA1IDEzIDUuNDQ3NzIgMTMgNiBMIDEzIDExLjM4MTggTCAxNi40NDczIDEzLjEwNTUgTCAxNi41MzYxIDEzLjE1NjIgQyAxNi45NjQzIDEzLjQyNzYgMTcuMTI2MSAxMy45ODQyIDE2Ljg5NDUgMTQuNDQ3MyBDIDE2LjY2MyAxNC45MTA0IDE2LjEyMDQgMTUuMTE1MyAxNS42NDY1IDE0LjkzNTUgTCAxNS41NTI3IDE0Ljg5NDUgTCAxMS41NTI3IDEyLjg5NDUgQyAxMS4yMTQgMTIuNzI1MSAxMSAxMi4zNzg4IDExIDEyIEwgMTEgNiBaIiBzdHJva2UtbGluZWNhcD0icm91bmQiIC8+PC9nPjwvZz48L2c+PC9zdmc+" alt="Clock" class="w-5 h-5">
         </div>
         <span class="text-[10px] font-semibold tracking-widest text-[#6A5E53] uppercase mb-1">Durée</span>
-        <span class="text-lg font-bold" id="stat-durée">12 min</span>
+        <span class="text-lg font-bold" id="stat-duration">12 min</span>
       </div>
       
       <!-- Activité -->
@@ -485,7 +485,7 @@ function boltCall(userMsg, isInit) {
   if (statusEl) statusEl.textContent = '● Réflexion...';
 
   var usageContext = _getUsageSummary();
-  var sys = 'You are Bolt, SportEdge AI fitness companion. '
+  var sys = 'You are Bolt, SportEdge AI fitness companion. You speak TO the user (their name is Alex), never about yourself in third person. '
     + 'User just completed a ' + _bInfo.duration + '-min session: "' + _bInfo.name + '". '
     + 'CONTEXTE UTILISATEUR : ' + usageContext + ' '
     + 'Be warm and concise (2-4 sentences). Respond in the same language as the user. '
