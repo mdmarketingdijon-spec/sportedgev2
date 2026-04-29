@@ -103,10 +103,15 @@ body { font-family: 'Outfit', sans-serif; background: #FBFAF9; color: #1D1A16; m
       <!-- GIF zone -->
       <div class="gif-container" style="flex:1;min-width:240px;height:300px;">
         <img id="exGif" src="" alt="" style="display:none;">
-        <div id="restOverlay" style="display:none;position:absolute;inset:0;background:rgba(251,250,249,0.95);display:none;flex-direction:column;align-items:center;justify-content:center;gap:8px;">
+        <div id="restOverlay" style="display:none;position:absolute;inset:0;background:rgba(251,250,249,0.97);flex-direction:column;align-items:center;justify-content:center;gap:10px;border-radius:20px;">
           <div style="font-size:42px">😮‍💨</div>
-          <div style="font-size:18px;font-weight:700">Repos</div>
-          <div style="font-size:13px;color:#888">Suivant : <span id="nextExName">—</span></div>
+          <div style="font-size:20px;font-weight:700;color:#1D1A16;font-family:Outfit,sans-serif;">Repos</div>
+          <div id="restCountdown" style="font-size:48px;font-weight:800;color:#EC9679;line-height:1;font-family:Outfit,sans-serif;">30</div>
+          <div style="font-size:13px;color:#6A5E53;text-align:center;padding:0 20px;">Suivant : <span id="nextExName" style="font-weight:600;color:#1D1A16;">—</span></div>
+          <div id="nextExTip" style="font-size:11px;color:#888;text-align:center;padding:0 30px;font-style:italic;max-width:300px;"></div>
+          <button id="restSkipBtn" onclick="skipRest()" style="margin-top:10px;padding:8px 18px;background:white;border:1.5px solid #EC9679;border-radius:20px;color:#EC9679;font-weight:600;cursor:pointer;font-family:Outfit,sans-serif;font-size:13px;">
+            Passer le repos →
+          </button>
         </div>
         <div id="meditationOverlay" style="display:none;position:absolute;inset:0;background:rgba(251,250,249,0.96);flex-direction:column;align-items:center;justify-content:center;gap:10px;">
           <div style="font-size:52px">🧘</div>
@@ -119,7 +124,7 @@ body { font-family: 'Outfit', sans-serif; background: #FBFAF9; color: #1D1A16; m
         </div>
         <div id="gifLoading" style="display:flex;flex-direction:column;align-items:center;gap:10px;color:#888;">
           <div style="width:44px;height:44px;border:3px solid #E4E0DC;border-top-color:#EC9679;border-radius:50%;animation:spin 1s linear infinite"></div>
-          <span style="font-size:13px">Loading exercise...</span>
+          <span style="font-size:13px">Chargement...</span>
         </div>
       </div>
 
@@ -284,6 +289,12 @@ function buildDots() {
 
 function loadEx(idx) {
   stopTimer();
+  // Nettoyer la phase de repos si en cours
+  if (typeof restInterval !== 'undefined' && restInterval) {
+    clearInterval(restInterval);
+    restInterval = null;
+  }
+  hide('restOverlay');
   curIdx = idx;
   var ex = session.exercises[idx];
   document.getElementById('exName').textContent = ex.name;
@@ -309,6 +320,8 @@ function loadEx(idx) {
   if (oldDiv) oldDiv.remove();
   var oldPh = document.getElementById('yt-placeholder');
   if (oldPh) oldPh.remove();
+  var oldFb = document.getElementById('video-unavailable-fb');
+  if (oldFb) oldFb.remove();
   document.getElementById('exGif').style.display = 'none';
   document.getElementById('gifLoading').style.display = 'flex';
 
@@ -330,13 +343,13 @@ function loadEx(idx) {
 
   updateList(idx); updateProgress(idx);
   document.getElementById('btnPrev').style.opacity = idx===0?'0.4':'1';
-  document.getElementById('btnNext').textContent = idx===session.exercises.length-1?'Finish ✓':'Suivant →';
+  document.getElementById('btnNext').textContent = idx===session.exercises.length-1?'Terminer ✓':'Suivant →';
   document.getElementById('btnPlay').textContent = '▶ Démarrer';
   document.getElementById('timerStatus').textContent = 'ready';
   isPlaying = false;
 }
 
-var YT_MAP = {"Jumping Jacks": "c4DAnQ6DtF8", "Lateral Shuffle": "c4DAnQ6DtF8", "Squat Jump": "Qgpxx1Bxmgs", "Upper Body Activation": "Qgpxx1Bxmgs", "Mountain Climbers": "wrn1Cm_yfEU", "Dead Bug": "wrn1Cm_yfEU", "Burpee": "xRdGC6cFY0s", "Stability Ball Basics": "vthMCtgVtFw", "High Knees": "nGaXj3kkmrU", "Full Body Shake": "dJF1MJPmCj4", "Push Up": "IODxDxX7oi4", "Tricep Dip": "IODxDxX7oi4", "Plank Hold": "ASdvN_XEl_c", "Forearm Plank": "ASdvN_XEl_c", "Plank to Chaturanga": "Nx_-MRwRvtE", "Cool Down": "eqVMAPM00DM", "Squat": "P-yaD24bUE8", "Dumbbell Foundational": "P-yaD24bUE8", "Reverse Lunge (right)": "7AWLfjXYjTE", "Reverse Lunge (left)": "7AWLfjXYjTE", "Glute Bridge": "B7kTkXDIMuE", "Superman Hold": "B7kTkXDIMuE", "Bird Dog": "9X3OKE6xZqw", "Side Plank (right)": "WDIpL0pjun0", "Side Plank (left)": "WDIpL0pjun0", "Mountain Pose": "u_jNKRDMkrM", "Neck Side Stretch": "U20I89tTv2U", "Standing Side Stretch": "U20I89tTv2U", "Shoulder Roll": "FcttbMXJA0A", "Hip Circle": "FcttbMXJA0A", "Chest Opener": "nmgCEFBqB0I", "Face & Head Scan": "O-6f5wkWN50", "Standing Forward Fold": "tnHRoE7HJi0", "Calf Raise": "DlS-GAF8Edg", "Standing Calf Stretch": "u_jNKRDMkrM", "Low Lunge (right)": "zuYbjkuKLKY", "Low Lunge (left)": "zuYbjkuKLKY", "Pigeon Pose (right)": "V7hr4w3pd6w", "Pigeon Pose (left)": "V7hr4w3pd6w", "Supine Hip Stretch": "aihbOIot3p0", "Bridge Pose": "artJ8bH9jXs", "Child's Pose": "eqVMAPM00DM", "Cobra Pose": "J_lLt6-GlMo", "Settling Breath": "J_lLt6-GlMo", "Downward Dog": "9X3OKE6xZqw", "Three-Legged Dog": "LHC96BuPv8I", "Warrior I (right)": "Mn6RSRCV3Nw", "Warrior I (left)": "LHC96BuPv8I", "Warrior II (right)": "EniGBCHAEVQ", "Warrior II (left)": "2MJGg-dUKh0", "Sun Salutation A": "VH-Ws3K-x7k", "Legs Up the Wall": "VH-Ws3K-x7k", "Supine Twist (right)": "aihbOIot3p0", "Supine Twist (left)": "N4figcWjDGI", "Reclined Butterfly": "N4figcWjDGI", "Savasana": "1VYlOKygqM8", "Brisk Walk Warm-Up": "dJF1MJPmCj4", "Easy Jog": "vVxbFRTlGF0", "Walk Recovery": "oGEvMX1DlM0", "Cool Down Walk": "vthMCtgVtFw", "Feet & Legs Scan": "86m4RC_ADEY", "Hips & Belly Scan": "86m4RC_ADEY", "Chest & Back Scan": "inpok4MKVLM", "Arms & Hands Scan": "inpok4MKVLM", "Whole Body Awareness": "O-6f5wkWN50"};
+var YT_MAP = {"Jumping Jacks": "c4DAnQ6DtF8", "Lateral Shuffle": "c4DAnQ6DtF8", "Squat Jump": "Qgpxx1Bxmgs", "Upper Body Activation": "Qgpxx1Bxmgs", "Mountain Climbers": "wrn1Cm_yfEU", "Dead Bug": "wrn1Cm_yfEU", "Burpee": "xRdGC6cFY0s", "Stability Ball Basics": "vthMCtgVtFw", "High Knees": "nGaXj3kkmrU", "Full Body Shake": "dJF1MJPmCj4", "Push Up": "IODxDxX7oi4", "Tricep Dip": "IODxDxX7oi4", "Plank Hold": "ASdvN_XEl_c", "Forearm Plank": "ASdvN_XEl_c", "Plank to Chaturanga": "Nx_-MRwRvtE", "Cool Down": "eqVMAPM00DM", "Squat": "P-yaD24bUE8", "Dumbbell Foundational": "P-yaD24bUE8", "Reverse Lunge (right)": "7AWLfjXYjTE", "Reverse Lunge (left)": "7AWLfjXYjTE", "Glute Bridge": "B7kTkXDIMuE", "Superman Hold": "B7kTkXDIMuE", "Bird Dog": "9X3OKE6xZqw", "Side Plank (right)": "WDIpL0pjun0", "Side Plank (left)": "WDIpL0pjun0", "Mountain Pose": "u_jNKRDMkrM", "Neck Side Stretch": "U20I89tTv2U", "Standing Side Stretch": "U20I89tTv2U", "Shoulder Roll": "FcttbMXJA0A", "Hip Circle": "FcttbMXJA0A", "Chest Opener": "nmgCEFBqB0I", "Face & Head Scan": "O-6f5wkWN50", "Standing Forward Fold": "tnHRoE7HJi0", "Calf Raise": "DlS-GAF8Edg", "Standing Calf Stretch": "u_jNKRDMkrM", "Low Lunge (right)": "zuYbjkuKLKY", "Low Lunge (left)": "zuYbjkuKLKY", "Pigeon Pose (right)": "V7hr4w3pd6w", "Pigeon Pose (left)": "V7hr4w3pd6w", "Supine Hip Stretch": "aihbOIot3p0", "Bridge Pose": "artJ8bH9jXs", "Child's Pose": "eqVMAPM00DM", "Cobra Pose": "J_lLt6-GlMo", "Settling Breath": "J_lLt6-GlMo", "Downward Dog": "9X3OKE6xZqw", "Three-Legged Dog": "LHC96BuPv8I", "Warrior I (right)": "Mn6RSRCV3Nw", "Warrior I (left)": "LHC96BuPv8I", "Warrior II (right)": "EniGBCHAEVQ", "Warrior II (left)": "2MJGg-dUKh0", "Sun Salutation A": "VH-Ws3K-x7k", "Legs Up the Wall": "VH-Ws3K-x7k", "Supine Twist (right)": "aihbOIot3p0", "Supine Twist (left)": "N4figcWjDGI", "Reclined Butterfly": "N4figcWjDGI", "Savasana": "8nY16jEfTo4", "Brisk Walk Warm-Up": "dJF1MJPmCj4", "Easy Jog": "vVxbFRTlGF0", "Walk Recovery": "oGEvMX1DlM0", "Cool Down Walk": "vthMCtgVtFw", "Feet & Legs Scan": "86m4RC_ADEY", "Hips & Belly Scan": "86m4RC_ADEY", "Chest & Back Scan": "inpok4MKVLM", "Arms & Hands Scan": "inpok4MKVLM", "Whole Body Awareness": "O-6f5wkWN50"};
 var ytPlayer = null;
 var ytReady = false;
 
@@ -391,6 +404,47 @@ function showVideoPlaceholder(exName, exIdx) {
   ph.onclick = function() { togglePlay(); };
 }
 
+// Fallback affiché quand YouTube ne peut pas charger la vidéo
+function showVideoUnavailableFallback() {
+  var container = document.querySelector('.gif-container');
+  if (!container) return;
+
+  // Retirer le player YouTube cassé
+  if (ytPlayer) {
+    try { ytPlayer.destroy(); } catch(e) {}
+    ytPlayer = null;
+  }
+  var oldDiv = document.getElementById('yt-player-div');
+  if (oldDiv) oldDiv.remove();
+  var oldFb = document.getElementById('yt-iframe-fallback');
+  if (oldFb) oldFb.remove();
+
+  // Créer le fallback visuel
+  var fb = document.getElementById('video-unavailable-fb');
+  if (!fb) {
+    fb = document.createElement('div');
+    fb.id = 'video-unavailable-fb';
+    fb.style.cssText = 'position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;background:#F6F5F3;border-radius:20px;padding:20px;text-align:center;';
+    container.appendChild(fb);
+  }
+
+  var ex = session && session.exercises[curIdx] ? session.exercises[curIdx] : {};
+  var cat = session ? session.category : '';
+  var icon = cat.indexOf('Yoga') !== -1 || cat.indexOf('Breath') !== -1 ? '🧘' :
+             cat.indexOf('Medit') !== -1 ? '🌿' :
+             cat.indexOf('Stretch') !== -1 || cat.indexOf('Mobil') !== -1 ? '🤸' :
+             cat.indexOf('Outdoor') !== -1 || cat.indexOf('Run') !== -1 ? '🏃' :
+             cat.indexOf('HIIT') !== -1 || cat.indexOf('Cardio') !== -1 ? '⚡' : '💪';
+
+  fb.innerHTML =
+    '<div style="font-size:64px">' + icon + '</div>' +
+    '<div style="font-size:18px;font-weight:700;color:#1D1A16;font-family:Outfit,sans-serif;">' + (ex.name || '') + '</div>' +
+    (ex.tip ? '<div style="font-size:13px;color:#6A5E53;max-width:280px;line-height:1.5;">' + ex.tip + '</div>' : '') +
+    '<div style="font-size:11px;color:#999;margin-top:8px;">📹 Vidéo bientôt disponible</div>';
+  fb.style.display = 'flex';
+}
+
+
 function hideVideoPlaceholder() {
   var ph = document.getElementById('yt-placeholder');
   if (ph) ph.style.display = 'none';
@@ -401,10 +455,10 @@ function loadGif(exId, exIdx) {
   document.getElementById('gifLoading').style.display = 'none';
   document.getElementById('exGif').style.display = 'none';
   var ytId = getYouTubeId(exName);
-  loadYouTubePlayer(ytId);
+  loadYouTubePlayer(ytId, ex.duration);
 }
 
-function loadYouTubePlayer(videoId) {
+function loadYouTubePlayer(videoId, exDuration) {
   var container = document.querySelector('.gif-container');
 
   // Supprimer l'ancien player
@@ -433,11 +487,34 @@ function loadYouTubePlayer(videoId) {
         controls: 1,
         rel: 0,
         modestbranding: 1,
-        loop: 1,
-        playlist: videoId
+        loop: (exDuration && exDuration <= 60) ? 1 : 0,
+        playlist: (exDuration && exDuration <= 60) ? videoId : undefined,
+        start: 0
       },
       events: {
-        onReady: function(e) { e.target.playVideo(); }
+        onReady: function(e) {
+          e.target.playVideo();
+          // Vérification : si après 4s la vidéo n'a toujours pas démarré, fallback
+          setTimeout(function() {
+            if (ytPlayer && typeof ytPlayer.getPlayerState === 'function') {
+              var state = ytPlayer.getPlayerState();
+              // -1 = unstarted, 5 = video cued, 3 = buffering
+              // Si pas en lecture (1) et pas en pause (2), c'est qu'elle ne démarre pas
+              if (state !== 1 && state !== 2 && state !== 3) {
+                console.warn('YouTube video did not start, falling back. State:', state);
+                showVideoUnavailableFallback();
+              }
+            }
+          }, 4000);
+        },
+        onError: function(e) {
+          console.warn('YouTube error', e.data, 'for video', videoId);
+          showVideoUnavailableFallback();
+        },
+        onStateChange: function(e) {
+          // Si état "ended" et pas censé être en loop, on n'affiche pas une vidéo qui rejoue
+          // Ce hook est juste un placeholder pour de futures détections
+        }
       }
     });
   } else {
@@ -445,8 +522,11 @@ function loadYouTubePlayer(videoId) {
     var iframe = document.createElement('iframe');
     iframe.id = 'yt-iframe-fallback';
     iframe.style.cssText = 'width:100%;height:100%;border:none;border-radius:20px;';
+    var loopParam = (exDuration && exDuration <= 60) 
+      ? '&loop=1&playlist=' + videoId 
+      : '';
     iframe.src = 'https://www.youtube.com/embed/' + videoId
-      + '?autoplay=1&mute=1&controls=1&rel=0&modestbranding=1&loop=1&playlist=' + videoId;
+      + '?autoplay=1&mute=1&controls=1&rel=0&modestbranding=1' + loopParam;
     iframe.allow = 'autoplay; fullscreen';
     playerDiv.appendChild(iframe);
     // Retry avec l'API après 1s
@@ -456,8 +536,13 @@ function loadYouTubePlayer(videoId) {
         if (fb) fb.remove();
         ytPlayer = new YT.Player('yt-player-div', {
           videoId: videoId,
-          playerVars: { autoplay:1, mute:1, controls:1, rel:0, loop:1, playlist:videoId },
-          events: { onReady: function(e){ e.target.playVideo(); } }
+          playerVars: { autoplay:1, mute:1, controls:1, rel:0, 
+            loop: (exDuration && exDuration <= 60) ? 1 : 0, 
+            playlist: (exDuration && exDuration <= 60) ? videoId : undefined },
+          events: {
+            onReady: function(e){ e.target.playVideo(); },
+            onError: function(e){ console.warn('YouTube error', e.data); showVideoUnavailableFallback(); }
+          }
         });
       }
     }, 1500);
@@ -491,6 +576,29 @@ function showFallback(name) {
 }
 
 function togglePlay() {
+  // Si on est en phase de repos, le bouton play met en pause / reprend le compte à rebours
+  if (typeof restInterval !== 'undefined' && restInterval) {
+    // Mettre en pause le compte à rebours de repos
+    clearInterval(restInterval);
+    restInterval = null;
+    document.getElementById('btnPlay').textContent = '▶ Reprendre';
+    return;
+  }
+  // Si bouton "Reprendre" pendant repos : redémarrer le compteur
+  if (typeof restTimeLeft !== 'undefined' && restTimeLeft > 0 && 
+      document.getElementById('restOverlay').style.display !== 'none') {
+    restInterval = setInterval(function() {
+      restTimeLeft--;
+      var cd = document.getElementById('restCountdown');
+      if (cd) cd.textContent = restTimeLeft;
+      if (restTimeLeft <= 0) {
+        finishRestPhase();
+      }
+    }, 1000);
+    document.getElementById('btnPlay').textContent = '⏸ Pause';
+    return;
+  }
+
   if (isPlaying) {
     pauseTimer();
     pauseYouTube();
@@ -513,7 +621,7 @@ function startTimer() {
     var ytId = getYouTubeId(ex.name);
     // Charger seulement si pas déjà un player actif
     if (!ytPlayer && !document.getElementById('yt-player-div')) {
-      loadYouTubePlayer(ytId);
+      loadYouTubePlayer(ytId, ex.duration);
     } else if (ytPlayer) {
       resumeYouTube();
     }
@@ -528,8 +636,8 @@ function startTimer() {
 
 function pauseTimer() {
   clearInterval(timerInt); isPlaying=false;
-  document.getElementById('btnPlay').textContent = '▶ Resume';
-  document.getElementById('timerStatus').textContent = 'paused';
+  document.getElementById('btnPlay').textContent = '▶ Reprendre';
+  document.getElementById('timerStatus').textContent = 'en pause';
 }
 
 function stopTimer() { clearInterval(timerInt); isPlaying=false; }
@@ -540,8 +648,54 @@ function onDone() {
   var dot = document.getElementById('dot'+curIdx);
   if (dot) dot.style.background='#5DCAA5';
   if (curIdx < session.exercises.length-1) {
-    setTimeout(function(){ loadEx(curIdx+1); startTimer(); }, 600);
+    // Démarrer la phase de repos 30s avant le prochain exercice
+    startRestPhase();
   } else { showCompleted(); }
+}
+
+// Variables pour la phase de repos
+var restInterval = null;
+var restTimeLeft = 30;
+
+function startRestPhase() {
+  // Stopper la vidéo en cours
+  pauseYouTube();
+  
+  // Préparer l'overlay de repos
+  var nextEx = session.exercises[curIdx + 1];
+  document.getElementById('nextExName').textContent = nextEx ? nextEx.name : '';
+  document.getElementById('nextExTip').textContent = nextEx && nextEx.tip ? nextEx.tip : '';
+  document.getElementById('restCountdown').textContent = '30';
+  
+  // Cacher la vidéo et afficher l'overlay
+  show('restOverlay');
+  
+  restTimeLeft = 30;
+  if (restInterval) { clearInterval(restInterval); }
+  
+  restInterval = setInterval(function() {
+    restTimeLeft--;
+    var cd = document.getElementById('restCountdown');
+    if (cd) cd.textContent = restTimeLeft;
+    if (restTimeLeft <= 0) {
+      finishRestPhase();
+    }
+  }, 1000);
+}
+
+function skipRest() {
+  finishRestPhase();
+}
+
+function finishRestPhase() {
+  if (restInterval) { clearInterval(restInterval); restInterval = null; }
+  hide('restOverlay');
+  // Charger le prochain exercice et démarrer automatiquement
+  loadEx(curIdx + 1);
+  // Démarrer auto (différent du premier exo qui demande clic manuel)
+  setTimeout(function() {
+    if (typeof startTimer === 'function') startTimer();
+  }, 300);
 }
 
 function nextEx() {
@@ -589,6 +743,12 @@ function updateRing(frac) {
 function showCompleted() {
   stopTimer();
   pauseYouTube();
+  // Nettoyer la phase de repos si en cours
+  if (typeof restInterval !== 'undefined' && restInterval) {
+    clearInterval(restInterval);
+    restInterval = null;
+  }
+  hide('restOverlay');
   var elapsed = startTime ? Math.round((Date.now() - startTime) / 60000) : session.duration;
   if (elapsed < 1) elapsed = 1;
 
