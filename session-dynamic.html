@@ -332,7 +332,7 @@ function loadEx(idx) {
       show('meditationOverlay');
     } else {
       var nxt = session.exercises[idx+1];
-      document.getElementById('nextExName').textContent = nxt ? nxt.name : 'Finish!';
+      document.getElementById('nextExName').textContent = nxt ? nxt.name : 'Terminé !';
       show('restOverlay');
     }
   } else {
@@ -395,7 +395,7 @@ function showVideoPlaceholder(exName, exIdx) {
     '<div style="font-size:52px">' + icon + '</div>' +
     '<div style="text-align:center;padding:0 20px;">' +
       '<div style="font-size:16px;font-weight:600;color:#1D1A16;margin-bottom:6px">' + exName + '</div>' +
-      '<div style="font-size:13px;color:#6A5E53">Press <b style=color:#EC9679>Démarrer</b> pour commencer</div>' +
+      '<div style="font-size:13px;color:#6A5E53">Appuie sur <b style=color:#EC9679>Démarrer</b> pour commencer</div>' +
     '</div>' +
     '<div style="width:52px;height:52px;border-radius:50%;background:#EC9679;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 14px rgba(236,150,121,.4);">' +
       '<span style="color:white;font-size:20px;margin-left:4px">▶</span>' +
@@ -669,16 +669,29 @@ var restInterval = null;
 var restTimeLeft = 30;
 
 function startRestPhase() {
-  // Stopper la vidéo en cours
+  console.log('[Rest] Starting 30s rest phase, next:', session.exercises[curIdx + 1] ? session.exercises[curIdx + 1].name : '?');
+  
+  // Stopper le timer principal et la vidéo
+  isPlaying = false;
   pauseYouTube();
   
   // Préparer l'overlay de repos
   var nextEx = session.exercises[curIdx + 1];
-  document.getElementById('nextExName').textContent = nextEx ? nextEx.name : '';
-  document.getElementById('nextExTip').textContent = nextEx && nextEx.tip ? nextEx.tip : '';
-  document.getElementById('restCountdown').textContent = '30';
+  var nextName = document.getElementById('nextExName');
+  var nextTip = document.getElementById('nextExTip');
+  var countdown = document.getElementById('restCountdown');
   
-  // Cacher la vidéo et afficher l'overlay
+  if (nextName) nextName.textContent = nextEx ? nextEx.name : '';
+  if (nextTip) nextTip.textContent = nextEx && nextEx.tip ? nextEx.tip : '';
+  if (countdown) countdown.textContent = '30';
+  
+  // Update status timer pendant le repos
+  var statusEl = document.getElementById('timerStatus');
+  if (statusEl) statusEl.textContent = 'repos';
+  var btnPlay = document.getElementById('btnPlay');
+  if (btnPlay) btnPlay.textContent = '⏸ Pause';
+  
+  // Afficher l'overlay de repos
   show('restOverlay');
   
   restTimeLeft = 30;
@@ -699,14 +712,17 @@ function skipRest() {
 }
 
 function finishRestPhase() {
+  console.log('[Rest] Rest phase finished, loading next exercise');
   if (restInterval) { clearInterval(restInterval); restInterval = null; }
   hide('restOverlay');
   // Charger le prochain exercice et démarrer automatiquement
   loadEx(curIdx + 1);
   // Démarrer auto (différent du premier exo qui demande clic manuel)
+  // Petit délai pour laisser le DOM se mettre à jour
   setTimeout(function() {
+    console.log('[Rest] Auto-starting timer for exercise', curIdx);
     if (typeof startTimer === 'function') startTimer();
-  }, 300);
+  }, 500);
 }
 
 function nextEx() {
@@ -887,7 +903,7 @@ function fmt(s) { return s>=60?Math.floor(s/60)+'min'+(s%60>0?' '+s%60+'s':''):s
 function show(id) { var el=document.getElementById(id); if(el){ el.style.display='flex'; } }
 function hide(id) { var el=document.getElementById(id); if(el){ el.style.display='none'; } }
 function confirmExit() {
-  if(isPlaying||curIdx>0){ if(confirm('Exit session?')) window.history.back(); }
+  if(isPlaying||curIdx>0){ if(confirm('Quitter la séance ?')) window.history.back(); }
   else window.history.back();
 }
 </script>
