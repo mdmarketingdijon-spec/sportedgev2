@@ -290,7 +290,7 @@
             <h2 class="text-xl font-bold">Notifications</h2>
             <p class="text-sm text-[#6A5E53]">Choisis comment SportEdge te rappelle de bouger.</p>
           </div>
-          <button class="w-10 h-10 bg-[#F6F5F3] rounded-full flex items-center justify-center">
+          <button class="w-10 h-10 bg-[#F6F5F3] rounded-full flex items-center justify-center" onclick="window.location.href='profile.html'">
             <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyMCIgaGVpZ2h0PSIyMCIgIHZpZXdCb3g9IjAgMCAyMCAyMCI+PGcgdHJhbnNmb3JtPSJtYXRyaXgoMSAwIDAgMSAwIDApIiAgPjxnIHN0eWxlPSIiICAgPjxnIHRyYW5zZm9ybT0ibWF0cml4KDAuODMgMCAwIDAuODMgMTAgMTApIiAgPjxwYXRoIHN0eWxlPSJzdHJva2U6IG5vbmU7IHN0cm9rZS13aWR0aDogMTsgc3Ryb2tlLWRhc2hhcnJheTogbm9uZTsgc3Ryb2tlLWxpbmVjYXA6IGJ1dHQ7IHN0cm9rZS1kYXNob2Zmc2V0OiAwOyBzdHJva2UtbGluZWpvaW46IG1pdGVyOyBzdHJva2UtbWl0ZXJsaW1pdDogNDsgZmlsbDogcmdiKDEwNiw5NCw4Myk7IGZpbGwtcnVsZTogbm9uemVybzsgb3BhY2l0eTogMTsiICB0cmFuc2Zvcm09IiB0cmFuc2xhdGUoLTEyLCAtMTIpIiBkPSJNIDE3LjI5MyA1LjI5MzAyIEMgMTcuNjgzNSA0LjkwMjQ5IDE4LjMxNjUgNC45MDI0OSAxOC43MDcgNS4yOTMwMiBDIDE5LjA5NzYgNS42ODM1NCAxOS4wOTc2IDYuMzE2NTUgMTguNzA3IDYuNzA3MDggTCA2LjcwNzAzIDE4LjcwNzEgQyA2LjMxNjUxIDE5LjA5NzYgNS42ODM0OSAxOS4wOTc2IDUuMjkyOTcgMTguNzA3MSBDIDQuOTAyNDUgMTguMzE2NiA0LjkwMjQ1IDE3LjY4MzUgNS4yOTI5NyAxNy4yOTMgTCAxNy4yOTMgNS4yOTMwMiBaIiBzdHJva2UtbGluZWNhcD0icm91bmQiIC8+PC9nPjxnIHRyYW5zZm9ybT0ibWF0cml4KDAuODMgMCAwIDAuODMgMTAgMTApIiAgPjxwYXRoIHN0eWxlPSJzdHJva2U6IG5vbmU7IHN0cm9rZS13aWR0aDogMTsgc3Ryb2tlLWRhc2hhcnJheTogbm9uZTsgc3Ryb2tlLWxpbmVjYXA6IGJ1dHQ7IHN0cm9rZS1kYXNob2Zmc2V0OiAwOyBzdHJva2UtbGluZWpvaW46IG1pdGVyOyBzdHJva2UtbWl0ZXJsaW1pdDogNDsgZmlsbDogcmdiKDEwNiw5NCw4Myk7IGZpbGwtcnVsZTogbm9uemVybzsgb3BhY2l0eTogMTsiICB0cmFuc2Zvcm09IiB0cmFuc2xhdGUoLTEyLCAtMTIpIiBkPSJNIDUuMjkyOTcgNS4yOTI5OCBDIDUuNjU5MDggNC45MjY4NiA2LjIzODA5IDQuOTA0MjcgNi42MzA4NiA1LjIyNDYyIEwgNi43MDcwMyA1LjI5Mjk4IEwgMTguNzA3IDE3LjI5MyBMIDE4Ljc3NTQgMTcuMzY5MiBDIDE5LjA5NTcgMTcuNzYxOSAxOS4wNzMxIDE4LjM0MDkgMTguNzA3IDE4LjcwNyBDIDE4LjM0MDkgMTkuMDczMiAxNy43NjE5IDE5LjA5NTggMTcuMzY5MSAxOC43NzU0IEwgMTcuMjkzIDE4LjcwNyBMIDUuMjkyOTcgNi43MDcwNCBMIDUuMjI0NjEgNi42MzA4NyBDIDQuOTA0MjYgNi4yMzgxIDQuOTI2ODUgNS42NTkwOSA1LjI5Mjk3IDUuMjkyOTggWiIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiAvPjwvZz48L2c+PC9nPjwvc3ZnPg==" alt="Close" class="w-5 h-5">
           </button>
         </div>
@@ -347,8 +347,8 @@
 
         <!-- Sheet Footer -->
         <div class="p-6 pt-2 bg-gradient-to-t from-[#FBFAF9] via-[#FBFAF9] to-transparent">
-          <button class="w-full h-14 bg-[#EC9679] rounded-full text-[#1D1A16] font-bold text-lg shadow-md hover:brightness-95 active:scale-[0.98]">
-            Save preferences
+          <button onclick="saveNotificationPrefs()" class="w-full h-14 bg-[#EC9679] rounded-full text-[#1D1A16] font-bold text-lg shadow-md hover:brightness-95 active:scale-[0.98]">
+            Enregistrer
           </button>
         </div>
       </div>
@@ -580,5 +580,59 @@
 
 })();
 </script>
+
+<script>
+// Charger la préférence sauvegardée
+(function() {
+  var saved = localStorage.getItem('_notif_pref') || 'daily';
+  var radios = document.querySelectorAll('input[name="reminder"]');
+  var labels = ['daily', 'weekly', 'none'];
+  radios.forEach(function(r, i) {
+    r.checked = (labels[i] === saved);
+  });
+  // Afficher/cacher le time picker
+  updateTimePicker();
+  
+  // Charger l'heure sauvegardée
+  var savedTime = localStorage.getItem('_notif_time') || '08:30';
+  var timeInput = document.querySelector('input[type="text"]');
+  if (timeInput) timeInput.value = savedTime;
+})();
+
+function updateTimePicker() {
+  var dailyChecked = document.querySelectorAll('input[name="reminder"]')[0].checked;
+  var timePicker = document.querySelector('.ml-2');
+  if (timePicker) {
+    timePicker.style.display = dailyChecked ? 'flex' : 'none';
+  }
+}
+
+// Listener sur les radios
+document.querySelectorAll('input[name="reminder"]').forEach(function(r, i) {
+  r.addEventListener('change', function() { updateTimePicker(); });
+});
+
+function saveNotificationPrefs() {
+  var radios = document.querySelectorAll('input[name="reminder"]');
+  var labels = ['daily', 'weekly', 'none'];
+  var selected = 'daily';
+  radios.forEach(function(r, i) {
+    if (r.checked) selected = labels[i];
+  });
+  localStorage.setItem('_notif_pref', selected);
+  
+  var timeInput = document.querySelector('input[type="text"]');
+  if (timeInput) localStorage.setItem('_notif_time', timeInput.value);
+  
+  // Feedback visuel puis retour
+  var btn = event.target;
+  btn.textContent = '✓ Enregistré !';
+  btn.style.background = '#5DCAA5';
+  setTimeout(function() {
+    window.location.href = 'profile.html';
+  }, 800);
+}
+</script>
+
 </body>
 </html>

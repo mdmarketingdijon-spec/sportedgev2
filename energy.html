@@ -60,6 +60,39 @@
       backdrop-filter: blur(2px);
     }
   </style>
+
+<style>
+.custom-radio {
+  appearance: none;
+  width: 22px;
+  height: 22px;
+  border: 2px solid #E4E0DC;
+  border-radius: 50%;
+  outline: none;
+  cursor: pointer;
+  position: relative;
+  flex-shrink: 0;
+}
+.custom-radio:checked {
+  border-color: #EC9679;
+  background-color: #EC9679;
+}
+.custom-radio:checked::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 7px;
+  height: 7px;
+  background: white;
+  border-radius: 50%;
+}
+.energy-option:has(input:checked) {
+  border-color: #EC9679;
+  background: #FDF4F2;
+}
+</style>
 </head>
 <body class="min-h-screen flex flex-col lg:flex-row">
 
@@ -279,7 +312,7 @@
         
         <div class="flex justify-between items-start mb-2">
           <h2 class="text-2xl font-bold text-[#1D1A16] leading-tight">Ton niveau d'énergie par défaut</h2>
-          <button class="w-10 h-10 bg-[#F6F5F3] rounded-full flex items-center justify-center">
+          <button class="w-10 h-10 bg-[#F6F5F3] rounded-full flex items-center justify-center" onclick="window.location.href='profile.html'">
             <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyMCIgaGVpZ2h0PSIyMCIgIHZpZXdCb3g9IjAgMCAyMCAyMCI+PGcgdHJhbnNmb3JtPSJtYXRyaXgoMSAwIDAgMSAwIDApIiAgPjxnIHN0eWxlPSIiICAgPjxnIHRyYW5zZm9ybT0ibWF0cml4KDAuODMgMCAwIDAuODMgMTAgMTApIiAgPjxwYXRoIHN0eWxlPSJzdHJva2U6IG5vbmU7IHN0cm9rZS13aWR0aDogMTsgc3Ryb2tlLWRhc2hhcnJheTogbm9uZTsgc3Ryb2tlLWxpbmVjYXA6IGJ1dHQ7IHN0cm9rZS1kYXNob2Zmc2V0OiAwOyBzdHJva2UtbGluZWpvaW46IG1pdGVyOyBzdHJva2UtbWl0ZXJsaW1pdDogNDsgZmlsbDogcmdiKDEwNiw5NCw4Myk7IGZpbGwtcnVsZTogbm9uemVybzsgb3BhY2l0eTogMTsiICB0cmFuc2Zvcm09IiB0cmFuc2xhdGUoLTEyLCAtMTIpIiBkPSJNIDE3LjI5MyA1LjI5MzAyIEMgMTcuNjgzNSA0LjkwMjQ5IDE4LjMxNjUgNC45MDI0OSAxOC43MDcgNS4yOTMwMiBDIDE5LjA5NzYgNS42ODM1NCAxOS4wOTc2IDYuMzE2NTUgMTguNzA3IDYuNzA3MDggTCA2LjcwNzAzIDE4LjcwNzEgQyA2LjMxNjUxIDE5LjA5NzYgNS42ODM0OSAxOS4wOTc2IDUuMjkyOTcgMTguNzA3MSBDIDQuOTAyNDUgMTguMzE2NiA0LjkwMjQ1IDE3LjY4MzUgNS4yOTI5NyAxNy4yOTMgTCAxNy4yOTMgNS4yOTMwMiBaIiBzdHJva2UtbGluZWNhcD0icm91bmQiIC8+PC9nPjxnIHRyYW5zZm9ybT0ibWF0cml4KDAuODMgMCAwIDAuODMgMTAgMTApIiAgPjxwYXRoIHN0eWxlPSJzdHJva2U6IG5vbmU7IHN0cm9rZS13aWR0aDogMTsgc3Ryb2tlLWRhc2hhcnJheTogbm9uZTsgc3Ryb2tlLWxpbmVjYXA6IGJ1dHQ7IHN0cm9rZS1kYXNob2Zmc2V0OiAwOyBzdHJva2UtbGluZWpvaW46IG1pdGVyOyBzdHJva2UtbWl0ZXJsaW1pdDogNDsgZmlsbDogcmdiKDEwNiw5NCw4Myk7IGZpbGwtcnVsZTogbm9uemVybzsgb3BhY2l0eTogMTsiICB0cmFuc2Zvcm09IiB0cmFuc2xhdGUoLTEyLCAtMTIpIiBkPSJNIDUuMjkyOTcgNS4yOTI5OCBDIDUuNjU5MDggNC45MjY4NiA2LjIzODA5IDQuOTA0MjcgNi42MzA4NiA1LjIyNDYyIEwgNi43MDcwMyA1LjI5Mjk4IEwgMTguNzA3IDE3LjI5MyBMIDE4Ljc3NTQgMTcuMzY5MiBDIDE5LjA5NTcgMTcuNzYxOSAxOS4wNzMxIDE4LjM0MDkgMTguNzA3IDE4LjcwNyBDIDE4LjM0MDkgMTkuMDczMiAxNy43NjE5IDE5LjA5NTggMTcuMzY5MSAxOC43NzU0IEwgMTcuMjkzIDE4LjcwNyBMIDUuMjkyOTcgNi43MDcwNCBMIDUuMjI0NjEgNi42MzA4NyBDIDQuOTA0MjYgNi4yMzgxIDQuOTI2ODUgNS42NTkwOSA1LjI5Mjk3IDUuMjkyOTggWiIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiAvPjwvZz48L2c+PC9nPjwvc3ZnPg==" alt="Close" class="w-5 h-5">
           </button>
         </div>
@@ -287,7 +320,7 @@
 
         <div class="space-y-4 mb-8">
           <!-- Basse Option -->
-          <label class="flex items-center gap-4 p-4 border-2 border-[#E4E0DC] rounded-[26px] cursor-pointer hover:bg-gray-50 transition-colors">
+          <label class="flex items-center gap-4 p-4 border-2 border-[#E4E0DC] rounded-[26px] cursor-pointer hover:bg-gray-50 transition-colors energy-option">
             <div class="w-12 h-12 bg-[#F6F5F3] rounded-2xl flex items-center justify-center shrink-0">
               <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgIHZpZXdCb3g9IjAgMCAyNCAyNCI+PGcgdHJhbnNmb3JtPSJtYXRyaXgoMSAwIDAgMSAwIDApIiAgPjxnIHN0eWxlPSIiICAgPjxnIHRyYW5zZm9ybT0ibWF0cml4KDEgMCAwIDEgMTIuNDkgMTEpIiAgPjxwYXRoIHN0eWxlPSJzdHJva2U6IG5vbmU7IHN0cm9rZS13aWR0aDogMTsgc3Ryb2tlLWRhc2hhcnJheTogbm9uZTsgc3Ryb2tlLWxpbmVjYXA6IGJ1dHQ7IHN0cm9rZS1kYXNob2Zmc2V0OiAwOyBzdHJva2UtbGluZWpvaW46IG1pdGVyOyBzdHJva2UtbWl0ZXJsaW1pdDogNDsgZmlsbDogcmdiKDEwNiw5NCw4Myk7IGZpbGwtcnVsZTogbm9uemVybzsgb3BhY2l0eTogMTsiICB0cmFuc2Zvcm09IiB0cmFuc2xhdGUoLTEyLjQ5LCAtMTEpIiBkPSJNIDIwLjAwMDMgMTAgQyAyMC4wMDAzIDcuMjA5NDMgMTkuNDQxMSA1LjM2OTg3IDE4LjczOTUgMy43ODEzIEMgMTguMDA0MSA0LjQ5NzIgMTcuMjE0OSA1LjA0MDE5IDE2LjE4MzkgNS40ODU0IEMgMTQuOTEwOSA2LjAzNTAyIDEzLjI4OTUgNi40MjY2MyAxMS4wMDgxIDYuODgxODggTCA5Ljk4OTUyIDcuMDgyMDggQyA5Ljk4MjUxIDcuMDgzNDMgOS45NzUwOCA3LjA4NDc4IDkuOTY4MDQgNy4wODU5OCBDIDguNDg0NjQgNy4zMzk1MSA3LjE1MDc2IDguMTQxMTUgNi4yMzA3MyA5LjMzMjA4IEMgNS4zMTA3MiAxMC41MjMxIDQuODcxOTEgMTIuMDE2MyA1LjAwMTI0IDEzLjUxNTcgQyA1LjEzMDY5IDE1LjAxNTEgNS44MTg0MiAxNi40MTIgNi45Mjg5NyAxNy40Mjc4IEMgOC4wMzk2IDE4LjQ0MzYgOS40OTIyNCAxOS4wMDQ2IDEwLjk5NzMgMTkgTCAxMS4wMDAzIDE5IEwgMTEuNDM3OCAxOC45ODgzIEMgMTUuOTUxMSAxOC43NDUxIDIwLjAwMDMgMTQuNzc1OSAyMC4wMDAzIDEwIFogTSAyMi4wMDAzIDEwIEMgMjIuMDAwMyAxNi4wNjk1IDE2Ljc1NTUgMjAuOTk3OCAxMS4wMDIyIDIwLjk5OTEgTCAxMS4wMDMyIDIxIEwgMTEuMDAxMiAyMC45OTkxIEwgMTEuMDAwMyAyMSBMIDExLjAwMDMgMjAuOTk5MSBDIDguOTk0NDYgMjEuMDA0NSA3LjA1OTUzIDIwLjI1NzEgNS41NzkzNiAxOC45MDM0IEMgNC4wOTg2OSAxNy41NDkxIDMuMTgwNzUgMTUuNjg3NyAzLjAwODA4IDEzLjY4ODUgQyAyLjgzNTQ3IDExLjY4OTIgMy40MjA5MSA5LjY5NzU2IDQuNjQ3NzIgOC4xMDk0MiBDIDUuODcwMTggNi41MjY5MiA3LjY0MDkgNS40NjAxMiA5LjYxMDYxIDUuMTE4MjEgTCAxMC42MzMxIDQuOTE4MDIgQyAxMi44OTU5IDQuNDY1NTQgMTQuMzIzMiA0LjExMDQ1IDE1LjM5MDkgMy42NDk0NiBDIDE2LjU0MTcgMy4xNTI1NSAxNy4yOTQ1IDIuNTIyMSAxOC4yMjE5IDEuMzcyMTIgTCAxOC4zMDY5IDEuMjc5MzQgQyAxOC41MTg1IDEuMDc1NzYgMTguODExNSAwLjk3Mzk0IDE5LjEwNzcgMS4wMDU5MSBDIDE5LjQ0NTkgMS4wNDI1NCAxOS43NDI3IDEuMjQ4NSAxOS44OTQ4IDEuNTUyNzggTCAyMC4yODE1IDIuMzQyODIgQyAyMS4xNzgzIDQuMjI4OTUgMjIuMDAwMyA2LjQ2Mzg4IDIyLjAwMDMgMTAgWiIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiAvPjwvZz48ZyB0cmFuc2Zvcm09Im1hdHJpeCgxIDAgMCAxIDcuNSAxNi41KSIgID48cGF0aCBzdHlsZT0ic3Ryb2tlOiBub25lOyBzdHJva2Utd2lkdGg6IDE7IHN0cm9rZS1kYXNoYXJyYXk6IG5vbmU7IHN0cm9rZS1saW5lY2FwOiBidXR0OyBzdHJva2UtZGFzaG9mZnNldDogMDsgc3Ryb2tlLWxpbmVqb2luOiBtaXRlcjsgc3Ryb2tlLW1pdGVybGltaXQ6IDQ7IGZpbGw6IHJnYigxMDYsOTQsODMpOyBmaWxsLXJ1bGU6IG5vbnplcm87IG9wYWNpdHk6IDE7IiAgdHJhbnNmb3JtPSIgdHJhbnNsYXRlKC03LjUsIC0xNi41KSIgZD0iTSAxIDIxIEMgMSAxNy41MTQ4IDMuMTk1MjIgMTQuNzUwOCA2Ljg4NTc0IDE0LjAxOTUgTCA3LjI5NDkyIDEzLjkyNzcgQyA4LjI1NDEzIDEzLjY4ODUgOS4yMzE4NyAxMy4yNzkzIDEwLjA5OTYgMTIuODEzNSBDIDExLjA5ODkgMTIuMjc3IDExLjg4NDQgMTEuNzAxNSAxMi4yOTMgMTEuMjkzIEwgMTIuMzY5MSAxMS4yMjQ2IEMgMTIuNzYxOSAxMC45MDQzIDEzLjM0MDkgMTAuOTI2OSAxMy43MDcgMTEuMjkzIEMgMTQuMDczMSAxMS42NTkxIDE0LjA5NTcgMTIuMjM4MSAxMy43NzU0IDEyLjYzMDkgTCAxMy43MDcgMTIuNzA3IEMgMTMuMTE1NyAxMy4yOTg0IDEyLjE1MTMgMTMuOTgyNyAxMS4wNDU5IDE0LjU3NjIgQyAxMC4wNzE3IDE1LjA5OTIgOC45MzUxOSAxNS41OCA3Ljc3MzQ0IDE1Ljg2OTIgTCA3LjI3NDQxIDE1Ljk4MDUgQyA0LjUwNDk0IDE2LjUyOTIgMyAxOC40ODUyIDMgMjEgQyAzIDIxLjU1MjMgMi41NTIyOCAyMiAyIDIyIEMgMS40NDc3MiAyMiAxIDIxLjU1MjMgMSAyMSBaIiBzdHJva2UtbGluZWNhcD0icm91bmQiIC8+PC9nPjwvZz48L2c+PC9zdmc+" alt="Leaf" class="w-6 h-6">
             </div>
@@ -295,7 +328,7 @@
               <p class="font-semibold text-[#1D1A16]">Basse</p>
               <p class="text-xs text-[#6A5E53]">Séances douces, mouvement léger, sans pression</p>
             </div>
-            <div class="w-5 h-5 border-2 border-[#E4E0DC] rounded-full"></div>
+            <input type="radio" name="energy" value="low" class="custom-radio">
           </label>
 
           <!-- Moyenne Option -->
@@ -307,11 +340,11 @@
               <p class="font-semibold text-[#1D1A16]">Moyenne</p>
               <p class="text-xs text-[#6A5E53]">Effort équilibré, stable et confortable</p>
             </div>
-            <div class="w-5 h-5 border-2 border-[#E4E0DC] rounded-full"></div>
+            <input type="radio" name="energy" value="medium" class="custom-radio" checked>
           </label>
 
           <!-- Haute Option -->
-          <label class="flex items-center gap-4 p-4 border-2 border-[#E4E0DC] rounded-[26px] cursor-pointer hover:bg-gray-50 transition-colors">
+          <label class="flex items-center gap-4 p-4 border-2 border-[#E4E0DC] rounded-[26px] cursor-pointer hover:bg-gray-50 transition-colors energy-option">
             <div class="w-12 h-12 bg-[#F6F5F3] rounded-2xl flex items-center justify-center shrink-0">
               <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgIHZpZXdCb3g9IjAgMCAyNCAyNCI+PGcgdHJhbnNmb3JtPSJtYXRyaXgoMSAwIDAgMSAwIDApIiAgPjxnIHN0eWxlPSIiICAgPjxnIHRyYW5zZm9ybT0ibWF0cml4KDEgMCAwIDEgMTIgMTIpIiAgPjxwYXRoIHN0eWxlPSJzdHJva2U6IG5vbmU7IHN0cm9rZS13aWR0aDogMTsgc3Ryb2tlLWRhc2hhcnJheTogbm9uZTsgc3Ryb2tlLWxpbmVjYXA6IGJ1dHQ7IHN0cm9rZS1kYXNob2Zmc2V0OiAwOyBzdHJva2UtbGluZWpvaW46IG1pdGVyOyBzdHJva2UtbWl0ZXJsaW1pdDogNDsgZmlsbDogcmdiKDEwNiw5NCw4Myk7IGZpbGwtcnVsZTogbm9uemVybzsgb3BhY2l0eTogMTsiICB0cmFuc2Zvcm09IiB0cmFuc2xhdGUoLTEyLCAtMTIpIiBkPSJNIDEzLjM1MTEgMS4wMDQyNiBDIDEzLjYwMzUgMC45Nzk0MzQgMTMuODU4NCAxLjAxOTE2IDE0LjA5MTMgMS4xMTk0OSBMIDE0LjIwNTYgMS4xNzUxNiBMIDE0LjMxNSAxLjIzOTYxIEMgMTQuNTI3NiAxLjM3NzczIDE0LjcwMTQgMS41Njc2OCAxNC44MjA4IDEuNzkxMzcgTCAxNC44NzY1IDEuOTA1NjMgTCAxNC45MjE0IDIuMDI0NzcgQyAxNS4wMDEyIDIuMjY1MTEgMTUuMDE5MyAyLjUyMTg2IDE0Ljk3MzIgMi43NzA4NiBMIDE0Ljk0MzkgMi44OTQ4OCBDIDE0Ljk0MDMgMi45MDc4MiAxNC45MzcyIDIuOTIxMTYgMTQuOTMzMSAyLjkzMzk1IEwgMTMuMDEzMiA4Ljk1MzQ4IEwgMTIuOTk2NiA5LjAwMDM1IEwgMTkuOTk5NSA5LjAwMDM1IEMgMjAuMzc3IDguOTk5NjIgMjAuNzQ3MiA5LjEwNTMzIDIxLjA2NjkgOS4zMDYwMiBDIDIxLjM4NzQgOS41MDcyMiAyMS42NDM4IDkuNzk1NzIgMjEuODA3MiAxMC4xMzcxIEMgMjEuOTcwNSAxMC40Nzg0IDIyLjAzNDIgMTAuODU4OSAyMS45ODk4IDExLjIzNDcgQyAyMS45NTA5IDExLjU2MzUgMjEuODMxMSAxMS44NzY4IDIxLjY0MjEgMTIuMTQ2OCBMIDIxLjU1NjIgMTIuMjYwMSBMIDIxLjQ5NzYgMTIuMzI2NSBMIDExLjU5NzIgMjIuNTI2NyBMIDExLjU5NjIgMjIuNTI1NyBDIDExLjM3NzUgMjIuNzU5NiAxMS4wOTA4IDIyLjkxOTUgMTAuNzc0OSAyMi45Nzc5IEMgMTAuNDQwNCAyMy4wMzk4IDEwLjA5NDUgMjIuOTg2IDkuNzk0NDYgMjIuODI1NSBDIDkuNDk0NDYgMjIuNjY1MSA5LjI1NzgxIDIyLjQwNjcgOS4xMjM1NiAyMi4wOTQxIEMgOC45ODk0NyAyMS43ODE2IDguOTY1OTkgMjEuNDMyOCA5LjA1NjE4IDIxLjEwNDggTCA5LjA2NjkyIDIxLjA2NTggTCAxMC45ODY4IDE1LjA0NjMgTCAxMS4wMDM0IDE1LjAwMDQgTCAzLjk5OTU0IDE1LjAwMDQgTCAzLjk5OTU0IDE0Ljk5OTQgQyAzLjYyMjQyIDE0Ljk5OTkgMy4yNTI1OSAxNC44OTQyIDIuOTMzMTMgMTQuNjkzNyBDIDIuNjEyODIgMTQuNDkyNiAyLjM1NjIzIDE0LjIwNDggMi4xOTI5IDEzLjg2MzYgQyAyLjAyOTUzIDEzLjUyMjIgMS45NjU4NyAxMy4xNDA5IDIuMDEwMjggMTIuNzY1IEMgMi4wNTQ3NCAxMi4zODkzIDIuMjA1NSAxMi4wMzM0IDIuNDQzODggMTEuNzM5NiBMIDIuNTAyNDcgMTEuNjczMiBMIDEyLjQwMjkgMS40NzM5OSBDIDEyLjYyMTYgMS4yMzk5NCAxMi45MDkyIDEuMDgxMjcgMTMuMjI1MSAxLjAyMjgxIEwgMTMuMzUxMSAxLjAwNDI2IFogTSA0LjAwMjQ3IDEzLjAwMDQgTCAxMC45OTk1IDEzLjAwMDQgQyAxMS4zMjIxIDEyLjk5OTggMTEuNjQwMSAxMy4wNzcxIDExLjkyNjMgMTMuMjI1OSBDIDEyLjIxMzIgMTMuMzc1MiAxMi40NjAyIDEzLjU5MTQgMTIuNjQ1IDEzLjg1NjggQyAxMi44Mjk5IDE0LjEyMjMgMTIuOTQ3NCAxNC40Mjk0IDEyLjk4NzggMTQuNzUwNCBDIDEzLjAyNjEgMTUuMDU1IDEyLjk5MDQgMTUuMzYzIDEyLjg5MDIgMTUuNjUyNyBMIDEyLjg5MzEgMTUuNjUzNyBMIDExLjYyNjUgMTkuNjI0NCBMIDE5Ljk5NzYgMTEuMDAwNCBMIDEyLjk5OTUgMTEuMDAwNCBMIDEyLjk5OTUgMTAuOTk5NCBDIDEyLjY3NzQgMTAuOTk5OCAxMi4zNTk2IDEwLjkyMzQgMTIuMDczOCAxMC43NzQ4IEMgMTEuNzg2OCAxMC42MjU1IDExLjUzOTkgMTAuNDA4NCAxMS4zNTUgMTAuMTQyOSBDIDExLjE3MDMgOS44Nzc1NiAxMS4wNTI3IDkuNTcxMTUgMTEuMDEyMiA5LjI1MDM1IEMgMTAuOTczOCA4Ljk0NTMzIDExLjAwODQgOC42MzYxNCAxMS4xMDg5IDguMzQ2MDYgTCAxMS4xMDcgOC4zNDYwNiBMIDEyLjM3MjYgNC4zNzQzOCBMIDQuMDAyNDcgMTMuMDAwNCBaIiBzdHJva2UtbGluZWNhcD0icm91bmQiIC8+PC9nPjwvZz48L2c+PC9zdmc+" alt="Zap" class="w-6 h-6">
             </div>
@@ -319,12 +352,12 @@
               <p class="font-semibold text-[#1D1A16]">Haute</p>
               <p class="text-xs text-[#6A5E53]">Pousse tes limites, intense et énergisant</p>
             </div>
-            <div class="w-5 h-5 border-2 border-[#E4E0DC] rounded-full"></div>
+            <input type="radio" name="energy" value="high" class="custom-radio">
           </label>
         </div>
 
-        <button class="w-full bg-[#EC9679] text-[#1D1A16] font-bold py-4 rounded-full shadow-md hover:bg-[#e08566] transition-colors">
-          Save preferences
+        <button onclick="saveEnergyPref()" class="w-full bg-[#EC9679] text-[#1D1A16] font-bold py-4 rounded-full shadow-md hover:bg-[#e08566] transition-colors">
+          Enregistrer
         </button>
       </div>
     </div>
@@ -565,5 +598,32 @@
 
 })();
 </script>
+
+<script>
+(function() {
+  var saved = localStorage.getItem('_energy_pref') || 'medium';
+  var radios = document.querySelectorAll('input[name="energy"]');
+  radios.forEach(function(r) {
+    r.checked = (r.value === saved);
+  });
+})();
+
+function saveEnergyPref() {
+  var radios = document.querySelectorAll('input[name="energy"]');
+  var selected = 'medium';
+  radios.forEach(function(r) {
+    if (r.checked) selected = r.value;
+  });
+  localStorage.setItem('_energy_pref', selected);
+  
+  var btn = event.target;
+  btn.textContent = '✓ Enregistré !';
+  btn.style.background = '#5DCAA5';
+  setTimeout(function() {
+    window.location.href = 'profile.html';
+  }, 800);
+}
+</script>
+
 </body>
 </html>
