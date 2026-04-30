@@ -103,7 +103,7 @@ body { font-family: 'Outfit', sans-serif; background: #FBFAF9; color: #1D1A16; m
       <!-- GIF zone -->
       <div class="gif-container" style="flex:1;min-width:240px;height:300px;">
         <img id="exGif" src="" alt="" style="display:none;">
-        <div id="restOverlay" style="display:none;position:absolute;inset:0;background:rgba(251,250,249,0.97);flex-direction:column;align-items:center;justify-content:center;gap:10px;border-radius:20px;">
+        <div id="restOverlay" style="display:none;position:absolute;inset:0;z-index:100;background:rgba(251,250,249,0.97);flex-direction:column;align-items:center;justify-content:center;gap:10px;border-radius:20px;">
           <div style="font-size:42px">😮‍💨</div>
           <div style="font-size:20px;font-weight:700;color:#1D1A16;font-family:Outfit,sans-serif;">Repos</div>
           <div id="restCountdown" style="font-size:48px;font-weight:800;color:#EC9679;line-height:1;font-family:Outfit,sans-serif;">30</div>
@@ -287,16 +287,32 @@ function buildDots() {
   });
 }
 
-function loadEx(idx) {
+function loadEx(idx, autoStart) {
+  // Nettoyer l'état précédent
   stopTimer();
-  // Nettoyer la phase de repos si en cours
   if (typeof restInterval !== 'undefined' && restInterval) {
     clearInterval(restInterval);
     restInterval = null;
   }
   hide('restOverlay');
+  hide('meditationOverlay');
+  hide('gifFallback');
+
+  // Détruire le player YouTube précédent
+  if (ytPlayer) { try { ytPlayer.destroy(); } catch(e) {} ytPlayer = null; }
+  var oldDiv = document.getElementById('yt-player-div');
+  if (oldDiv) oldDiv.remove();
+  var oldPh = document.getElementById('yt-placeholder');
+  if (oldPh) oldPh.remove();
+  var oldFb = document.getElementById('video-unavailable-fb');
+  if (oldFb) oldFb.remove();
+  var oldIframe = document.getElementById('yt-iframe-fallback');
+  if (oldIframe) oldIframe.remove();
+
   curIdx = idx;
   var ex = session.exercises[idx];
+
+  // Mettre à jour les infos de l'exercice
   document.getElementById('exName').textContent = ex.name;
   document.getElementById('exTip').textContent = ex.tip || '';
   var ic = INT_COLORS[session.intensity] || INT_COLORS['Medium'];
@@ -305,6 +321,7 @@ function loadEx(idx) {
   timeLeft = ex.duration; totalTime = ex.duration;
   updateTimerDisplay(); updateRing(1);
 
+  // Reps ou durée
   if (ex.reps) {
     document.getElementById('repsBox').style.display = 'block';
     document.getElementById('repsVal').textContent = ex.reps;
@@ -312,41 +329,48 @@ function loadEx(idx) {
     document.getElementById('repsBox').style.display = 'none';
   }
 
-  // Reset overlays
-  hide('restOverlay'); hide('meditationOverlay'); hide('gifFallback');
-  // Nettoyer le player YouTube précédent
-  if (ytPlayer) { try { ytPlayer.destroy(); } catch(e) {} ytPlayer = null; }
-  var oldDiv = document.getElementById('yt-player-div');
-  if (oldDiv) oldDiv.remove();
-  var oldPh = document.getElementById('yt-placeholder');
-  if (oldPh) oldPh.remove();
-  var oldFb = document.getElementById('video-unavailable-fb');
-  if (oldFb) oldFb.remove();
+  // Zone vidéo
   document.getElementById('exGif').style.display = 'none';
-  document.getElementById('gifLoading').style.display = 'flex';
+  document.getElementById('gifLoading').style.display = 'none';
 
   if (!ex.id) {
-    document.getElementById('gifLoading').style.display = 'none';
+    // Exercice sans vidéo (repos prédéfini) : overlay méditation
     if (session.category === 'Mindful Meditation') {
       document.getElementById('medText').textContent = ex.tip;
       show('meditationOverlay');
-    } else {
-      var nxt = session.exercises[idx+1];
-      document.getElementById('nextExName').textContent = nxt ? nxt.name : 'Terminé !';
-      show('restOverlay');
+    }
+    // Sinon rien (l'exercice sans id est géré par le tip)
+  } else if (autoStart) {
+    // Démarrage automatique (après phase de repos) : charger la vidéo directement
+    var ytId = getYouTubeId(ex.name);
+    if (ytId) {
+      document.getElementById('gifLoading').style.display = 'flex';
+      setTimeout(function() {
+        document.getElementById('gifLoading').style.display = 'none';
+        loadYouTubePlayer(ytId, ex.duration);
+      }, 200);
     }
   } else {
-    // Afficher un placeholder "click start" au lieu de charger la vidéo
-    document.getElementById('gifLoading').style.display = 'none';
+    // Démarrage manuel (premier exercice) : afficher le placeholder
     showVideoPlaceholder(ex.name, idx);
   }
 
+  // Navigation
   updateList(idx); updateProgress(idx);
-  document.getElementById('btnPrev').style.opacity = idx===0?'0.4':'1';
-  document.getElementById('btnNext').textContent = idx===session.exercises.length-1?'Terminer ✓':'Suivant →';
-  document.getElementById('btnPlay').textContent = '▶ Démarrer';
-  document.getElementById('timerStatus').textContent = 'ready';
-  isPlaying = false;
+  document.getElementById('btnPrev').style.opacity = idx === 0 ? '0.4' : '1';
+  document.getElementById('btnNext').textContent = idx === session.exercises.length - 1 ? 'Terminer ✓' : 'Suivant →';
+
+  if (autoStart) {
+    // Démarrage auto : le timer sera lancé par finishRestPhase via startTimer()
+    document.getElementById('btnPlay').textContent = '⏸ Pause';
+    document.getElementById('timerStatus').textContent = 'actif';
+    isPlaying = false; // sera mis à true par startTimer()
+  } else {
+    // Démarrage manuel
+    document.getElementById('btnPlay').textContent = '▶ Démarrer';
+    document.getElementById('timerStatus').textContent = 'prêt';
+    isPlaying = false;
+  }
 }
 
 var YT_MAP = {"Jumping Jacks": "c4DAnQ6DtF8", "Lateral Shuffle": "c4DAnQ6DtF8", "Squat Jump": "Qgpxx1Bxmgs", "Upper Body Activation": "Qgpxx1Bxmgs", "Mountain Climbers": "wrn1Cm_yfEU", "Dead Bug": "wrn1Cm_yfEU", "Burpee": "xRdGC6cFY0s", "Stability Ball Basics": "vthMCtgVtFw", "High Knees": "nGaXj3kkmrU", "Full Body Shake": "dJF1MJPmCj4", "Push Up": "IODxDxX7oi4", "Tricep Dip": "IODxDxX7oi4", "Plank Hold": "ASdvN_XEl_c", "Forearm Plank": "ASdvN_XEl_c", "Plank to Chaturanga": "Nx_-MRwRvtE", "Cool Down": "eqVMAPM00DM", "Squat": "P-yaD24bUE8", "Dumbbell Foundational": "P-yaD24bUE8", "Reverse Lunge (right)": "7AWLfjXYjTE", "Reverse Lunge (left)": "7AWLfjXYjTE", "Glute Bridge": "B7kTkXDIMuE", "Superman Hold": "B7kTkXDIMuE", "Bird Dog": "9X3OKE6xZqw", "Side Plank (right)": "WDIpL0pjun0", "Side Plank (left)": "WDIpL0pjun0", "Mountain Pose": "u_jNKRDMkrM", "Neck Side Stretch": "U20I89tTv2U", "Standing Side Stretch": "U20I89tTv2U", "Shoulder Roll": "FcttbMXJA0A", "Hip Circle": "FcttbMXJA0A", "Chest Opener": "nmgCEFBqB0I", "Face & Head Scan": "O-6f5wkWN50", "Standing Forward Fold": "tnHRoE7HJi0", "Calf Raise": "DlS-GAF8Edg", "Standing Calf Stretch": "u_jNKRDMkrM", "Low Lunge (right)": "zuYbjkuKLKY", "Low Lunge (left)": "zuYbjkuKLKY", "Pigeon Pose (right)": "V7hr4w3pd6w", "Pigeon Pose (left)": "V7hr4w3pd6w", "Supine Hip Stretch": "aihbOIot3p0", "Bridge Pose": "artJ8bH9jXs", "Child's Pose": "eqVMAPM00DM", "Cobra Pose": "J_lLt6-GlMo", "Settling Breath": "J_lLt6-GlMo", "Downward Dog": "9X3OKE6xZqw", "Three-Legged Dog": "LHC96BuPv8I", "Warrior I (right)": "Mn6RSRCV3Nw", "Warrior I (left)": "LHC96BuPv8I", "Warrior II (right)": "EniGBCHAEVQ", "Warrior II (left)": "2MJGg-dUKh0", "Sun Salutation A": "VH-Ws3K-x7k", "Legs Up the Wall": "VH-Ws3K-x7k", "Supine Twist (right)": "aihbOIot3p0", "Supine Twist (left)": "N4figcWjDGI", "Reclined Butterfly": "N4figcWjDGI", "Savasana": "8nY16jEfTo4", "Brisk Walk Warm-Up": "dJF1MJPmCj4", "Easy Jog": "vVxbFRTlGF0", "Walk Recovery": "oGEvMX1DlM0", "Cool Down Walk": "vthMCtgVtFw", "Feet & Legs Scan": "86m4RC_ADEY", "Hips & Belly Scan": "86m4RC_ADEY", "Chest & Back Scan": "inpok4MKVLM", "Arms & Hands Scan": "inpok4MKVLM", "Whole Body Awareness": "O-6f5wkWN50"};
@@ -673,7 +697,20 @@ function startRestPhase() {
   
   // Stopper le timer principal et la vidéo
   isPlaying = false;
-  pauseYouTube();
+  
+  // Détruire le player YouTube pour qu'il ne masque pas l'overlay de repos
+  if (ytPlayer) {
+    try { ytPlayer.stopVideo(); ytPlayer.destroy(); } catch(e) {}
+    ytPlayer = null;
+  }
+  var ytDiv = document.getElementById('yt-player-div');
+  if (ytDiv) ytDiv.remove();
+  var ytIframe = document.getElementById('yt-iframe-fallback');
+  if (ytIframe) ytIframe.remove();
+  var ytPh = document.getElementById('yt-placeholder');
+  if (ytPh) ytPh.remove();
+  var ytFb = document.getElementById('video-unavailable-fb');
+  if (ytFb) ytFb.remove();
   
   // Préparer l'overlay de repos
   var nextEx = session.exercises[curIdx + 1];
@@ -716,7 +753,7 @@ function finishRestPhase() {
   if (restInterval) { clearInterval(restInterval); restInterval = null; }
   hide('restOverlay');
   // Charger le prochain exercice et démarrer automatiquement
-  loadEx(curIdx + 1);
+  loadEx(curIdx + 1, true);
   // Démarrer auto (différent du premier exo qui demande clic manuel)
   // Petit délai pour laisser le DOM se mettre à jour
   setTimeout(function() {
